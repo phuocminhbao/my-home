@@ -1,7 +1,7 @@
 export interface ConstructionSettlement {
-    index: string | null;
+    index: string | number | null;
     category: string | null;
-    length: number | null;
+    length: number | string | null;
     width: number | null;
     quantity: number | null;
     squareMeters: number | null;
