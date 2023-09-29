@@ -1,14 +1,26 @@
 /** @type {import('eslint').Linter.Config} */
 module.exports = {
+    env: {
+        browser: true,
+        es2021: true,
+        node: true
+    },
     extends: [
         '@remix-run/eslint-config',
         '@remix-run/eslint-config/node',
-        'eslint:recommended',
         'plugin:react/recommended',
-        'plugin:@typescript-eslint/recommended'
+        'standard-with-typescript',
+        'plugin:jsx-a11y/recommended',
+        'prettier'
     ],
-    parser: 'babel-eslint',
-    plugins: ['react', 'prettier', '@typescript-eslint'],
+    parser: '@typescript-eslint/parser',
+    parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        project: './tsconfig.json',
+        tsconfigRootDir: __dirname
+    },
+    plugins: ['react', 'jsx-a11y', 'prettier'],
     rules: {
         '@typescript-eslint/strict-boolean-expressions': 'off',
         'max-len': [
@@ -29,6 +41,7 @@ module.exports = {
                 named: 'never',
                 asyncArrow: 'always'
             }
-        ]
+        ],
+        'prettier/prettier': 'error'
     }
 };
