@@ -1,14 +1,16 @@
-import type { MetaFunction } from "@remix-run/node";
-import { Form } from "@remix-run/react";
+import type { MetaFunction } from '@remix-run/node';
+import { Form } from '@remix-run/react';
+import TableList from '~/react-components/TableList';
 
 export const meta: MetaFunction = () => {
-  return [{ title: "My Home" }, { name: "description", content: "Hallo" }];
+    return [{ title: 'My Home' }, { name: 'description', content: 'Hallo' }];
 };
 
 export default function Index() {
-  return (
-    <Form method="POST" action="/excel-action">
-      <button type="submit">Do excel</button>
-    </Form>
-  );
+    return (
+        // <Form method="POST" action="/excel-action">
+        //   <button type="submit">Do excel</button>
+        // </Form>
+        <TableList></TableList>
+    );
 }

@@ -22,4 +22,4 @@ export async function doExcel() {
 
     await workbook.xlsx.writeFile(exportPath);
     console.log('Backend here');
-};
+}
