@@ -3,7 +3,7 @@ import { ConstructionSettlementTable } from '~/types/ExcelModel/ConstructionSett
 export function getDefaultData(): ConstructionSettlementTable[] {
     return [
         {
-            order: undefined,
+            order: 'I',
             category: undefined,
             length: undefined,
             width: undefined,
@@ -55,7 +55,7 @@ export function getDefaultData(): ConstructionSettlementTable[] {
             ]
         },
         {
-            order: undefined,
+            order: 'II',
             category: undefined,
             length: undefined,
             width: undefined,
