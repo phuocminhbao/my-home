@@ -1,5 +1,6 @@
 import type { MetaFunction } from '@remix-run/node';
 import { Form } from '@remix-run/react';
+import { useEffect } from 'react';
 import TableList from '~/react-components/TableList';
 
 export const meta: MetaFunction = () => {
