@@ -1,7 +1,7 @@
 import type { MetaFunction } from '@remix-run/node';
 import { Form } from '@remix-run/react';
 import { useEffect } from 'react';
-import TableList from '~/react-components/TableList';
+import { TableList } from '~/react-components';
 
 export const meta: MetaFunction = () => {
     return [{ title: 'My Home' }, { name: 'description', content: 'Hallo' }];
