@@ -9,4 +9,15 @@ const columnType = [
     { key: 'totalCost', header: 'THÀNH TIỀN' }
 ];
 
-export { columnType };
+const getColWidth: Record<string, string> = {
+    index: '5%',
+    category: '20%',
+    length: '14%',
+    width: '14%',
+    quantity: '5%',
+    squareMeters: '8%',
+    price: '14%',
+    totalCost: '14%'
+};
+
+export { columnType, getColWidth };

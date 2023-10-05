@@ -8,8 +8,8 @@ export const mockData: ConstructionSettlement[] = [
         width: 0.32,
         quantity: 22,
         squareMeters: 8.59,
-        price: undefined,
-        totalCost: undefined
+        price: null,
+        totalCost: null
     },
     {
         order: 1,
@@ -18,8 +18,8 @@ export const mockData: ConstructionSettlement[] = [
         width: 1.15,
         quantity: 2,
         squareMeters: 2.81,
-        price: undefined,
-        totalCost: undefined
+        price: null,
+        totalCost: null
     },
     {
         order: 2,
@@ -28,25 +28,25 @@ export const mockData: ConstructionSettlement[] = [
         width: 0.25,
         quantity: 1,
         squareMeters: 1.4,
-        price: undefined,
-        totalCost: undefined
+        price: null,
+        totalCost: null
     },
     {
-        order: undefined,
-        category: undefined,
+        order: null,
+        category: null,
         length: 2.73,
         width: 0.25,
         quantity: 1,
         squareMeters: 0.68,
-        price: undefined,
-        totalCost: undefined
+        price: null,
+        totalCost: null
     },
     {
-        order: undefined,
-        category: undefined,
+        order: null,
+        category: null,
         length: 'CỘNG',
-        width: undefined,
-        quantity: undefined,
+        width: null,
+        quantity: null,
         squareMeters: 13.48,
         price: 960000,
         totalCost: 12938208
@@ -64,12 +64,12 @@ export const mockData: ConstructionSettlement[] = [
     {
         order: 1,
         category: 'ĐÁ ẤN ĐỘ',
-        length: undefined,
-        width: undefined,
-        quantity: undefined,
-        squareMeters: undefined,
-        price: undefined,
-        totalCost: undefined
+        length: null,
+        width: null,
+        quantity: null,
+        squareMeters: null,
+        price: null,
+        totalCost: null
     },
     {
         order: 2,
@@ -78,25 +78,25 @@ export const mockData: ConstructionSettlement[] = [
         width: 0.62,
         quantity: 1,
         squareMeters: 1.78,
-        price: undefined,
-        totalCost: undefined
+        price: null,
+        totalCost: null
     },
     {
-        order: undefined,
-        category: undefined,
+        order: null,
+        category: null,
         length: 2.8,
         width: 0.62,
         quantity: 1,
         squareMeters: 1.74,
-        price: undefined,
-        totalCost: undefined
+        price: null,
+        totalCost: null
     },
     {
-        order: undefined,
-        category: undefined,
+        order: null,
+        category: null,
         length: 'CỘNG',
-        width: undefined,
-        quantity: undefined,
+        width: null,
+        quantity: null,
         squareMeters: 3.52,
         price: 1400000,
         totalCost: 4921560
@@ -105,8 +105,8 @@ export const mockData: ConstructionSettlement[] = [
         order: 3,
         category: 'CHỈ BẾP',
         length: '2.87+3.42',
-        width: undefined,
-        quantity: undefined,
+        width: null,
+        quantity: null,
         squareMeters: 6.29,
         price: 230000,
         totalCost: 1446700
@@ -118,25 +118,25 @@ export const mockData: ConstructionSettlement[] = [
         width: 0.43,
         quantity: 1,
         squareMeters: 1.21,
-        price: undefined,
-        totalCost: undefined
+        price: null,
+        totalCost: null
     },
     {
-        order: undefined,
-        category: undefined,
+        order: null,
+        category: null,
         length: 3.72,
         width: 0.43,
         quantity: 1,
         squareMeters: 1.6,
-        price: undefined,
-        totalCost: undefined
+        price: null,
+        totalCost: null
     },
     {
-        order: undefined,
-        category: undefined,
+        order: null,
+        category: null,
         length: 'CỘNG',
-        width: undefined,
-        quantity: undefined,
+        width: null,
+        quantity: null,
         squareMeters: 2.81,
         price: 1400000,
         totalCost: 3937080
@@ -145,8 +145,8 @@ export const mockData: ConstructionSettlement[] = [
         order: 5,
         category: 'CHỈ GHÉP',
         length: '2.82+4.15',
-        width: undefined,
-        quantity: undefined,
+        width: null,
+        quantity: null,
         squareMeters: 6.97,
         price: 230000,
         totalCost: 1603100
@@ -155,8 +155,8 @@ export const mockData: ConstructionSettlement[] = [
         order: 6,
         category: 'CỬA LẦU 1',
         length: '1.4+2.6',
-        width: undefined,
-        quantity: undefined,
+        width: null,
+        quantity: null,
         squareMeters: 4,
         price: 320000,
         totalCost: 1280000
@@ -165,8 +165,8 @@ export const mockData: ConstructionSettlement[] = [
         order: 7,
         category: 'CỬA SỔ BẾP',
         length: '1.4+2.4',
-        width: undefined,
-        quantity: undefined,
+        width: null,
+        quantity: null,
         squareMeters: 3.8,
         price: 320000,
         totalCost: 1216000
@@ -178,17 +178,17 @@ export const mockData: ConstructionSettlement[] = [
         width: 4.32,
         quantity: 1,
         squareMeters: 21.17,
-        price: undefined,
-        totalCost: undefined
+        price: null,
+        totalCost: null
     },
     {
         order: 9,
-        category: undefined,
+        category: null,
         length: 1.95,
         width: 1.44,
         quantity: 2,
         squareMeters: 5.62,
-        price: undefined,
-        totalCost: undefined
+        price: null,
+        totalCost: null
     }
 ];

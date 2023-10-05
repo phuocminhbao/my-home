@@ -7,8 +7,11 @@ import {
     TableHead,
     TableBody,
     TextField,
-    InputAdornment
+    InputAdornment,
+    IconButton,
+    Tooltip
 } from '@mui/material';
+import { Add, Remove } from '@mui/icons-material';
 import { getDefaultData, getUnit } from '~/utils';
 import _ from 'lodash';
 import { useState, Fragment, useCallback, useEffect } from 'react';
@@ -20,7 +23,7 @@ import { AccordionRow } from '..';
 import { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
 
 //Importing contants
-import { columnType } from '~/contants';
+import { columnType, getColWidth } from '~/contants';
 
 export default function TableList() {
     const [tableData, setTableData] = useState(getDefaultData());
@@ -37,7 +40,7 @@ export default function TableList() {
             setShouldMergeCells(String(data.length).includes('+'));
         }, [data.length]);
 
-        // Handle merge length, width and quantity
+        // TODO: Handle merge length, width and quantity
         // const shouldMergeCells = String(data.length).includes('+');;
         const rowInput = (
             value: string | number | null,
@@ -45,7 +48,7 @@ export default function TableList() {
             // isMergedCell: boolean = false
         ) => {
             const handleBlur = (e: React.FocusEvent<HTMLInputElement, Element>) => {
-                if (!data) return;
+                // if (!data) return;
 
                 // Don't do anything if not change
                 if (e.currentTarget.value === value) {
@@ -77,6 +80,9 @@ export default function TableList() {
 
             return (
                 <TextField
+                    style={{
+                        fontSize: '1.5rem'
+                    }}
                     defaultValue={value ?? ''}
                     size="medium"
                     onBlur={handleBlur}
@@ -84,13 +90,55 @@ export default function TableList() {
                     multiline
                     maxRows={4}
                     variant="filled"
-                    fullWidth={shouldMergeCells}
+                    fullWidth
                     InputProps={{
                         endAdornment: !shouldMergeCells && (
                             <InputAdornment position="end">{getUnit(field)}</InputAdornment>
                         )
                     }}
                 ></TextField>
+            );
+        };
+
+        const rowEventCell = () => {
+            const handleEvent = (action: string): void => {
+                const newTableData = [...tableData];
+                switch (action) {
+                    case 'remove':
+                        if (isAccordionRow) {
+                            newTableData.splice(accordionRowIndex, 1);
+                        } else {
+                            newTableData[accordionRowIndex].details?.splice(detailRowIndex!, 1);
+                        }
+                        break;
+                    case 'add':
+                        console.log('add');
+                        break;
+                }
+                setTableData(newTableData);
+            };
+            return (
+                <>
+                    <Tooltip title="Xóa hàng hiện tại">
+                        <IconButton
+                            onClick={() => {
+                                handleEvent('remove');
+                            }}
+                        >
+                            <Remove />
+                        </IconButton>
+                    </Tooltip>
+                    <br />
+                    <Tooltip title="Thêm hàng mới ở dưới">
+                        <IconButton
+                            onClick={() => {
+                                handleEvent('add');
+                            }}
+                        >
+                            <Add />
+                        </IconButton>
+                    </Tooltip>
+                </>
             );
         };
 
@@ -110,6 +158,7 @@ export default function TableList() {
                 <TableCell align="center">{data.squareMeters}</TableCell>
                 <TableCell align="center">{rowInput(data.price, 'price')}</TableCell>
                 <TableCell align="center">{data.totalCost}</TableCell>
+                <TableCell>{rowEventCell()}</TableCell>
             </>
         );
 
@@ -117,7 +166,7 @@ export default function TableList() {
             rowContent
         ) : (
             <TableRow>
-                {<TableCell padding="checkbox" />}
+                <TableCell padding="checkbox"></TableCell>
                 {rowContent}
             </TableRow>
         );
@@ -144,10 +193,11 @@ export default function TableList() {
                     <TableRow>
                         <TableCell padding="checkbox" />
                         {columnType.map((col) => (
-                            <TableCell key={col.key} align="center">
+                            <TableCell key={col.key} align="center" width={getColWidth[col.key]}>
                                 {col.header}
                             </TableCell>
                         ))}
+                        <TableCell />
                     </TableRow>
                 </TableHead>
                 <TableBody>
