@@ -1,3 +1,5 @@
+import { ConstructionSettlementTable } from "~/types";
+
 const columnType = [
     { key: 'index', header: 'STT' },
     { key: 'category', header: 'HẠNG MỤC' },
@@ -20,4 +22,175 @@ const getColWidth: Record<string, string> = {
     totalCost: '14%'
 };
 
-export { columnType, getColWidth };
+const initTableData: ConstructionSettlementTable[] = [
+    {
+        order: 'I',
+        category: '',
+        length: 0,
+        width: 0,
+        quantity: 0,
+        squareMeters: null,
+        price: 0,
+        totalCost: null,
+        details: [
+            {
+                order: null,
+                category: '',
+                length: 0,
+                width: 0,
+                quantity: 0,
+                squareMeters: null,
+                price: 0,
+                totalCost: null
+            },
+            {
+                order: null,
+                category: '',
+                length: 0,
+                width: 0,
+                quantity: 0,
+                squareMeters: null,
+                price: 0,
+                totalCost: null
+            },
+            {
+                order: null,
+                category: '',
+                length: 0,
+                width: 0,
+                quantity: 0,
+                squareMeters: null,
+                price: 0,
+                totalCost: null
+            },
+            {
+                order: null,
+                category: '',
+                length: 0,
+                width: 0,
+                quantity: 0,
+                squareMeters: null,
+                price: 0,
+                totalCost: null
+            }
+        ]
+    },
+    {
+        order: 'II',
+        category: '',
+        length: 0,
+        width: 0,
+        quantity: 0,
+        squareMeters: null,
+        price: 0,
+        totalCost: null,
+        details: [
+            {
+                order: null,
+                category: '',
+                length: 0,
+                width: 0,
+                quantity: 0,
+                squareMeters: null,
+                price: 0,
+                totalCost: null
+            },
+            {
+                order: null,
+                category: '',
+                length: 0,
+                width: 0,
+                quantity: 0,
+                squareMeters: null,
+                price: 0,
+                totalCost: null
+            },
+            {
+                order: null,
+                category: '',
+                length: 0,
+                width: 0,
+                quantity: 0,
+                squareMeters: null,
+                price: 0,
+                totalCost: null
+            },
+            {
+                order: null,
+                category: '',
+                length: 0,
+                width: 0,
+                quantity: 0,
+                squareMeters: null,
+                price: 0,
+                totalCost: null
+            }
+        ]
+    }
+];
+
+const initAccordionRowData = {
+    order: null,
+    category: '',
+    length: 0,
+    width: 0,
+    quantity: 0,
+    squareMeters: null,
+    price: 0,
+    totalCost: null,
+    details: [
+        {
+            order: null,
+            category: '',
+            length: 0,
+            width: 0,
+            quantity: 0,
+            squareMeters: null,
+            price: 0,
+            totalCost: null
+        },
+        {
+            order: null,
+            category: '',
+            length: 0,
+            width: 0,
+            quantity: 0,
+            squareMeters: null,
+            price: 0,
+            totalCost: null
+        },
+        {
+            order: null,
+            category: '',
+            length: 0,
+            width: 0,
+            quantity: 0,
+            squareMeters: null,
+            price: 0,
+            totalCost: null
+        },
+        {
+            order: null,
+            category: '',
+            length: 0,
+            width: 0,
+            quantity: 0,
+            squareMeters: null,
+            price: 0,
+            totalCost: null
+        }
+    ]
+}
+
+const initDetailsRowData = {
+    order: null,
+    category: '',
+    length: 0,
+    width: 0,
+    quantity: 0,
+    squareMeters: null,
+    price: 0,
+    totalCost: null
+};
+
+export { columnType, getColWidth, initTableData, initAccordionRowData, initDetailsRowData };
