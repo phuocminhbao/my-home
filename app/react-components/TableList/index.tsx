@@ -12,9 +12,9 @@ import {
     Tooltip
 } from '@mui/material';
 import { Add, Remove } from '@mui/icons-material';
-import { getDefaultData, getUnit } from '~/utils';
+import { getUnit, updateTableData } from '~/utils';
 import _ from 'lodash';
-import { useState, Fragment, useCallback, useEffect } from 'react';
+import { useState, Fragment, useEffect } from 'react';
 
 // Importing components
 import { AccordionRow } from '..';
@@ -23,10 +23,22 @@ import { AccordionRow } from '..';
 import { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
 
 //Importing contants
-import { columnType, getColWidth } from '~/contants';
+import { columnType, getColWidth, initTableData } from '~/contants';
+import { initAccordionRowData, initDetailsRowData } from '~/contants/table';
 
 export default function TableList() {
-    const [tableData, setTableData] = useState(getDefaultData());
+    const [tableData, setTableData] = useState(initTableData);
+
+    const checkAndSetTableData = (newTableData: ConstructionSettlementTable[]) => {
+        if(!_.isEqual(tableData, newTableData)) {
+            setTableData(newTableData);
+        }
+    }
+
+    useEffect(() => {
+        updateTableData();
+        console.log(tableData);
+    }, [tableData]);
 
     function processRow(
         data: ConstructionSettlement | ConstructionSettlementTable,
@@ -34,21 +46,15 @@ export default function TableList() {
         accordionRowIndex: number,
         detailRowIndex?: number
     ): JSX.Element {
-        const [shouldMergeCells, setShouldMergeCells] = useState(String(data.length).includes('+'));
-
-        useEffect(() => {
-            setShouldMergeCells(String(data.length).includes('+'));
-        }, [data.length]);
 
         // TODO: Handle merge length, width and quantity
-        // const shouldMergeCells = String(data.length).includes('+');;
+        const shouldMergeCells = String(data.length).includes('+');
         const rowInput = (
             value: string | number | null,
             field: keyof ConstructionSettlement
-            // isMergedCell: boolean = false
         ) => {
             const handleBlur = (e: React.FocusEvent<HTMLInputElement, Element>) => {
-                // if (!data) return;
+                if(!data) return;
 
                 // Don't do anything if not change
                 if (e.currentTarget.value === value) {
@@ -62,14 +68,14 @@ export default function TableList() {
                     } else e.currentTarget.value = '0';
                 }
 
-                let newTableData = [...tableData];
+                const newTableData = _.cloneDeep(tableData);
                 if (isAccordionRow) {
                     newTableData[accordionRowIndex][field] = e.target.value as any;
                 } else {
                     newTableData[accordionRowIndex].details![detailRowIndex!][field] = e.target
                         .value as any;
                 }
-                setTableData(newTableData);
+                checkAndSetTableData(newTableData);
             };
             const handleFocus = (e: React.FocusEvent<HTMLInputElement, Element>) => {
                 // Remove default value when focus
@@ -102,7 +108,7 @@ export default function TableList() {
 
         const rowEventCell = () => {
             const handleEvent = (action: string): void => {
-                const newTableData = [...tableData];
+                const newTableData = _.cloneDeep(tableData);
                 switch (action) {
                     case 'remove':
                         if (isAccordionRow) {
@@ -112,10 +118,15 @@ export default function TableList() {
                         }
                         break;
                     case 'add':
-                        console.log('add');
+                        if (isAccordionRow) {
+                            newTableData.splice(accordionRowIndex + 1, 0, initAccordionRowData);
+                        } else {
+                            newTableData[accordionRowIndex].details?.splice(detailRowIndex! + 1, 0, initDetailsRowData);
+                        }
                         break;
+                    default: throw new Error('Unexpected action');
                 }
-                setTableData(newTableData);
+                checkAndSetTableData(newTableData);
             };
             return (
                 <>
@@ -171,9 +182,6 @@ export default function TableList() {
             </TableRow>
         );
     }
-    useEffect(() => {
-        console.log(tableData);
-    }, [tableData]);
 
     return (
         <Paper
@@ -185,7 +193,6 @@ export default function TableList() {
             <Table
                 style={{
                     minWidth: 'fit-content',
-                    textSizeAdjust: '1.5rem'
                 }}
                 aria-label="simple table"
             >
@@ -203,11 +210,11 @@ export default function TableList() {
                 <TableBody>
                     {tableData.map((row, accordionIndex) => (
                         <AccordionRow
-                            key={accordionIndex}
+                            key={String(accordionIndex)}
                             expandComponent={
                                 <>
                                     {row.details?.map((detail, subIndex) => (
-                                        <Fragment key={subIndex}>
+                                        <Fragment key={String(accordionIndex) + String(subIndex)}>
                                             {processRow(detail, false, accordionIndex, subIndex)}
                                         </Fragment>
                                     ))}
