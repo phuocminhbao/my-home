@@ -210,11 +210,11 @@ export default function TableList() {
                 <TableBody>
                     {tableData.map((row, accordionIndex) => (
                         <AccordionRow
-                            key={accordionIndex}
+                            key={String(accordionIndex)}
                             expandComponent={
                                 <>
                                     {row.details?.map((detail, subIndex) => (
-                                        <Fragment key={subIndex}>
+                                        <Fragment key={String(accordionIndex) + String(subIndex)}>
                                             {processRow(detail, false, accordionIndex, subIndex)}
                                         </Fragment>
                                     ))}
