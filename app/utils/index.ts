@@ -1,4 +1,4 @@
 import { updateTableData } from './data';
-import { getUnit } from './common';
+import { getUniqueKey, getUnit } from './common';
 
-export { getUnit, updateTableData };
+export { getUnit, updateTableData, getUniqueKey };

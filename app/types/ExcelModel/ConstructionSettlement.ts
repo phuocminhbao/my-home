@@ -1,4 +1,5 @@
 export interface ConstructionSettlement {
+    id?: number;
     order: string | number | null;
     category: string | null;
     length: number | string | null;

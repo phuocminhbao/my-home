@@ -12,7 +12,7 @@ import {
     Tooltip
 } from '@mui/material';
 import { Add, Remove } from '@mui/icons-material';
-import { getUnit, updateTableData } from '~/utils';
+import { getUnit, updateTableData, getUniqueKey } from '~/utils';
 import _ from 'lodash';
 import { useState, Fragment, useEffect } from 'react';
 
@@ -210,11 +210,11 @@ export default function TableList() {
                 <TableBody>
                     {tableData.map((row, accordionIndex) => (
                         <AccordionRow
-                            key={String(accordionIndex)}
+                            key={row.id}
                             expandComponent={
                                 <>
                                     {row.details?.map((detail, subIndex) => (
-                                        <Fragment key={String(accordionIndex) + String(subIndex)}>
+                                        <Fragment key={detail.id}>
                                             {processRow(detail, false, accordionIndex, subIndex)}
                                         </Fragment>
                                     ))}

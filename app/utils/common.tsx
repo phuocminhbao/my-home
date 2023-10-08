@@ -17,3 +17,11 @@ export function getUnit(type: string) {
             return '';
     }
 }
+
+// Globa value for below function
+var key = 0;
+
+export function getUniqueKey() {
+    key += 1;
+    return key;
+}
