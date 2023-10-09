@@ -18,10 +18,10 @@ export function getUnit(type: string) {
     }
 }
 
-// Globa value for below function
+// Global value for below function
 var key = 0;
 
-export function getUniqueKey() {
+export function getUniqueID() {
     key += 1;
     return key;
 }
