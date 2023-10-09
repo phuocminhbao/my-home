@@ -1,4 +1,20 @@
-import { getDefaultData } from './data';
-import { getUnit } from './common';
+import {
+    updateTableData,
+    getInitTableData,
+    getInitAccordionRowData,
+    getInitDetailsRowData,
+    getInitDetailsRowDataWithNumber
+} from './data';
+import { getUniqueID, getUnit } from './common';
+import { toRoman } from './number';
 
-export { getDefaultData, getUnit };
+export {
+    getUnit,
+    updateTableData,
+    getUniqueID,
+    getInitAccordionRowData,
+    getInitDetailsRowData,
+    getInitTableData,
+    toRoman,
+    getInitDetailsRowDataWithNumber
+};

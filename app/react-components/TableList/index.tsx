@@ -7,11 +7,23 @@ import {
     TableHead,
     TableBody,
     TextField,
-    InputAdornment
+    InputAdornment,
+    IconButton,
+    Tooltip,
+    TableContainer
 } from '@mui/material';
-import { getDefaultData, getUnit } from '~/utils';
+
+import { Add, PlaylistAdd, Remove } from '@mui/icons-material';
+import {
+    getInitAccordionRowData,
+    getInitDetailsRowData,
+    getInitDetailsRowDataWithNumber,
+    getInitTableData,
+    getUnit,
+    updateTableData
+} from '~/utils';
 import _ from 'lodash';
-import { useState, Fragment, useCallback, useEffect } from 'react';
+import { useState, Fragment, useEffect, useMemo } from 'react';
 
 // Importing components
 import { AccordionRow } from '..';
@@ -20,10 +32,27 @@ import { AccordionRow } from '..';
 import { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
 
 //Importing contants
-import { columnType } from '~/contants';
+import { columnType, getColWidth } from '~/contants';
 
 export default function TableList() {
-    const [tableData, setTableData] = useState(getDefaultData());
+    const [tableData, setTableData] = useState(() => getInitTableData());
+    const newTableData = useMemo(() => _.cloneDeep(tableData), [tableData]);
+
+    const checkAndSetTableData = () => {
+        updateTableData(newTableData);
+        if (!_.isEqual(tableData, newTableData)) {
+            setTableData(newTableData);
+        }
+    };
+
+    useEffect(() => {
+        // Update order of each row
+        checkAndSetTableData();
+    }, []);
+
+    useEffect(() => {
+        console.log(tableData);
+    }, [tableData]);
 
     function processRow(
         data: ConstructionSettlement | ConstructionSettlementTable,
@@ -31,19 +60,9 @@ export default function TableList() {
         accordionRowIndex: number,
         detailRowIndex?: number
     ): JSX.Element {
-        const [shouldMergeCells, setShouldMergeCells] = useState(String(data.length).includes('+'));
-
-        useEffect(() => {
-            setShouldMergeCells(String(data.length).includes('+'));
-        }, [data.length]);
-
         // Handle merge length, width and quantity
-        // const shouldMergeCells = String(data.length).includes('+');;
-        const rowInput = (
-            value: string | number | null,
-            field: keyof ConstructionSettlement
-            // isMergedCell: boolean = false
-        ) => {
+        const shouldMergeCells = String(data.length).includes('+');
+        const rowInput = (value: string | number | null, field: keyof ConstructionSettlement) => {
             const handleBlur = (e: React.FocusEvent<HTMLInputElement, Element>) => {
                 if (!data) return;
 
@@ -59,14 +78,13 @@ export default function TableList() {
                     } else e.currentTarget.value = '0';
                 }
 
-                let newTableData = [...tableData];
                 if (isAccordionRow) {
-                    newTableData[accordionRowIndex][field] = e.target.value as any;
+                    newTableData[accordionRowIndex][field] = e.target.value as never;
                 } else {
                     newTableData[accordionRowIndex].details![detailRowIndex!][field] = e.target
-                        .value as any;
+                        .value as never;
                 }
-                setTableData(newTableData);
+                checkAndSetTableData();
             };
             const handleFocus = (e: React.FocusEvent<HTMLInputElement, Element>) => {
                 // Remove default value when focus
@@ -84,7 +102,7 @@ export default function TableList() {
                     multiline
                     maxRows={4}
                     variant="filled"
-                    fullWidth={shouldMergeCells}
+                    fullWidth
                     InputProps={{
                         endAdornment: !shouldMergeCells && (
                             <InputAdornment position="end">{getUnit(field)}</InputAdornment>
@@ -94,22 +112,90 @@ export default function TableList() {
             );
         };
 
+        const rowEventCell = () => {
+            const handleEvent = (action: string): void => {
+                switch (action) {
+                    case 'remove':
+                        if (isAccordionRow) {
+                            newTableData.splice(accordionRowIndex, 1);
+                        } else {
+                            newTableData[accordionRowIndex].details?.splice(detailRowIndex!, 1);
+                        }
+                        break;
+                    case 'add':
+                        if (isAccordionRow) {
+                            newTableData.splice(
+                                accordionRowIndex + 1,
+                                0,
+                                getInitAccordionRowData()
+                            );
+                        } else {
+                            newTableData[accordionRowIndex].details?.splice(
+                                detailRowIndex! + 1,
+                                0,
+                                getInitDetailsRowData()
+                            );
+                        }
+                        break;
+                    default:
+                        throw new Error('Unexpected action');
+                }
+                checkAndSetTableData();
+            };
+            return (
+                <>
+                    <Tooltip title="Xóa hàng hiện tại">
+                        <IconButton
+                            onClick={() => {
+                                handleEvent('remove');
+                            }}
+                        >
+                            <Remove />
+                        </IconButton>
+                    </Tooltip>
+                    <br />
+                    <Tooltip title="Thêm hàng mới ở dưới">
+                        <IconButton
+                            onClick={() => {
+                                handleEvent('add');
+                            }}
+                        >
+                            <Add />
+                        </IconButton>
+                    </Tooltip>
+                </>
+            );
+        };
+
         const rowContent = (
             <>
                 <TableCell align="center">{data.order}</TableCell>
                 <TableCell align="center">{rowInput(data.category, 'category')}</TableCell>
                 {shouldMergeCells ? (
-                    <TableCell colSpan={3}>{rowInput(data.length, 'length')} </TableCell>
+                    <TableCell colSpan={3}>
+                        {
+                            <Tooltip title="Xóa dấu - để tách thành 3 hàng">
+                                {rowInput(data.length, 'length')}
+                            </Tooltip>
+                        }
+                    </TableCell>
                 ) : (
                     <>
-                        <TableCell align="center">{rowInput(data.length, 'length')}</TableCell>
+                        <TableCell align="center">
+                            {
+                                <Tooltip title="Gõ dấu + để gộp 3 hàng">
+                                    {rowInput(data.length, 'length')}
+                                </Tooltip>
+                            }
+                        </TableCell>
                         <TableCell align="center">{rowInput(data.width, 'width')}</TableCell>
                         <TableCell align="center">{rowInput(data.quantity, 'quantity')}</TableCell>
                     </>
                 )}
-                <TableCell align="center">{data.squareMeters}</TableCell>
+                <TableCell align="center">{data.squareMeters ?? ''}</TableCell>
                 <TableCell align="center">{rowInput(data.price, 'price')}</TableCell>
                 <TableCell align="center">{data.totalCost}</TableCell>
+                <TableCell>{rowEventCell()}</TableCell>
             </>
         );
 
@@ -117,58 +203,99 @@ export default function TableList() {
             rowContent
         ) : (
             <TableRow>
-                {<TableCell padding="checkbox" />}
+                <TableCell padding="checkbox" width='5%'></TableCell>
                 {rowContent}
             </TableRow>
         );
     }
-    useEffect(() => {
-        console.log(tableData);
-    }, [tableData]);
+
+    function addDefaultDetailsRows(id: number) {
+        const subRows = getInitDetailsRowDataWithNumber();
+        const selectedAccordionRow = newTableData.find((accorRow) => accorRow.id === id);
+        if (selectedAccordionRow) {
+            selectedAccordionRow.details = subRows;
+        }
+        checkAndSetTableData();
+    }
+
+    function addDefaultAccordionRows() {
+        newTableData.push(getInitAccordionRowData());
+        checkAndSetTableData();
+    }
 
     return (
         <Paper
             style={{
                 width: '100%',
-                overflowX: 'auto'
+                overflow: 'hidden'
             }}
         >
-            <Table
-                style={{
-                    minWidth: 'fit-content',
-                    textSizeAdjust: '1.5rem'
-                }}
-                aria-label="simple table"
-            >
-                <TableHead>
-                    <TableRow>
-                        <TableCell padding="checkbox" />
-                        {columnType.map((col) => (
-                            <TableCell key={col.key} align="center">
-                                {col.header}
-                            </TableCell>
-                        ))}
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {tableData.map((row, accordionIndex) => (
-                        <AccordionRow
-                            key={accordionIndex}
-                            expandComponent={
-                                <>
-                                    {row.details?.map((detail, subIndex) => (
-                                        <Fragment key={subIndex}>
-                                            {processRow(detail, false, accordionIndex, subIndex)}
-                                        </Fragment>
-                                    ))}
-                                </>
-                            }
-                        >
-                            {processRow(row, true, accordionIndex)}
-                        </AccordionRow>
-                    ))}
-                </TableBody>
-            </Table>
+            <TableContainer sx={{ maxHeight: '100vh' }}>
+                <Table
+                    style={{
+                        minWidth: 'fit-content'
+                    }}
+                    stickyHeader
+                    aria-label="simple table"
+                >
+                    <TableHead>
+                        <TableRow >
+                            <TableCell padding="checkbox" variant='head' width='5%' sx={{minWidth: '75px'}}/>
+                            {columnType.map((col) => (
+                                <TableCell
+                                    key={col.key}
+                                    align="center"
+                                    width={getColWidth[col.key]}
+                                    variant='head'
+                                    sx={{minWidth: '75px', fontWeight: 600}}
+                                >
+                                    {col.header}
+                                </TableCell>
+                            ))}
+                            <TableCell variant='head' width='5%' sx={{minWidth: '75px'}}/>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {tableData.length > 0 ? (
+                            <>
+                                {tableData.map((row, accordionIndex) => (
+                                    <AccordionRow
+                                        key={row.id}
+                                        rowId={row.id!}
+                                        addSubRowsCallback={addDefaultDetailsRows}
+                                        expandComponent={
+                                            <>
+                                                {row.details?.map((detail, subIndex) => (
+                                                    <Fragment key={detail.id}>
+                                                        {processRow(
+                                                            detail,
+                                                            false,
+                                                            accordionIndex,
+                                                            subIndex
+                                                        )}
+                                                    </Fragment>
+                                                ))}
+                                            </>
+                                        }
+                                    >
+                                        {processRow(row, true, accordionIndex)}
+                                    </AccordionRow>
+                                ))}
+                            </>
+                        ) : (
+                            <TableRow>
+                                <TableCell colSpan={10}>
+                            <Tooltip title="Thêm hàng con">
+                                <IconButton size="large" onClick={() => {addDefaultAccordionRows()}}>
+                                    <PlaylistAdd />
+                                </IconButton>
+                            </Tooltip>
+                                </TableCell>
+                            </TableRow>
+                        )}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </Paper>
     );
 }

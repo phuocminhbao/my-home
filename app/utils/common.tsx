@@ -17,3 +17,11 @@ export function getUnit(type: string) {
             return '';
     }
 }
+
+// Global value for below function
+var key = 0;
+
+export function getUniqueID() {
+    key += 1;
+    return key;
+}
