@@ -17,7 +17,7 @@ function calculatingMeters(data: ConstructionSettlementTable | ConstructionSettl
         });
     }
 
-    data.squareMeters = result;
+    data.squareMeters = Number(result.toFixed(2));
 }
 
 function formatRow(data: ConstructionSettlementTable | ConstructionSettlement) {

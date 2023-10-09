@@ -12,7 +12,8 @@ import {
     Tooltip,
     TableContainer
 } from '@mui/material';
-import { Add, Remove } from '@mui/icons-material';
+
+import { Add, PlaylistAdd, Remove } from '@mui/icons-material';
 import {
     getInitAccordionRowData,
     getInitDetailsRowData,
@@ -32,7 +33,6 @@ import { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
 
 //Importing contants
 import { columnType, getColWidth } from '~/contants';
-// import { initAccordionRowData, initDetailsRowData } from '~/contants/table';
 
 export default function TableList() {
     const [tableData, setTableData] = useState(() => getInitTableData());
@@ -203,7 +203,7 @@ export default function TableList() {
             rowContent
         ) : (
             <TableRow>
-                <TableCell padding="checkbox"></TableCell>
+                <TableCell padding="checkbox" width='5%'></TableCell>
                 {rowContent}
             </TableRow>
         );
@@ -215,6 +215,11 @@ export default function TableList() {
         if (selectedAccordionRow) {
             selectedAccordionRow.details = subRows;
         }
+        checkAndSetTableData();
+    }
+
+    function addDefaultAccordionRows() {
+        newTableData.push(getInitAccordionRowData());
         checkAndSetTableData();
     }
 
@@ -234,44 +239,60 @@ export default function TableList() {
                     aria-label="simple table"
                 >
                     <TableHead>
-                        <TableRow>
-                            <TableCell padding="checkbox" />
+                        <TableRow >
+                            <TableCell padding="checkbox" variant='head' width='5%' sx={{minWidth: '75px'}}/>
                             {columnType.map((col) => (
                                 <TableCell
                                     key={col.key}
                                     align="center"
                                     width={getColWidth[col.key]}
+                                    variant='head'
+                                    sx={{minWidth: '75px', fontWeight: 600}}
                                 >
                                     {col.header}
                                 </TableCell>
                             ))}
-                            <TableCell />
+                            <TableCell variant='head' width='5%' sx={{minWidth: '75px'}}/>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {tableData.map((row, accordionIndex) => (
-                            <AccordionRow
-                                key={row.id}
-                                rowId={row.id!}
-                                addSubRowsCallback={addDefaultDetailsRows}
-                                expandComponent={
-                                    <>
-                                        {row.details?.map((detail, subIndex) => (
-                                            <Fragment key={detail.id}>
-                                                {processRow(
-                                                    detail,
-                                                    false,
-                                                    accordionIndex,
-                                                    subIndex
-                                                )}
-                                            </Fragment>
-                                        ))}
-                                    </>
-                                }
-                            >
-                                {processRow(row, true, accordionIndex)}
-                            </AccordionRow>
-                        ))}
+                        {tableData.length > 0 ? (
+                            <>
+                                {tableData.map((row, accordionIndex) => (
+                                    <AccordionRow
+                                        key={row.id}
+                                        rowId={row.id!}
+                                        addSubRowsCallback={addDefaultDetailsRows}
+                                        expandComponent={
+                                            <>
+                                                {row.details?.map((detail, subIndex) => (
+                                                    <Fragment key={detail.id}>
+                                                        {processRow(
+                                                            detail,
+                                                            false,
+                                                            accordionIndex,
+                                                            subIndex
+                                                        )}
+                                                    </Fragment>
+                                                ))}
+                                            </>
+                                        }
+                                    >
+                                        {processRow(row, true, accordionIndex)}
+                                    </AccordionRow>
+                                ))}
+                            </>
+                        ) : (
+                            <TableRow>
+                                <TableCell colSpan={10}>
+                            <Tooltip title="Thêm hàng con">
+                                <IconButton size="large" onClick={() => {addDefaultAccordionRows()}}>
+                                    <PlaylistAdd />
+                                </IconButton>
+                            </Tooltip>
+                                </TableCell>
+                            </TableRow>
+                        )}
                     </TableBody>
                 </Table>
             </TableContainer>

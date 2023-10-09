@@ -21,12 +21,12 @@ const columnType = [
 const getColWidth: Record<string, string> = {
     index: '5%',
     category: '20%',
-    length: '14%',
-    width: '14%',
-    quantity: '5%',
-    squareMeters: '8%',
-    price: '14%',
-    totalCost: '14%'
+    length: '12%',
+    width: '12%',
+    quantity: '8%',
+    squareMeters: '9%',
+    price: '12%',
+    totalCost: '12%'
 };
 
 const initDetailsRowData: ConstructionSettlement = {

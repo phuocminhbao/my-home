@@ -22,7 +22,7 @@ export default function AccordionRow({
     return (
         <>
             <TableRow>
-                <TableCell padding="checkbox">
+                <TableCell padding="checkbox" width='5%'>
                     {isHavingDetailsRow ? (
                         <IconButton onClick={() => setIsExpanded(!isExpanded)}>
                             {isExpanded ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
