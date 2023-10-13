@@ -18,28 +18,36 @@ export default function AccordionRow({
     addSubRowsCallback
 }: AccordionRowProps) {
     const [isExpanded, setIsExpanded] = useState(false);
-    const isHavingDetailsRow = _.get(expandComponent, 'props.children', []).length > 0;
+    const isHavingDetailsRows = _.get(expandComponent, 'props.children', []).length > 0;
+
+    const AddSubRowsButton = () => {
+        return (
+            <Tooltip title="Thêm hàng con">
+                <IconButton
+                    onClick={() => {
+                        addSubRowsCallback(rowId);
+                        setIsExpanded(true);
+                    }}
+                >
+                    <PlaylistAdd />
+                </IconButton>
+            </Tooltip>
+        )
+    }
+
+    const ExpandedIcon = () => {
+        return (
+            <IconButton onClick={() => setIsExpanded(!isExpanded)}>
+                {isExpanded ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+            </IconButton>
+        )
+    }
 
     return (
         <>
             <TableRow draggable>
                 <TableCell padding="checkbox" width={colWidth.event}>
-                    {isHavingDetailsRow ? (
-                        <IconButton onClick={() => setIsExpanded(!isExpanded)}>
-                            {isExpanded ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
-                        </IconButton>
-                    ) : (
-                        <Tooltip title="Thêm hàng con">
-                            <IconButton
-                                onClick={() => {
-                                    addSubRowsCallback(rowId);
-                                    setIsExpanded(true);
-                                }}
-                            >
-                                <PlaylistAdd />
-                            </IconButton>
-                        </Tooltip>
-                    )}
+                    {isHavingDetailsRows ? <ExpandedIcon /> : <AddSubRowsButton />}
                 </TableCell>
                 {children}
             </TableRow>

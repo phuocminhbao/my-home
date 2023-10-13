@@ -42,6 +42,56 @@ import { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
 //Importing contants
 import { colWidth, columnType } from '~/contants';
 
+function TalbeHeader({ showCalculation }: { showCalculation: boolean }) {
+    return (
+        <TableHead>
+            <TableRow>
+                <TableCell padding="none" variant="head" width={colWidth.event}>
+                    {showCalculation ? (
+                        <Button variant="contained" startIcon={<Calculate />}>
+                            Tính
+                        </Button>
+                    ) : (
+                        <></>
+                    )}
+                </TableCell>
+                {columnType.map((col) => (
+                    <TableCell
+                        key={col.key}
+                        align="center"
+                        padding="none"
+                        width={colWidth[col.key]}
+                        variant="head"
+                        sx={{ minWidth: '75px', fontWeight: 600 }}
+                    >
+                        {col.header}
+                    </TableCell>
+                ))}
+                <TableCell variant="head" width={colWidth.event} padding="none" />
+            </TableRow>
+        </TableHead>
+    );
+}
+
+function AddDefautlTableButton({ handleClick }: { handleClick: () => void }) {
+    return (
+        <TableRow>
+            <TableCell colSpan={10}>
+                <Tooltip title="Thêm hàng con">
+                    <IconButton
+                        size="large"
+                        onClick={() => {
+                            handleClick();
+                        }}
+                    >
+                        <PlaylistAdd />
+                    </IconButton>
+                </Tooltip>
+            </TableCell>
+        </TableRow>
+    );
+}
+
 export default function TableList() {
     const [tableData, setTableData] = useState(() => getInitTableData());
     const newTableData = useMemo(() => _.cloneDeep(tableData), [tableData]);
@@ -56,7 +106,7 @@ export default function TableList() {
     };
 
     useEffect(() => {
-        // Update order of each row
+        // Update and format data of each row
         checkAndSetTableData();
     }, []);
 
@@ -64,11 +114,12 @@ export default function TableList() {
         console.log(tableData);
     }, [tableData]);
 
-    function processRow(
-        data: ConstructionSettlement | ConstructionSettlementTable,
-        isAccordionRow: boolean = false,
+    function ProcessedRow(
+        {data, isAccordionRow = false, accordionRowIndex, detailRowIndex}:
+        {data: ConstructionSettlement | ConstructionSettlementTable,
+        isAccordionRow?: boolean,
         accordionRowIndex: number,
-        detailRowIndex?: number
+        detailRowIndex?: number}
     ): JSX.Element {
         const isCalculateRow = String(data.length) === 'CỘNG';
         // Handle merge length, width and quantity
@@ -79,7 +130,7 @@ export default function TableList() {
         if (!_.isNil(detailRowIndex) && !_.isNil(currentAccRow.details))
             currentDetailRow = currentAccRow.details[detailRowIndex];
 
-        const rowInput = (value: string | number | null, field: keyof ConstructionSettlement) => {
+        const RowInput = ( {value, field} :{value: string | number | null, field: keyof ConstructionSettlement}) => {
             const handleBlur = (e: React.FocusEvent<HTMLInputElement, Element>) => {
                 if (!data) return;
 
@@ -128,7 +179,7 @@ export default function TableList() {
             );
         };
 
-        const addRemoveCell = () => {
+        const AddRemoveCell = () => {
             const handleEvent = (action: string): void => {
                 switch (action) {
                     case 'remove':
@@ -183,53 +234,58 @@ export default function TableList() {
             );
         };
 
-        const rowContent = (
-            <>
-                <TableCell align="center">{data.order}</TableCell>
-                <TableCell align="center">
-                    {isCalculateRow ? <></> : rowInput(data.category, 'category')}
-                </TableCell>
-                {shouldMergeCells ? (
-                    <TableCell colSpan={3} align="center">
-                        {isCalculateRow ? (
-                            data.length
-                        ) : (
-                            <Tooltip title="Xóa dấu - để tách thành 3 hàng">
-                                {rowInput(data.length, 'length')}
-                            </Tooltip>
-                        )}
+        const RowContent = () => {
+            return (
+                <>
+                    <TableCell align="center">{data.order}</TableCell>
+                    <TableCell align="center">
+                        {isCalculateRow ? <></> : <RowInput value={data.category} field='category'/>} 
                     </TableCell>
-                ) : (
-                    <>
-                        <TableCell align="center">
-                            {
-                                <Tooltip title="Gõ dấu + để gộp 3 hàng">
-                                    {rowInput(data.length, 'length')}
+                    {shouldMergeCells ? (
+                        <TableCell colSpan={3} align="center">
+                            {isCalculateRow ? (
+                                data.length
+                            ) : (
+                                <Tooltip title="Xóa dấu - để tách thành 3 hàng">
+                                    <><RowInput value={data.length} field='length'/></>
                                 </Tooltip>
-                            }
+                            )}
                         </TableCell>
-                        <TableCell align="center">{rowInput(data.width, 'width')}</TableCell>
-                        <TableCell align="center">{rowInput(data.quantity, 'quantity')}</TableCell>
-                    </>
-                )}
-                <TableCell align="center">{data.squareMeters ?? ''}</TableCell>
-                <TableCell align="center">
-                    {isCalculateRow || isAccordionRow ? rowInput(data.price, 'price') : <></>}
-                </TableCell>
-                <TableCell align="center">{data.totalCost}</TableCell>
-                <TableCell>{addRemoveCell()}</TableCell>
-            </>
-        );
+                    ) : (
+                        <>
+                            <TableCell align="center">
+                                {
+                                    <Tooltip title="Gõ dấu + để gộp 3 hàng">
+                                        <><RowInput value={data.length} field='length'/></>
+                                    </Tooltip>
+                                }
+                            </TableCell>
+                            <TableCell align="center"><RowInput value={data.width} field='width'/></TableCell>
+                            <TableCell align="center">
+                            <RowInput value={data.quantity} field='quantity'/>
+                            </TableCell>
+                        </>
+                    )}
+                    <TableCell align="center">{data.squareMeters ?? ''}</TableCell>
+                    <TableCell align="center">
+                        {isCalculateRow || isAccordionRow ? <RowInput value={data.price} field='price'/> : <></>}
+                    </TableCell>
+                    <TableCell align="center">{data.totalCost}</TableCell>
+                    <TableCell><AddRemoveCell /></TableCell>
+                </>
+            );
+        };
 
         return isAccordionRow ? (
-            rowContent
+            <RowContent />
         ) : (
-            <TableRow draggable>
+            <TableRow draggable selected={data.isSelected}>
                 <TableCell
                     align="center"
                     padding="checkbox"
                     width={colWidth.event}
                     onClick={() => {
+                        if(_.isEmpty(data.category)) return;
                         currentDetailRow.isSelected = !currentDetailRow.isSelected;
                         checkAndSetTableData();
                     }}
@@ -242,24 +298,27 @@ export default function TableList() {
                         <CheckBoxOutlineBlank color="info" />
                     )}
                 </TableCell>
-                {rowContent}
+                <RowContent />
             </TableRow>
         );
     }
 
-    const addDefaultDetailsRows = useCallback((id: number) => {
-        const subRows = getInitDetailsRowDataWithNumber();
-        const selectedAccordionRow = newTableData.find((accorRow) => accorRow.id === id);
-        if (selectedAccordionRow) {
-            selectedAccordionRow.details = subRows;
-        }
-        checkAndSetTableData();
-    }, []);
+    const addDefaultDetailsRows = useCallback(
+        (id: number) => {
+            const subRows = getInitDetailsRowDataWithNumber();
+            const selectedAccordionRow = newTableData.find((accorRow) => accorRow.id === id);
+            if (selectedAccordionRow) {
+                selectedAccordionRow.details = subRows;
+            }
+            checkAndSetTableData();
+        },
+        [tableData]
+    );
 
-    const addDefaultAccordionRows = useCallback(() => {
+    const addDefaultAccordionRow = useCallback(() => {
         newTableData.push(getInitAccordionRowData());
         checkAndSetTableData();
-    }, []);
+    }, [tableData]);
 
     return (
         <Paper
@@ -271,45 +330,12 @@ export default function TableList() {
             <TableContainer sx={{ maxHeight: '100vh' }}>
                 <Table
                     style={{
-                        minWidth: 'fit-content'
+                        minWidth: '1250px'
                     }}
                     stickyHeader
                     aria-label="Accordion table"
                 >
-                    <TableHead>
-                        <TableRow>
-                            <TableCell
-                                padding="checkbox"
-                                variant="head"
-                                width={colWidth.event}
-                                sx={{ minWidth: '75px' }}
-                            >
-                                {showCalculation ? (
-                                    <Button variant="contained" startIcon={<Calculate />}>
-                                        Tính
-                                    </Button>
-                                ) : (
-                                    <></>
-                                )}
-                            </TableCell>
-                            {columnType.map((col) => (
-                                <TableCell
-                                    key={col.key}
-                                    align="center"
-                                    width={colWidth[col.key]}
-                                    variant="head"
-                                    sx={{ minWidth: '75px', fontWeight: 600 }}
-                                >
-                                    {col.header}
-                                </TableCell>
-                            ))}
-                            <TableCell
-                                variant="head"
-                                width={colWidth.event}
-                                sx={{ minWidth: '75px' }}
-                            />
-                        </TableRow>
-                    </TableHead>
+                    <TalbeHeader showCalculation={showCalculation} />
                     <TableBody>
                         {tableData.length > 0 ? (
                             <>
@@ -321,37 +347,17 @@ export default function TableList() {
                                         expandComponent={
                                             <>
                                                 {row.details?.map((detail, subIndex) => (
-                                                    <Fragment key={detail.id}>
-                                                        {processRow(
-                                                            detail,
-                                                            false,
-                                                            accordionIndex,
-                                                            subIndex
-                                                        )}
-                                                    </Fragment>
+                                                    <ProcessedRow key={detail.id} data={detail} accordionRowIndex={accordionIndex} detailRowIndex={subIndex}/>
                                                 ))}
                                             </>
                                         }
                                     >
-                                        {processRow(row, true, accordionIndex)}
+                                        <ProcessedRow data={row} isAccordionRow accordionRowIndex={accordionIndex}/>
                                     </AccordionRow>
                                 ))}
                             </>
                         ) : (
-                            <TableRow>
-                                <TableCell colSpan={10}>
-                                    <Tooltip title="Thêm hàng con">
-                                        <IconButton
-                                            size="large"
-                                            onClick={() => {
-                                                addDefaultAccordionRows();
-                                            }}
-                                        >
-                                            <PlaylistAdd />
-                                        </IconButton>
-                                    </Tooltip>
-                                </TableCell>
-                            </TableRow>
+                            <AddDefautlTableButton handleClick={addDefaultAccordionRow} />
                         )}
                     </TableBody>
                 </Table>

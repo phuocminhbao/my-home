@@ -19,7 +19,7 @@ const columnType = [
 ];
 
 const colWidth: Record<string, string> = {
-    event: '5%',
+    event: '2%',
     index: '5%',
     category: '20%',
     length: '12%',
