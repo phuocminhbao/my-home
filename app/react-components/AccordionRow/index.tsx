@@ -2,6 +2,7 @@ import { KeyboardArrowUp, KeyboardArrowDown, PlaylistAdd } from '@mui/icons-mate
 import { TableRow, TableCell, IconButton, Tooltip } from '@mui/material';
 import _ from 'lodash';
 import { useState } from 'react';
+import { colWidth } from '~/contants';
 
 interface AccordionRowProps {
     children: React.ReactNode;
@@ -21,8 +22,8 @@ export default function AccordionRow({
 
     return (
         <>
-            <TableRow>
-                <TableCell padding="checkbox" width='5%'>
+            <TableRow draggable>
+                <TableCell padding="checkbox" width={colWidth.event}>
                     {isHavingDetailsRow ? (
                         <IconButton onClick={() => setIsExpanded(!isExpanded)}>
                             {isExpanded ? <KeyboardArrowUp /> : <KeyboardArrowDown />}

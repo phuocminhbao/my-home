@@ -1,5 +1,5 @@
 import { initDetailsRowData } from '~/contants';
-import { getUniqueID, toRoman } from '.';
+import { idHandler, toRoman } from '.';
 import { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
 import _ from 'lodash';
 
@@ -57,10 +57,12 @@ function updateTableData(tableData: ConstructionSettlementTable[]) {
     });
 }
 
+const ID_HANDLER = idHandler();
+
 function getInitDetailsRowData(): ConstructionSettlement {
     return {
-        id: getUniqueID(),
-        ...initDetailsRowData
+        ...initDetailsRowData,
+        id: ID_HANDLER.getUniqueID()
     };
 }
 

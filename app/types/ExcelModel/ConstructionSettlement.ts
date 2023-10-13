@@ -1,5 +1,6 @@
 export interface ConstructionSettlement {
-    id?: number;
+    isSelected: boolean;
+    id: number;
     order: string | number | null;
     category: string | null;
     length: number | string | null;

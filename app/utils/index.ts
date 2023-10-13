@@ -5,13 +5,13 @@ import {
     getInitDetailsRowData,
     getInitDetailsRowDataWithNumber
 } from './data';
-import { getUniqueID, getUnit } from './common';
+import { idHandler, getUnit } from './common';
 import { toRoman } from './number';
 
 export {
     getUnit,
     updateTableData,
-    getUniqueID,
+    idHandler,
     getInitAccordionRowData,
     getInitDetailsRowData,
     getInitTableData,

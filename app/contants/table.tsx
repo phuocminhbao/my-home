@@ -18,7 +18,8 @@ const columnType = [
     { key: 'totalCost', header: 'THÀNH TIỀN' }
 ];
 
-const getColWidth: Record<string, string> = {
+const colWidth: Record<string, string> = {
+    event: '5%',
     index: '5%',
     category: '20%',
     length: '12%',
@@ -30,6 +31,8 @@ const getColWidth: Record<string, string> = {
 };
 
 const initDetailsRowData: ConstructionSettlement = {
+    isSelected: false,
+    id: 0,
     order: null,
     category: '',
     length: 0,
@@ -40,4 +43,4 @@ const initDetailsRowData: ConstructionSettlement = {
     totalCost: null
 };
 
-export { columnType, getColWidth, initDetailsRowData };
+export { columnType, colWidth, initDetailsRowData };

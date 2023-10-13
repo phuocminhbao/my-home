@@ -10,10 +10,18 @@ import {
     InputAdornment,
     IconButton,
     Tooltip,
-    TableContainer
+    TableContainer,
+    Button
 } from '@mui/material';
 
-import { Add, PlaylistAdd, Remove } from '@mui/icons-material';
+import {
+    Delete,
+    PlaylistAdd,
+    PlusOne,
+    CheckBox,
+    CheckBoxOutlineBlank,
+    Calculate
+} from '@mui/icons-material';
 import {
     getInitAccordionRowData,
     getInitDetailsRowData,
@@ -23,7 +31,7 @@ import {
     updateTableData
 } from '~/utils';
 import _ from 'lodash';
-import { useState, Fragment, useEffect, useMemo } from 'react';
+import { useState, Fragment, useEffect, useMemo, useCallback } from 'react';
 
 // Importing components
 import { AccordionRow } from '..';
@@ -32,11 +40,13 @@ import { AccordionRow } from '..';
 import { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
 
 //Importing contants
-import { columnType, getColWidth } from '~/contants';
+import { colWidth, columnType } from '~/contants';
 
 export default function TableList() {
     const [tableData, setTableData] = useState(() => getInitTableData());
     const newTableData = useMemo(() => _.cloneDeep(tableData), [tableData]);
+
+    const showCalculation = _.some(tableData, (row) => _.some(row.details, { isSelected: true }));
 
     const checkAndSetTableData = () => {
         updateTableData(newTableData);
@@ -60,8 +70,15 @@ export default function TableList() {
         accordionRowIndex: number,
         detailRowIndex?: number
     ): JSX.Element {
+        const isCalculateRow = String(data.length) === 'CỘNG';
         // Handle merge length, width and quantity
-        const shouldMergeCells = String(data.length).includes('+');
+        const shouldMergeCells = String(data.length).includes('+') || isCalculateRow;
+
+        const currentAccRow = newTableData[accordionRowIndex];
+        let currentDetailRow: ConstructionSettlement;
+        if (!_.isNil(detailRowIndex) && !_.isNil(currentAccRow.details))
+            currentDetailRow = currentAccRow.details[detailRowIndex];
+
         const rowInput = (value: string | number | null, field: keyof ConstructionSettlement) => {
             const handleBlur = (e: React.FocusEvent<HTMLInputElement, Element>) => {
                 if (!data) return;
@@ -79,10 +96,9 @@ export default function TableList() {
                 }
 
                 if (isAccordionRow) {
-                    newTableData[accordionRowIndex][field] = e.target.value as never;
-                } else {
-                    newTableData[accordionRowIndex].details![detailRowIndex!][field] = e.target
-                        .value as never;
+                    currentAccRow[field] = e.target.value as never;
+                } else if (currentDetailRow) {
+                    currentDetailRow[field] = e.target.value as never;
                 }
                 checkAndSetTableData();
             };
@@ -112,14 +128,14 @@ export default function TableList() {
             );
         };
 
-        const rowEventCell = () => {
+        const addRemoveCell = () => {
             const handleEvent = (action: string): void => {
                 switch (action) {
                     case 'remove':
                         if (isAccordionRow) {
                             newTableData.splice(accordionRowIndex, 1);
-                        } else {
-                            newTableData[accordionRowIndex].details?.splice(detailRowIndex!, 1);
+                        } else if (!_.isNil(detailRowIndex)) {
+                            currentAccRow.details?.splice(detailRowIndex, 1);
                         }
                         break;
                     case 'add':
@@ -129,9 +145,9 @@ export default function TableList() {
                                 0,
                                 getInitAccordionRowData()
                             );
-                        } else {
-                            newTableData[accordionRowIndex].details?.splice(
-                                detailRowIndex! + 1,
+                        } else if (!_.isNil(detailRowIndex)) {
+                            currentAccRow.details?.splice(
+                                detailRowIndex + 1,
                                 0,
                                 getInitDetailsRowData()
                             );
@@ -150,7 +166,7 @@ export default function TableList() {
                                 handleEvent('remove');
                             }}
                         >
-                            <Remove />
+                            <Delete />
                         </IconButton>
                     </Tooltip>
                     <br />
@@ -160,7 +176,7 @@ export default function TableList() {
                                 handleEvent('add');
                             }}
                         >
-                            <Add />
+                            <PlusOne />
                         </IconButton>
                     </Tooltip>
                 </>
@@ -170,14 +186,18 @@ export default function TableList() {
         const rowContent = (
             <>
                 <TableCell align="center">{data.order}</TableCell>
-                <TableCell align="center">{rowInput(data.category, 'category')}</TableCell>
+                <TableCell align="center">
+                    {isCalculateRow ? <></> : rowInput(data.category, 'category')}
+                </TableCell>
                 {shouldMergeCells ? (
-                    <TableCell colSpan={3}>
-                        {
+                    <TableCell colSpan={3} align="center">
+                        {isCalculateRow ? (
+                            data.length
+                        ) : (
                             <Tooltip title="Xóa dấu - để tách thành 3 hàng">
                                 {rowInput(data.length, 'length')}
                             </Tooltip>
-                        }
+                        )}
                     </TableCell>
                 ) : (
                     <>
@@ -193,35 +213,53 @@ export default function TableList() {
                     </>
                 )}
                 <TableCell align="center">{data.squareMeters ?? ''}</TableCell>
-                <TableCell align="center">{rowInput(data.price, 'price')}</TableCell>
+                <TableCell align="center">
+                    {isCalculateRow || isAccordionRow ? rowInput(data.price, 'price') : <></>}
+                </TableCell>
                 <TableCell align="center">{data.totalCost}</TableCell>
-                <TableCell>{rowEventCell()}</TableCell>
+                <TableCell>{addRemoveCell()}</TableCell>
             </>
         );
 
         return isAccordionRow ? (
             rowContent
         ) : (
-            <TableRow>
-                <TableCell padding="checkbox" width='5%'></TableCell>
+            <TableRow draggable>
+                <TableCell
+                    align="center"
+                    padding="checkbox"
+                    width={colWidth.event}
+                    onClick={() => {
+                        currentDetailRow.isSelected = !currentDetailRow.isSelected;
+                        checkAndSetTableData();
+                    }}
+                >
+                    {_.isEmpty(data.category) ? (
+                        <></>
+                    ) : data.isSelected ? (
+                        <CheckBox color="info" />
+                    ) : (
+                        <CheckBoxOutlineBlank color="info" />
+                    )}
+                </TableCell>
                 {rowContent}
             </TableRow>
         );
     }
 
-    function addDefaultDetailsRows(id: number) {
+    const addDefaultDetailsRows = useCallback((id: number) => {
         const subRows = getInitDetailsRowDataWithNumber();
         const selectedAccordionRow = newTableData.find((accorRow) => accorRow.id === id);
         if (selectedAccordionRow) {
             selectedAccordionRow.details = subRows;
         }
         checkAndSetTableData();
-    }
+    }, []);
 
-    function addDefaultAccordionRows() {
+    const addDefaultAccordionRows = useCallback(() => {
         newTableData.push(getInitAccordionRowData());
         checkAndSetTableData();
-    }
+    }, []);
 
     return (
         <Paper
@@ -236,23 +274,40 @@ export default function TableList() {
                         minWidth: 'fit-content'
                     }}
                     stickyHeader
-                    aria-label="simple table"
+                    aria-label="Accordion table"
                 >
                     <TableHead>
-                        <TableRow >
-                            <TableCell padding="checkbox" variant='head' width='5%' sx={{minWidth: '75px'}}/>
+                        <TableRow>
+                            <TableCell
+                                padding="checkbox"
+                                variant="head"
+                                width={colWidth.event}
+                                sx={{ minWidth: '75px' }}
+                            >
+                                {showCalculation ? (
+                                    <Button variant="contained" startIcon={<Calculate />}>
+                                        Tính
+                                    </Button>
+                                ) : (
+                                    <></>
+                                )}
+                            </TableCell>
                             {columnType.map((col) => (
                                 <TableCell
                                     key={col.key}
                                     align="center"
-                                    width={getColWidth[col.key]}
-                                    variant='head'
-                                    sx={{minWidth: '75px', fontWeight: 600}}
+                                    width={colWidth[col.key]}
+                                    variant="head"
+                                    sx={{ minWidth: '75px', fontWeight: 600 }}
                                 >
                                     {col.header}
                                 </TableCell>
                             ))}
-                            <TableCell variant='head' width='5%' sx={{minWidth: '75px'}}/>
+                            <TableCell
+                                variant="head"
+                                width={colWidth.event}
+                                sx={{ minWidth: '75px' }}
+                            />
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -285,11 +340,16 @@ export default function TableList() {
                         ) : (
                             <TableRow>
                                 <TableCell colSpan={10}>
-                            <Tooltip title="Thêm hàng con">
-                                <IconButton size="large" onClick={() => {addDefaultAccordionRows()}}>
-                                    <PlaylistAdd />
-                                </IconButton>
-                            </Tooltip>
+                                    <Tooltip title="Thêm hàng con">
+                                        <IconButton
+                                            size="large"
+                                            onClick={() => {
+                                                addDefaultAccordionRows();
+                                            }}
+                                        >
+                                            <PlaylistAdd />
+                                        </IconButton>
+                                    </Tooltip>
                                 </TableCell>
                             </TableRow>
                         )}

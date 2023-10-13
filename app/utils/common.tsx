@@ -18,10 +18,11 @@ export function getUnit(type: string) {
     }
 }
 
-// Global value for below function
-var key = 0;
-
-export function getUniqueID() {
-    key += 1;
-    return key;
+export function idHandler() {
+    let key = 0;
+    return {
+        getUniqueID: () => {
+            return key++;
+        }
+    };
 }
