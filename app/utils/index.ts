@@ -3,7 +3,9 @@ import {
     getInitTableData,
     getInitAccordionRowData,
     getInitDetailsRowData,
-    getInitDetailsRowDataWithNumber
+    getInitDetailsRowDataWithNumber,
+    updateSelectAccRow,
+    updateSelectSubRow
 } from './data';
 import { idHandler, getUnit } from './common';
 import { toRoman } from './number';
@@ -16,5 +18,7 @@ export {
     getInitDetailsRowData,
     getInitTableData,
     toRoman,
-    getInitDetailsRowDataWithNumber
+    getInitDetailsRowDataWithNumber,
+    updateSelectAccRow,
+    updateSelectSubRow
 };

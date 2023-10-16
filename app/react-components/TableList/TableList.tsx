@@ -28,10 +28,12 @@ import {
     getInitDetailsRowDataWithNumber,
     getInitTableData,
     getUnit,
+    updateSelectAccRow,
+    updateSelectSubRow,
     updateTableData
 } from '~/utils';
 import _ from 'lodash';
-import { useState, Fragment, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 
 // Importing components
 import { AccordionRow } from '..';
@@ -46,7 +48,7 @@ function TalbeHeader({ showCalculation }: { showCalculation: boolean }) {
     return (
         <TableHead>
             <TableRow>
-                <TableCell padding="none" variant="head" width={colWidth.event}>
+                <TableCell padding="none" variant="head" width={colWidth.event} colSpan={2}>
                     {showCalculation ? (
                         <Button variant="contained" startIcon={<Calculate />}>
                             Tính
@@ -99,14 +101,16 @@ export default function TableList() {
     const showCalculation = _.some(tableData, (row) => _.some(row.details, { isSelected: true }));
 
     const checkAndSetTableData = () => {
+        console.time('Updating time');
         updateTableData(newTableData);
+        console.timeEnd('Updating time');
         if (!_.isEqual(tableData, newTableData)) {
             setTableData(newTableData);
         }
     };
 
     useEffect(() => {
-        // Update and format data of each row
+        // Update and format data of each row for the first render
         checkAndSetTableData();
     }, []);
 
@@ -114,13 +118,17 @@ export default function TableList() {
         console.log(tableData);
     }, [tableData]);
 
-    function ProcessedRow(
-        {data, isAccordionRow = false, accordionRowIndex, detailRowIndex}:
-        {data: ConstructionSettlement | ConstructionSettlementTable,
-        isAccordionRow?: boolean,
-        accordionRowIndex: number,
-        detailRowIndex?: number}
-    ): JSX.Element {
+    function ProcessedRow({
+        data,
+        isAccordionRow = false,
+        accordionRowIndex,
+        detailRowIndex
+    }: {
+        data: ConstructionSettlement | ConstructionSettlementTable;
+        isAccordionRow?: boolean;
+        accordionRowIndex: number;
+        detailRowIndex?: number;
+    }): JSX.Element {
         const isCalculateRow = String(data.length) === 'CỘNG';
         // Handle merge length, width and quantity
         const shouldMergeCells = String(data.length).includes('+') || isCalculateRow;
@@ -130,7 +138,13 @@ export default function TableList() {
         if (!_.isNil(detailRowIndex) && !_.isNil(currentAccRow.details))
             currentDetailRow = currentAccRow.details[detailRowIndex];
 
-        const RowInput = ( {value, field} :{value: string | number | null, field: keyof ConstructionSettlement}) => {
+        const RowInput = ({
+            value,
+            field
+        }: {
+            value: string | number | null;
+            field: keyof ConstructionSettlement;
+        }) => {
             const handleBlur = (e: React.FocusEvent<HTMLInputElement, Element>) => {
                 if (!data) return;
 
@@ -237,9 +251,35 @@ export default function TableList() {
         const RowContent = () => {
             return (
                 <>
+                    <TableCell
+                        align="center"
+                        padding="checkbox"
+                        width={colWidth.event}
+                        onClick={() => {
+                            if (_.isEmpty(data.category)) return;
+                            if (isAccordionRow) {
+                                updateSelectAccRow(currentAccRow);
+                            } else if (!_.isNil(detailRowIndex)) {
+                                updateSelectSubRow(currentAccRow, detailRowIndex);
+                            }
+                            checkAndSetTableData();
+                        }}
+                    >
+                        {_.isEmpty(data.category) ? (
+                            <></>
+                        ) : data.isSelected ? (
+                            <CheckBox color="info" />
+                        ) : (
+                            <CheckBoxOutlineBlank color="info" />
+                        )}
+                    </TableCell>
                     <TableCell align="center">{data.order}</TableCell>
                     <TableCell align="center">
-                        {isCalculateRow ? <></> : <RowInput value={data.category} field='category'/>} 
+                        {isCalculateRow ? (
+                            <></>
+                        ) : (
+                            <RowInput value={data.category} field="category" />
+                        )}
                     </TableCell>
                     {shouldMergeCells ? (
                         <TableCell colSpan={3} align="center">
@@ -247,7 +287,9 @@ export default function TableList() {
                                 data.length
                             ) : (
                                 <Tooltip title="Xóa dấu - để tách thành 3 hàng">
-                                    <><RowInput value={data.length} field='length'/></>
+                                    <>
+                                        <RowInput value={data.length} field="length" />
+                                    </>
                                 </Tooltip>
                             )}
                         </TableCell>
@@ -256,22 +298,32 @@ export default function TableList() {
                             <TableCell align="center">
                                 {
                                     <Tooltip title="Gõ dấu + để gộp 3 hàng">
-                                        <><RowInput value={data.length} field='length'/></>
+                                        <>
+                                            <RowInput value={data.length} field="length" />
+                                        </>
                                     </Tooltip>
                                 }
                             </TableCell>
-                            <TableCell align="center"><RowInput value={data.width} field='width'/></TableCell>
                             <TableCell align="center">
-                            <RowInput value={data.quantity} field='quantity'/>
+                                <RowInput value={data.width} field="width" />
+                            </TableCell>
+                            <TableCell align="center">
+                                <RowInput value={data.quantity} field="quantity" />
                             </TableCell>
                         </>
                     )}
                     <TableCell align="center">{data.squareMeters ?? ''}</TableCell>
                     <TableCell align="center">
-                        {isCalculateRow || isAccordionRow ? <RowInput value={data.price} field='price'/> : <></>}
+                        {isCalculateRow || isAccordionRow ? (
+                            <RowInput value={data.price} field="price" />
+                        ) : (
+                            <></>
+                        )}
                     </TableCell>
                     <TableCell align="center">{data.totalCost}</TableCell>
-                    <TableCell><AddRemoveCell /></TableCell>
+                    <TableCell>
+                        <AddRemoveCell />
+                    </TableCell>
                 </>
             );
         };
@@ -280,24 +332,7 @@ export default function TableList() {
             <RowContent />
         ) : (
             <TableRow draggable selected={data.isSelected}>
-                <TableCell
-                    align="center"
-                    padding="checkbox"
-                    width={colWidth.event}
-                    onClick={() => {
-                        if(_.isEmpty(data.category)) return;
-                        currentDetailRow.isSelected = !currentDetailRow.isSelected;
-                        checkAndSetTableData();
-                    }}
-                >
-                    {_.isEmpty(data.category) ? (
-                        <></>
-                    ) : data.isSelected ? (
-                        <CheckBox color="info" />
-                    ) : (
-                        <CheckBoxOutlineBlank color="info" />
-                    )}
-                </TableCell>
+                <TableCell align="center" padding="checkbox" width={colWidth.event} />
                 <RowContent />
             </TableRow>
         );
@@ -347,12 +382,21 @@ export default function TableList() {
                                         expandComponent={
                                             <>
                                                 {row.details?.map((detail, subIndex) => (
-                                                    <ProcessedRow key={detail.id} data={detail} accordionRowIndex={accordionIndex} detailRowIndex={subIndex}/>
+                                                    <ProcessedRow
+                                                        key={detail.id}
+                                                        data={detail}
+                                                        accordionRowIndex={accordionIndex}
+                                                        detailRowIndex={subIndex}
+                                                    />
                                                 ))}
                                             </>
                                         }
                                     >
-                                        <ProcessedRow data={row} isAccordionRow accordionRowIndex={accordionIndex}/>
+                                        <ProcessedRow
+                                            data={row}
+                                            isAccordionRow
+                                            accordionRowIndex={accordionIndex}
+                                        />
                                     </AccordionRow>
                                 ))}
                             </>

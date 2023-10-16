@@ -35,6 +35,45 @@ function formatRow(data: ConstructionSettlementTable | ConstructionSettlement) {
         data.price = Number(price);
     }
 }
+export function updateSelectAccRow(data: ConstructionSettlementTable) {
+    const isSelected = !data.isSelected;
+    data.isSelected = isSelected;
+    data.details?.forEach((row) => (row.isSelected = isSelected));
+}
+
+function updateSelectAccRowOnly(data: ConstructionSettlementTable) {
+    if (!data.details?.some((value) => value.isSelected === false)) {
+        data.isSelected = true;
+        return;
+    }
+    data.isSelected = false;
+}
+
+export function updateSelectSubRow(accData: ConstructionSettlementTable, startLoop: number) {
+    if (!accData.details) return;
+    const rowsWithCategoryIndex = accData.details
+        ?.map((subRow, ind) => {
+            if (_.isEmpty(subRow.category)) return;
+            return ind;
+        })
+        .filter((i) => !_.isNil(i));
+    if (_.isEmpty(rowsWithCategoryIndex) || !rowsWithCategoryIndex) return;
+    const isSelected = !accData.details[startLoop].isSelected;
+
+    // Update select rows
+    accData.details[startLoop].isSelected = isSelected;
+
+    // Update rows below until reach to row that existed category
+    const startIndex = rowsWithCategoryIndex?.indexOf(startLoop);
+    let endLoop = rowsWithCategoryIndex[startIndex + 1] as number;
+    // If end = undifined then end = details length
+    if (!endLoop) endLoop = accData.details.length;
+    for (let i = startLoop; i < endLoop; i++) {
+        if (accData.details) {
+            accData.details[i].isSelected = isSelected;
+        }
+    }
+}
 
 function updateTableData(tableData: ConstructionSettlementTable[]) {
     console.log('Updating data ...');
@@ -42,8 +81,10 @@ function updateTableData(tableData: ConstructionSettlementTable[]) {
         row.order = toRoman(index + 1);
         formatRow(row);
         calculatingMeters(row);
+        updateSelectAccRowOnly(row);
 
         let subOrder = 1;
+
         row.details?.forEach((subRow) => {
             if (_.isEmpty(subRow.category)) {
                 subRow.order = null;
@@ -53,6 +94,8 @@ function updateTableData(tableData: ConstructionSettlementTable[]) {
             }
             formatRow(subRow);
             calculatingMeters(subRow);
+            // if (subRow.category)
+            //     updateSelectSubRow(row, subInd, rowWithCategoryIndex, subRow.isSelected);
         });
     });
 }
