@@ -1,4 +1,4 @@
-import { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
+import { ConstructionSettlement } from '~/types';
 
 const columnType = [
     { key: 'index', header: 'STT' },
@@ -43,4 +43,6 @@ const initDetailsRowData: ConstructionSettlement = {
     totalCost: null
 };
 
-export { columnType, colWidth, initDetailsRowData };
+const MIN_TABLE_WIDTH = '75px';
+
+export { columnType, colWidth, initDetailsRowData, MIN_TABLE_WIDTH };

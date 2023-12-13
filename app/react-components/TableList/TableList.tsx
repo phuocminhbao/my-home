@@ -182,7 +182,6 @@ export default function TableList() {
                     onFocus={handleFocus}
                     multiline
                     maxRows={4}
-                    variant="filled"
                     fullWidth
                     InputProps={{
                         endAdornment: !shouldMergeCells && (
@@ -362,7 +361,7 @@ export default function TableList() {
                 overflow: 'hidden'
             }}
         >
-            <TableContainer sx={{ maxHeight: '100vh' }}>
+            <TableContainer sx={{ maxHeight: '50vh' }}>
                 <Table
                     style={{
                         minWidth: '1250px'
