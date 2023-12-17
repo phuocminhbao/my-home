@@ -3,6 +3,8 @@ import useMaterialData from './hook/useMaterialData';
 import { useState } from 'react';
 import { TableHeader } from '.';
 import { KeyboardArrowUp, KeyboardArrowDown } from '@mui/icons-material';
+import useTableRowsLenght from './hook/useMaterialTableInformation';
+import { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
 
 const InputCell = ({ width }: { width?: string }) => {
     return (
@@ -38,11 +40,14 @@ const AccordionCell = ({ open }: { open: boolean }) => {
 
 const MaterialCells = ({
     isAccordion,
-    isAccordionOpen
+    isAccordionOpen,
+    data
 }: {
     isAccordion?: boolean;
     isAccordionOpen?: boolean;
+    data: ConstructionSettlementTable | ConstructionSettlement
 }) => {
+    const {order, category, length, width, quantity, squareMeters, price, totalCost} = data;
     return (
         <>
             <InforCell />
@@ -58,8 +63,15 @@ const MaterialCells = ({
     );
 };
 
-const MaterialRow = () => {
+const MaterialRow = ({
+    data, index
+} : {
+    data: ConstructionSettlementTable; 
+    index: number;
+}) => {
     const [open, setOpen] = useState(false);
+    const { rowsNumber } = useTableRowsLenght();
+    const { details } = data;
     return (
         <>
             <TableRow
@@ -67,17 +79,19 @@ const MaterialRow = () => {
                     setOpen(!open);
                 }}
             >
-                <MaterialCells isAccordion isAccordionOpen={open} />
+                <MaterialCells isAccordion isAccordionOpen={open} data={data}/>
             </TableRow>
             <TableRow>
-                {/* // TODO: make colspan dynamic with lenght of table cells */}
-                <TableCell colSpan={9} padding="none">
+                <TableCell colSpan={rowsNumber} padding="none">
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Table>
                             <TableHeader hidden />
                             <TableBody>
                                 <TableRow>
-                                    <MaterialCells />
+                                    {details ? 
+                                        details.map((subRows, subIndex) => <MaterialCells data={subRows}/>
+                                    )
+                                : <></>}
                                 </TableRow>
                             </TableBody>
                         </Table>

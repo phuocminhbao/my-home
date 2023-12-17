@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { MIN_TABLE_WIDTH, colWidth, columnType } from '~/contants';
 import useMaterialData from './hook/useMaterialData';
-import { MaterialDataProvider } from './hook/MaterialDataProvider';
+import { MaterialDataProvider } from './provider/MaterialDataProvider';
 import GenerateMaterialRow from './GenerateMaterialRow';
 import { useEffect } from 'react';
 import MaterialRow from './MaterialRow';
@@ -46,7 +46,7 @@ const TableBodyContent = () => {
     return (
         <TableBody>
             {data.length > 0 ? (
-                data.map((row, accordionIndex) => <MaterialRow key={row.id} />)
+                data.map((row, index) => <MaterialRow key={row.id} data={row} index={index}/>)
             ) : (
                 <GenerateMaterialRow />
             )}
