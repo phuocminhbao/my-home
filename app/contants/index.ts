@@ -1,3 +1,3 @@
-import { columnType, colWidth, initDetailsRowData, MIN_TABLE_WIDTH } from './table';
+import { columnType, colWidth, initDetailsRowData, MIN_TABLE_WIDTH, inputCellType } from './table';
 
-export { columnType, colWidth, initDetailsRowData, MIN_TABLE_WIDTH };
+export { columnType, colWidth, initDetailsRowData, MIN_TABLE_WIDTH, inputCellType };

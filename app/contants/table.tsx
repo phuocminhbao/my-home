@@ -45,4 +45,9 @@ const initDetailsRowData: ConstructionSettlement = {
 
 const MIN_TABLE_WIDTH = '75px';
 
-export { columnType, colWidth, initDetailsRowData, MIN_TABLE_WIDTH };
+const inputCellType: Record<string, string> = {
+    'string': 'text',
+    'number': 'number'
+}
+
+export { columnType, colWidth, initDetailsRowData, MIN_TABLE_WIDTH, inputCellType };

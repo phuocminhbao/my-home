@@ -5,19 +5,25 @@ import { TableHeader } from '.';
 import { KeyboardArrowUp, KeyboardArrowDown } from '@mui/icons-material';
 import useTableRowsLenght from './hook/useMaterialTableInformation';
 import { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
+import { inputCellType } from '~/contants';
+import _ from 'lodash';
 
-const InputCell = ({ width }: { width?: string }) => {
+const InputCell = ({data} : {data: string | number | null}) => {
+    const inputType = inputCellType[typeof data]
+    
     return (
-        <TableCell width={width}>
+        <TableCell>
             <TextField
                 onClick={(e) => {
                     e.stopPropagation();
                 }}
-                defaultValue={''}
+                type={inputType}
+                inputMode='numeric'
+                // defaultValue={data}
                 size="medium"
                 onBlur={() => {}}
                 onFocus={(e) => {}}
-                multiline
+                multiline={_.isString(data)}
                 maxRows={4}
                 fullWidth
                 // InputProps={{
@@ -26,12 +32,13 @@ const InputCell = ({ width }: { width?: string }) => {
                 //     )
                 // }}
             ></TextField>
+            
         </TableCell>
     );
 };
 
-const InforCell = () => {
-    return <TableCell></TableCell>;
+const InforCell = ({data} : {data: string | number | null}) => {
+    return <TableCell align='center'>{data}</TableCell>;
 };
 
 const AccordionCell = ({ open }: { open: boolean }) => {
@@ -50,15 +57,15 @@ const MaterialCells = ({
     const {order, category, length, width, quantity, squareMeters, price, totalCost} = data;
     return (
         <>
-            <InforCell />
-            <InputCell />
-            <InputCell />
-            <InputCell />
-            <InputCell />
-            <InforCell />
-            <InputCell />
-            <InforCell />
-            {isAccordion ? <AccordionCell open={isAccordionOpen!} /> : <InforCell />}
+            <InforCell data={order}/>
+            <InputCell data={category} dataKey='category'/>
+            <InputCell data={length} dataKey='length'/>
+            <InputCell data={width} dataKey='width'/>
+            <InputCell data={quantity} dataKey='quantity'/>
+            <InforCell data={squareMeters}/>
+            <InputCell data={price} dataKey='price'/>
+            <InforCell data={totalCost}/>
+            {isAccordion ? <AccordionCell open={isAccordionOpen!} /> : <InforCell data={null}/>}
         </>
     );
 };
@@ -87,12 +94,13 @@ const MaterialRow = ({
                         <Table>
                             <TableHeader hidden />
                             <TableBody>
-                                <TableRow>
                                     {details ? 
-                                        details.map((subRows, subIndex) => <MaterialCells data={subRows}/>
+                                        details.map((subRows, subIndex) => 
+                                            <TableRow key={subRows.id} >
+                                                <MaterialCells data={subRows}/>
+                                            </TableRow>
                                     )
                                 : <></>}
-                                </TableRow>
                             </TableBody>
                         </Table>
                     </Collapse>
