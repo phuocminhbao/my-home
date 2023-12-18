@@ -39,10 +39,14 @@ export const TableHeader = ({ hidden }: { hidden?: boolean }) => {
 };
 
 const TableBodyContent = () => {
-    const { data } = useMaterialData();
+    const { data, forceUpdateData } = useMaterialData();
     useEffect(() => {
         console.log(data);
     }, [data]);
+
+    useEffect(() => {
+        forceUpdateData();
+    },[])
     return (
         <TableBody>
             {data.length > 0 ? (
@@ -55,6 +59,7 @@ const TableBodyContent = () => {
 };
 
 const MaterialTable = () => {
+    
     return (
         <Paper
             style={{

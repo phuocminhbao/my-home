@@ -1,3 +1,5 @@
+import { ConstructionSettlement } from "~/types";
+
 export function getUnit(type: string) {
     switch (type) {
         case 'length':
@@ -25,4 +27,19 @@ export function idHandler() {
             return key++;
         }
     };
+}
+
+export const proccessValueType = (dataKey: keyof ConstructionSettlement, value: String | number): String | number => {
+    switch(dataKey) {
+        case 'length':
+        case 'width':
+        case 'squareMeters':
+        case 'quantity':
+        case 'price':
+        case 'totalCost':
+            return Number(value)
+        case 'category':
+        default:
+            return String(value)
+    }
 }

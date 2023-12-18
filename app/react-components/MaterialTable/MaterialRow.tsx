@@ -7,10 +7,24 @@ import useTableRowsLenght from './hook/useMaterialTableInformation';
 import { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
 import { inputCellType } from '~/contants';
 import _ from 'lodash';
+import { proccessValueType } from '~/utils/common';
 
-const InputCell = ({data} : {data: string | number | null}) => {
-    const inputType = inputCellType[typeof data]
-    
+const InputCell = ({
+    value,
+    dataKey,
+    updateValue
+} : {
+    value: string | number | null; 
+    dataKey: keyof ConstructionSettlement;
+    updateValue: (key: keyof ConstructionSettlement, value: String | number | null) => void
+}) => {
+    const inputType = inputCellType[typeof value]
+
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>) => {
+        const valueToUpdate = proccessValueType(dataKey, e.target.value);
+        updateValue(dataKey, valueToUpdate);
+    }
+    // Todo: validate negative number
     return (
         <TableCell>
             <TextField
@@ -19,11 +33,11 @@ const InputCell = ({data} : {data: string | number | null}) => {
                 }}
                 type={inputType}
                 inputMode='numeric'
-                // defaultValue={data}
+                defaultValue={value}
                 size="medium"
-                onBlur={() => {}}
+                onBlur={handleBlur}
                 onFocus={(e) => {}}
-                multiline={_.isString(data)}
+                multiline={_.isString(value)}
                 maxRows={4}
                 fullWidth
                 // InputProps={{
@@ -37,8 +51,8 @@ const InputCell = ({data} : {data: string | number | null}) => {
     );
 };
 
-const InforCell = ({data} : {data: string | number | null}) => {
-    return <TableCell align='center'>{data}</TableCell>;
+const InforCell = ({value} : {value: string | number | null}) => {
+    return <TableCell align='center'>{value}</TableCell>;
 };
 
 const AccordionCell = ({ open }: { open: boolean }) => {
@@ -54,18 +68,23 @@ const MaterialCells = ({
     isAccordionOpen?: boolean;
     data: ConstructionSettlementTable | ConstructionSettlement
 }) => {
-    const {order, category, length, width, quantity, squareMeters, price, totalCost} = data;
+    const { updateRowDataById } = useMaterialData();
+    const {id, order, category, length, width, quantity, squareMeters, price, totalCost} = data;
+
+    const updateValue = (key: keyof ConstructionSettlement, value: String | number | null) => {
+        updateRowDataById(id, key, value)
+    }
     return (
         <>
-            <InforCell data={order}/>
-            <InputCell data={category} dataKey='category'/>
-            <InputCell data={length} dataKey='length'/>
-            <InputCell data={width} dataKey='width'/>
-            <InputCell data={quantity} dataKey='quantity'/>
-            <InforCell data={squareMeters}/>
-            <InputCell data={price} dataKey='price'/>
-            <InforCell data={totalCost}/>
-            {isAccordion ? <AccordionCell open={isAccordionOpen!} /> : <InforCell data={null}/>}
+            <InforCell value={order}/>
+            <InputCell value={category} dataKey='category' updateValue={updateValue}/>
+            <InputCell value={length} dataKey='length' updateValue={updateValue}/>
+            <InputCell value={width} dataKey='width' updateValue={updateValue}/>
+            <InputCell value={quantity} dataKey='quantity' updateValue={updateValue}/>
+            <InforCell value={squareMeters}/>
+            <InputCell value={price} dataKey='price' updateValue={updateValue}/>
+            <InforCell value={totalCost}/>
+            {isAccordion ? <AccordionCell open={isAccordionOpen!} /> : <InforCell value={null}/>}
         </>
     );
 };
