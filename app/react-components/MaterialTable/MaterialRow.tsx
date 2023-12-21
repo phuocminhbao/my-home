@@ -24,7 +24,6 @@ const InputCell = ({
         const valueToUpdate = proccessValueType(dataKey, e.target.value);
         updateValue(dataKey, valueToUpdate);
     }
-    // Todo: validate negative number
     return (
         <TableCell>
             <TextField
