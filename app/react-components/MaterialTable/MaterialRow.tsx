@@ -22,7 +22,24 @@ const InputCell = ({
 
     const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>) => {
         const valueToUpdate = proccessValueType(dataKey, e.target.value);
+
+        // Do nothing when value not change
+        if (valueToUpdate === value) {
+            e.target.value = valueToUpdate.toString()
+            return;
+        }
+
+        if (valueToUpdate === 0) {
+            e.target.value = valueToUpdate.toString()
+        }
+
         updateValue(dataKey, valueToUpdate);
+    }
+
+    const handleFocus = ( e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>) => {
+        if (e.target.value === '0') {
+            e.target.value = ''
+        }
     }
     return (
         <TableCell>
@@ -35,7 +52,7 @@ const InputCell = ({
                 defaultValue={value}
                 size="medium"
                 onBlur={handleBlur}
-                onFocus={(e) => {}}
+                onFocus={handleFocus}
                 multiline={_.isString(value)}
                 maxRows={4}
                 fullWidth

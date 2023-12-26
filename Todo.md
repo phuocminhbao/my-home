@@ -1,14 +1,14 @@
 Handle input field onBlur:
- - Empty when value is 0 or ''
- - No update/action when notting update (Compare value needed)
+~~ - Empty when value is 0 or ''~~
+~~ - No update/action when notting update (Compare value needed)~~
 ~~ -  Handler value type set to table~~
- - Set default value (0 for number field and '' for text field) when input is empty
+~~ - Set default value (0 for number field and '' for text field) when input is empty~~
   - Validating: Negative numbers, negative numbers in long list
  - Round value to 2 decimal places (Length, Width and Meter field only)
- - Set value and update data at final
+~~ - Set value and update data at final~~
 
 Handle input field onFocus:
- - Empty the field if current value is 0
+~~ - Empty the field if current value is 0~~
 
 Handle number input unit icon
 
