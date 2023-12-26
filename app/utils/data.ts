@@ -84,6 +84,7 @@ function getInitTableData(amount: number = 2): ConstructionSettlementTable[] {
     for (let i = 0; i < amount; i++) {
         rows.push(getInitAccordionRowData());
     }
+    
     return rows;
 }
 
