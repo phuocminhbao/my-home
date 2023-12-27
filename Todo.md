@@ -6,6 +6,7 @@ Handle input field onBlur:
 ~~  - Validating: Negative numbers, negative numbers in long list~~
  - Round value to 2 decimal places (Length, Width and Meter field only)
 ~~ - Set value and update data at final~~
+- Should save even value validation is invalid? => always show error
 
 Handle input field onFocus:
 ~~ - Empty the field if current value is 0~~
