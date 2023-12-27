@@ -29,7 +29,7 @@ export function idHandler() {
     };
 }
 
-export const proccessValueType = (dataKey: keyof ConstructionSettlement, value: String | number): String | number => {
+export const proccessValueType = (dataKey: keyof ConstructionSettlement, value: string | number): string | number => {
     switch(dataKey) {
         case 'length':
         case 'width':

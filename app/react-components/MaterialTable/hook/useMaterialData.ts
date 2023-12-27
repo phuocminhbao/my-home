@@ -40,7 +40,7 @@ const useMaterialData = () => {
         throw new Error("Can't find row with id: " + id);
     }
 
-    const updateRowDataById = (id: number, fieldToUpdate: keyof ConstructionSettlement, valueToupdate: String | number | null) => {
+    const updateRowDataById = (id: number, fieldToUpdate: keyof ConstructionSettlement, valueToupdate: string | number | null) => {
         const rowData = getRowData(id);
         rowData[fieldToUpdate] = valueToupdate as never;
         checkAndUpdateData();

@@ -5,9 +5,10 @@ import { TableHeader } from '.';
 import { KeyboardArrowUp, KeyboardArrowDown } from '@mui/icons-material';
 import useTableRowsLenght from './hook/useMaterialTableInformation';
 import { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
-import { inputCellType } from '~/contants';
+import { VALID_INPUT_RESULT, inputCellType } from '~/contants';
 import _ from 'lodash';
 import { proccessValueType } from '~/utils/common';
+import { validateInput } from '~/utils';
 
 const InputCell = ({
     value,
@@ -16,8 +17,11 @@ const InputCell = ({
 } : {
     value: string | number | null; 
     dataKey: keyof ConstructionSettlement;
-    updateValue: (key: keyof ConstructionSettlement, value: String | number | null) => void
+    updateValue: (key: keyof ConstructionSettlement, value: string | number | null) => void
 }) => {
+    const [isInputValid, setIsInputValid] = useState(VALID_INPUT_RESULT);
+    if (value === null) return <TableCell />
+
     const inputType = inputCellType[typeof value]
 
     const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>) => {
@@ -26,14 +30,22 @@ const InputCell = ({
         // Do nothing when value not change
         if (valueToUpdate === value) {
             e.target.value = valueToUpdate.toString()
+            !isInputValid.okay && setIsInputValid(VALID_INPUT_RESULT);
             return;
         }
 
         if (valueToUpdate === 0) {
             e.target.value = valueToUpdate.toString()
         }
-
-        updateValue(dataKey, valueToUpdate);
+        
+        const validateResult = validateInput(dataKey, valueToUpdate)
+        if (validateResult.okay) {
+            !isInputValid.okay && setIsInputValid(VALID_INPUT_RESULT);
+            updateValue(dataKey, valueToUpdate);
+        } else {
+            setIsInputValid(validateResult);
+            return;
+        }
     }
 
     const handleFocus = ( e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>) => {
@@ -55,6 +67,8 @@ const InputCell = ({
                 onFocus={handleFocus}
                 multiline={_.isString(value)}
                 maxRows={4}
+                error={!isInputValid.okay}
+                helperText={isInputValid.error}
                 fullWidth
                 // InputProps={{
                 //     endAdornment: !shouldMergeCells && (
@@ -87,7 +101,7 @@ const MaterialCells = ({
     const { updateRowDataById } = useMaterialData();
     const {id, order, category, length, width, quantity, squareMeters, price, totalCost} = data;
 
-    const updateValue = (key: keyof ConstructionSettlement, value: String | number | null) => {
+    const updateValue = (key: keyof ConstructionSettlement, value: string | number | null) => {
         updateRowDataById(id, key, value)
     }
     return (
