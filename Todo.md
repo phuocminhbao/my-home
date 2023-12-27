@@ -3,7 +3,7 @@ Handle input field onBlur:
 ~~ - No update/action when notting update (Compare value needed)~~
 ~~ -  Handler value type set to table~~
 ~~ - Set default value (0 for number field and '' for text field) when input is empty~~
-  - Validating: Negative numbers, negative numbers in long list
+~~  - Validating: Negative numbers, negative numbers in long list~~
  - Round value to 2 decimal places (Length, Width and Meter field only)
 ~~ - Set value and update data at final~~
 
