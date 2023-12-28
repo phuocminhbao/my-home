@@ -8,8 +8,8 @@ import {
     updateSelectSubRow
 } from './data';
 import { idHandler, getUnit } from './common';
-import { toRoman } from './number';
-import { validateInput } from './Validation';
+import { roundNumber, toRoman } from './number';
+import { validateInput } from './validation';
 
 export {
     getUnit,
@@ -22,5 +22,6 @@ export {
     getInitDetailsRowDataWithNumber,
     updateSelectAccRow,
     updateSelectSubRow,
-    validateInput
+    validateInput,
+    roundNumber
 };

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useMemo } from 'react';
 import MaterialDataContext from '../context/MaterialDataContext';
-import { getInitAccordionRowData, updateTableData } from '~/utils';
+import { getInitAccordionRowData, roundNumber, updateTableData } from '~/utils';
 import _, { forIn } from 'lodash';
 import { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
 
@@ -12,7 +12,7 @@ const useMaterialData = () => {
     const forceUpdateData = () => {
         updateTableData(clonedData);
         updateData(clonedData);
-    }
+    };
 
     const checkAndUpdateData = () => {
         console.time('Updating time');
@@ -28,23 +28,45 @@ const useMaterialData = () => {
     };
 
     const getRowData = (id: number): ConstructionSettlementTable | ConstructionSettlement => {
-        for(const row of clonedData) {
-            if(row.id === id) return row;
-            if(!_.isEmpty(row.details)) {
-                for(const subRow of row.details!) {
-                    if(subRow.id === id) return subRow;
+        for (const row of clonedData) {
+            if (row.id === id) return row;
+            if (!_.isEmpty(row.details)) {
+                for (const subRow of row.details!) {
+                    if (subRow.id === id) return subRow;
                 }
             }
         }
 
         throw new Error("Can't find row with id: " + id);
-    }
+    };
 
-    const updateRowDataById = (id: number, fieldToUpdate: keyof ConstructionSettlement, valueToupdate: string | number | null) => {
+    const formatValue = (
+        fieldToUpdate: keyof ConstructionSettlement,
+        valueToupdate: string | number | null
+    ): string | number | null => {
+        if (valueToupdate === null) return null;
+        switch (fieldToUpdate) {
+            case 'length':
+            case 'width':
+            case 'squareMeters':
+                if (_.isNumber(valueToupdate)) {
+                    return roundNumber(valueToupdate);
+                }
+            default:
+                return valueToupdate;
+        }
+    };
+
+    const updateRowDataById = (
+        id: number,
+        fieldToUpdate: keyof ConstructionSettlement,
+        valueToupdate: string | number | null
+    ) => {
         const rowData = getRowData(id);
-        rowData[fieldToUpdate] = valueToupdate as never;
+        const value = formatValue(fieldToUpdate, valueToupdate);
+        rowData[fieldToUpdate] = value as never;
         checkAndUpdateData();
-    }
+    };
 
     return { data, generateData, updateRowDataById, forceUpdateData };
 };
