@@ -68,7 +68,9 @@ const MaterialTable = () => {
             }}
         >
             <MaterialDataProvider>
-                <TableContainer sx={{ maxHeight: '50vh' }}>
+                <TableContainer 
+                // sx={{ maxHeight: '50vh' }}
+                >
                     <Table>
                         <TableHeader />
                         <TableBodyContent />

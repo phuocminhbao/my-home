@@ -4,9 +4,9 @@ Handle input field onBlur:
 ~~ -  Handler value type set to table~~
 ~~ - Set default value (0 for number field and '' for text field) when input is empty~~
 ~~  - Validating: Negative numbers, negative numbers in long list~~
- - Round value to 2 decimal places (Length, Width and Meter field only)
+~~ - Round value to 2 decimal places (Length, Width and Meter field only)~~
 ~~ - Set value and update data at final~~
-- Should save even value validation is invalid? => always show error
+~~- Should save even value validation is invalid? => always show error~~
 
 Handle input field onFocus:
 ~~ - Empty the field if current value is 0~~
@@ -18,10 +18,12 @@ Handle thousand separator formating ( toLocaleString('en-US')) on displaying:
 - Save value should alway number without any sepator
 
 Handle new column for event cell with functionals:
- - Remove this row
- - Add a row below
- - Add a row upon
+~~ - Remove this row~~
+~~ - Add a row below~~
+~~ - Add a row upon~~
  - Move row up and down (Separate button, text as remove/add event, onDraft-hard ?)
+
+Handle preview section with only infor table
 
 Handle merge 3 cells as 1 sum cell:
  - Merge when ever value is contains + (onBlur or onChange ?)
