@@ -5,13 +5,23 @@ import {
     Add,
     Menu as MenuIcon
 } from '@mui/icons-material';
-import { TableCell, TextField, Grid, Menu, MenuItem } from '@mui/material';
+import {
+    TableCell,
+    TextField,
+    Grid,
+    Menu,
+    MenuItem,
+    InputAdornment,
+    Button,
+    ListItemIcon,
+    ListItemText
+} from '@mui/material';
 import _ from 'lodash';
-import { useState, ReactNode } from 'react';
+import { useState, ReactNode, MouseEventHandler } from 'react';
 import { VALID_INPUT_RESULT, inputCellType } from '~/contants';
 import { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
 import { validateInput } from '~/utils';
-import { proccessValueType } from '~/utils/common';
+import { getUnit, proccessValueType } from '~/utils/common';
 import useMaterialData from './hook/useMaterialData';
 
 const InputCell = ({
@@ -74,11 +84,9 @@ const InputCell = ({
                 error={!isInputValid.okay}
                 helperText={isInputValid.error}
                 fullWidth
-                // InputProps={{
-                //     endAdornment: !shouldMergeCells && (
-                //         <InputAdornment position="end">{getUnit(field)}</InputAdornment>
-                //     )
-                // }}
+                InputProps={{
+                    endAdornment: <InputAdornment position="end">{getUnit(dataKey)}</InputAdornment>
+                }}
             ></TextField>
         </TableCell>
     );
@@ -92,32 +100,13 @@ const InforCell = ({ value }: { value: string | number | ReactNode | null }) => 
     );
 };
 
-const AccordionCell = ({ open, rowId }: { open: boolean; rowId: number }) => {
-    return (
-        <TableCell>
-            <Grid
-                container
-                spacing={3}
-                direction="row"
-                justifyContent="flex-start"
-                alignItems="center"
-            >
-                <Grid item>
-                    <EventMenuCell rowId={rowId} />
-                </Grid>
-                <Grid item>{open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}</Grid>
-            </Grid>
-        </TableCell>
-    );
-};
-
 const EventMenuCell = ({ rowId }: { rowId: number }) => {
-    const [anchorEl, setAnchorEl] = useState<null | SVGSVGElement>(null);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const { removeRowById, addRowAboveById, addRowBelowById } = useMaterialData();
 
     const open = Boolean(anchorEl);
 
-    const handleClick = (event: React.MouseEvent<SVGSVGElement>) => {
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
     const handleClose = (option: 'delete' | 'addBelow' | 'addAbove') => {
@@ -138,7 +127,9 @@ const EventMenuCell = ({ rowId }: { rowId: number }) => {
     };
     return (
         <div onClick={(e) => e.stopPropagation()}>
-            <MenuIcon onClick={handleClick} />
+            <Button onClick={handleClick}>
+                <MenuIcon />
+            </Button>
             <Menu
                 id="basic-menu"
                 anchorEl={anchorEl}
@@ -148,30 +139,93 @@ const EventMenuCell = ({ rowId }: { rowId: number }) => {
                     'aria-labelledby': 'basic-button'
                 }}
             >
-                <MenuItem onClick={() => handleClose('delete')}>
-                    <Delete />
-                    Xoá hàng này
-                </MenuItem>
-                <MenuItem onClick={() => handleClose('addBelow')}>
-                    <Add />
-                    Thêm 1 hàng bên dưới
-                </MenuItem>
-                <MenuItem onClick={() => handleClose('addAbove')}>
-                    <Add />
-                    Thêm 1 hàng bên trên
-                </MenuItem>
+                <MenuItemWithIcon
+                    handleClick={() => handleClose('delete')}
+                    icon={<Delete />}
+                    text="Xoá hàng này"
+                />
+                <MenuItemWithIcon
+                    handleClick={() => handleClose('addBelow')}
+                    icon={<Add />}
+                    text="Thêm 1 hàng bên dưới"
+                />
+                <MenuItemWithIcon
+                    handleClick={() => handleClose('addAbove')}
+                    icon={<Add />}
+                    text="Thêm 1 hàng bên trên"
+                />
             </Menu>
         </div>
+    );
+};
+
+const MenuItemWithIcon = ({
+    handleClick,
+    icon,
+    text
+}: {
+    handleClick: MouseEventHandler<HTMLLIElement>;
+    icon: JSX.Element;
+    text: string;
+}) => {
+    return (
+        <MenuItem onClick={handleClick}>
+            <ListItemIcon>{icon}</ListItemIcon>
+            <ListItemText>{text}</ListItemText>
+        </MenuItem>
+    );
+};
+
+const AccordionCell = ({
+    open,
+    rowId,
+    isDetailsEmpty
+}: {
+    open: boolean;
+    rowId: number;
+    isDetailsEmpty: boolean;
+}) => {
+    const { addSubRowsById } = useMaterialData();
+    const ArrowIcon = () => (open ? <KeyboardArrowUp /> : <KeyboardArrowDown />);
+    return (
+        <TableCell>
+            <Grid
+                container
+                spacing={3}
+                direction="row"
+                justifyContent="flex-start"
+                alignItems="center"
+            >
+                <Grid item xs={6}>
+                    <EventMenuCell rowId={rowId} />
+                </Grid>
+                <Grid item xs={6}>
+                    <Button>
+                        {isDetailsEmpty ? (
+                            <Add
+                                onClick={() => {
+                                    addSubRowsById(rowId);
+                                }}
+                            />
+                        ) : (
+                            <ArrowIcon />
+                        )}
+                    </Button>
+                </Grid>
+            </Grid>
+        </TableCell>
     );
 };
 
 const MaterialCells = ({
     isAccordion,
     isAccordionOpen,
+    isDetailsEmpty,
     data
 }: {
     isAccordion?: boolean;
     isAccordionOpen?: boolean;
+    isDetailsEmpty?: boolean;
     data: ConstructionSettlementTable | ConstructionSettlement;
 }) => {
     const { updateRowDataById } = useMaterialData();
@@ -192,7 +246,11 @@ const MaterialCells = ({
             <InputCell value={price} dataKey="price" updateValue={updateValue} />
             <InforCell value={totalCost} />
             {isAccordion ? (
-                <AccordionCell open={isAccordionOpen!} rowId={id} />
+                <AccordionCell
+                    open={isAccordionOpen!}
+                    rowId={id}
+                    isDetailsEmpty={!!isDetailsEmpty}
+                />
             ) : (
                 <InforCell value={<EventMenuCell rowId={id} />} />
             )}

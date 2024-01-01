@@ -24,7 +24,7 @@ const MaterialRow = ({ data }: { data: ConstructionSettlementTable; index: numbe
                     setOpen(!open);
                 }}
             >
-                <MaterialCells isAccordion isAccordionOpen={open} data={data} />
+                <MaterialCells isAccordion isAccordionOpen={open} isDetailsEmpty= {_.isEmpty(details)}data={data} />
             </TableRow>
             <TableRow>
                 <TableCell colSpan={rowsNumber} padding="none">

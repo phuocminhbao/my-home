@@ -144,6 +144,10 @@ const useMaterialData = () => {
         throw new Error('No element matched id: ' + id);
     };
 
+    const addSubRowsById = (rowId: number) => {
+        console.log(rowId);
+    }
+
     return {
         data,
         generateData,
@@ -151,7 +155,8 @@ const useMaterialData = () => {
         forceUpdateData,
         removeRowById,
         addRowAboveById,
-        addRowBelowById
+        addRowBelowById,
+        addSubRowsById
     };
 };
 
