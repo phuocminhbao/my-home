@@ -71,7 +71,7 @@ const MaterialTable = () => {
                 <TableContainer 
                 // sx={{ maxHeight: '50vh' }}
                 >
-                    <Table>
+                    <Table size='medium'>
                         <TableHeader />
                         <TableBodyContent />
                     </Table>
