@@ -6,7 +6,7 @@ import {
     roundNumber,
     updateTableData
 } from '~/utils';
-import _, { forIn } from 'lodash';
+import _ from 'lodash';
 import { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
 
 const useMaterialData = () => {
@@ -146,7 +146,7 @@ const useMaterialData = () => {
 
     const addSubRowsById = (rowId: number) => {
         console.log(rowId);
-    }
+    };
 
     return {
         data,

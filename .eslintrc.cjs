@@ -42,6 +42,11 @@ module.exports = {
                 asyncArrow: 'always'
             }
         ],
-        'prettier/prettier': 'error'
+        'prettier/prettier': [
+            'error',
+            {
+                endOfLine: 'auto'
+            }
+        ]
     }
 };
