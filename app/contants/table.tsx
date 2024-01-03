@@ -40,7 +40,8 @@ const initDetailsRowData: ConstructionSettlement = {
     quantity: 0,
     squareMeters: null,
     price: 0,
-    totalCost: null
+    totalCost: null,
+    isSum: false
 };
 
 const MIN_TABLE_WIDTH = '75px';

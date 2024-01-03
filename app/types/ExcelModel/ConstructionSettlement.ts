@@ -9,8 +9,9 @@ export interface ConstructionSettlement {
     squareMeters: number | null;
     price: number | null;
     totalCost: number | null;
+    isSum: boolean;
 }
 
 export interface ConstructionSettlementTable extends ConstructionSettlement {
-    details: ConstructionSettlement[] | null;
+    details: ConstructionSettlement[];
 }

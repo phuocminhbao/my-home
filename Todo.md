@@ -1,4 +1,4 @@
-Handle input field onBlur:
+~~Handle input field onBlur:~~
 ~~ - Empty when value is 0 or ''~~
 ~~ - No update/action when notting update (Compare value needed)~~
 ~~ -  Handler value type set to table~~
@@ -8,7 +8,7 @@ Handle input field onBlur:
 ~~ - Set value and update data at final~~
 ~~- Should save even value validation is invalid? => always show error~~
 
-Handle input field onFocus:
+~~Handle input field onFocus:~~
 ~~ - Empty the field if current value is 0~~
 
 Handle number input unit icon
@@ -33,11 +33,11 @@ Handle merge 3 cells as 1 sum cell:
 
 Handle background color for odd and even rows
 
-Handle Price field:
+~~Handle Price field:~~
  - When to allow/visible input:
 Length fied type is String (contains Cộng lowercase or +)
-Event cell: Add total sum count row, change this row to total count row
-Main row: having a icon button allow input or just show it forever
+~~Event cell: Add total sum count row, change this row to total count row~~
+Main row: having a icon button allow input or **just show it forever**
 
 Handle calculating:
 Only calulate when price field is filled

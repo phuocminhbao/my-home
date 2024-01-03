@@ -13,19 +13,19 @@ import { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
 const useMaterialData = () => {
     const { data, updateData } = useContext(MaterialDataContext);
 
-    const clonedData = useMemo(() => _.cloneDeep(data), [data]);
+    const dataSnapshot = useMemo(() => _.cloneDeep(data), [data]);
 
     const forceUpdateData = () => {
-        updateTableData(clonedData);
-        updateData(clonedData);
+        updateTableData(dataSnapshot);
+        updateData(dataSnapshot);
     };
 
     const checkAndUpdateData = () => {
         console.time('Updating time');
-        updateTableData(clonedData);
+        updateTableData(dataSnapshot);
         console.timeEnd('Updating time');
-        if (!_.isEqual(data, clonedData)) {
-            updateData(clonedData);
+        if (!_.isEqual(data, dataSnapshot)) {
+            updateData(dataSnapshot);
         }
     };
 
@@ -34,10 +34,10 @@ const useMaterialData = () => {
     };
 
     const getRowData = (id: number): ConstructionSettlementTable | ConstructionSettlement => {
-        for (const row of clonedData) {
+        for (const row of dataSnapshot) {
             if (row.id === id) return row;
             if (!_.isEmpty(row.details)) {
-                for (const subRow of row.details!) {
+                for (const subRow of row.details) {
                     if (subRow.id === id) return subRow;
                 }
             }
@@ -76,14 +76,14 @@ const useMaterialData = () => {
 
     const removeRowById = (id: number) => {
         // Check in main rows
-        for (let i = 0; i < clonedData.length; i++) {
-            if (clonedData[i].id === id) {
-                clonedData.splice(i, 1);
+        for (let i = 0; i < dataSnapshot.length; i++) {
+            if (dataSnapshot[i].id === id) {
+                dataSnapshot.splice(i, 1);
                 checkAndUpdateData();
                 return;
             }
             // Check in sub rows
-            const details = clonedData[i].details!;
+            const details = dataSnapshot[i].details;
             if (!_.isEmpty(details)) {
                 for (let j = 0; j < details.length; j++) {
                     if (details[j].id === id) {
@@ -99,14 +99,14 @@ const useMaterialData = () => {
 
     const addRowBelowById = (id: number) => {
         // Check in main rows
-        for (let i = 0; i < clonedData.length; i++) {
-            if (clonedData[i].id === id) {
-                clonedData.splice(i + 1, 0, getInitAccordionRowData());
+        for (let i = 0; i < dataSnapshot.length; i++) {
+            if (dataSnapshot[i].id === id) {
+                dataSnapshot.splice(i + 1, 0, getInitAccordionRowData());
                 checkAndUpdateData();
                 return;
             }
             // Check in sub rows
-            const details = clonedData[i].details!;
+            const details = dataSnapshot[i].details;
             if (!_.isEmpty(details)) {
                 for (let j = 0; j < details.length; j++) {
                     if (details[j].id === id) {
@@ -122,18 +122,18 @@ const useMaterialData = () => {
 
     const addRowAboveById = (id: number) => {
         // Check in main rows
-        for (let i = 0; i < clonedData.length; i++) {
-            if (clonedData[i].id === id) {
+        for (let i = 0; i < dataSnapshot.length; i++) {
+            if (dataSnapshot[i].id === id) {
                 if (i === 0) {
-                    clonedData.splice(0, 0, getInitAccordionRowData());
+                    dataSnapshot.splice(0, 0, getInitAccordionRowData());
                 } else {
-                    clonedData.splice(i - 1, 0, getInitAccordionRowData());
+                    dataSnapshot.splice(i - 1, 0, getInitAccordionRowData());
                 }
                 checkAndUpdateData();
                 return;
             }
             // Check in sub rows
-            const details = clonedData[i].details!;
+            const details = dataSnapshot[i].details;
             if (!_.isEmpty(details)) {
                 for (let j = 0; j < details.length; j++) {
                     if (details[j].id === id) {
@@ -158,6 +158,30 @@ const useMaterialData = () => {
         checkAndUpdateData();
     };
 
+    const addSumRowBelowById = (subRowId: number) => {
+        const sumRow: ConstructionSettlement = {
+            ...getInitDetailsRowData(),
+            isSum: true
+        };
+        
+        const foundMainRow = dataSnapshot.find((row) =>
+            row.details.some((subRow) => subRow.id === subRowId)
+        );
+
+        if (!foundMainRow)
+            throw new Error('Cannot find any row contain sub row with id: ' + subRowId);
+
+        foundMainRow.details.every((subRow, index) => {
+            if (subRow.id === subRowId) {
+                foundMainRow.details.splice(index + 1, 0, sumRow);
+                checkAndUpdateData();
+                // Break the loop
+                return false;
+            }
+            return true;
+        });
+    };
+
     return {
         data,
         generateData,
@@ -166,7 +190,8 @@ const useMaterialData = () => {
         removeRowById,
         addRowAboveById,
         addRowBelowById,
-        addSubRowsById
+        addSubRowsById,
+        addSumRowBelowById
     };
 };
 

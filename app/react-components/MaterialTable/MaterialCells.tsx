@@ -92,9 +92,18 @@ const InputCell = ({
     );
 };
 
-const InforCell = ({ value }: { value: string | number | ReactNode | null }) => {
+const InforCell = ({
+    value,
+    colSpan
+}: {
+    value: string | number | ReactNode | null;
+    colSpan?: number;
+}) => {
     return (
-        <TableCell align={typeof value === 'object' ? 'left' : 'center'}>
+        <TableCell
+            align={typeof value === 'object' ? 'left' : 'center'}
+            colSpan={colSpan ? colSpan : 1}
+        >
             <div onClick={(e) => e.stopPropagation()}>{value}</div>
         </TableCell>
     );
@@ -102,14 +111,15 @@ const InforCell = ({ value }: { value: string | number | ReactNode | null }) => 
 
 const EventMenuCell = ({ rowId }: { rowId: number }) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const { removeRowById, addRowAboveById, addRowBelowById } = useMaterialData();
+    const { removeRowById, addRowAboveById, addRowBelowById, addSumRowBelowById } =
+        useMaterialData();
 
     const open = Boolean(anchorEl);
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
-    const handleClose = (option: 'delete' | 'addBelow' | 'addAbove') => {
+    const handleClose = (option: 'delete' | 'addBelow' | 'addAbove' | 'addSumBelow') => {
         switch (option) {
             case 'delete':
                 removeRowById(rowId);
@@ -119,6 +129,9 @@ const EventMenuCell = ({ rowId }: { rowId: number }) => {
                 break;
             case 'addBelow':
                 addRowBelowById(rowId);
+                break;
+            case 'addSumBelow':
+                addSumRowBelowById(rowId);
                 break;
             default:
                 break;
@@ -153,6 +166,11 @@ const EventMenuCell = ({ rowId }: { rowId: number }) => {
                     handleClick={() => handleClose('addAbove')}
                     icon={<Add />}
                     text="Thêm 1 hàng bên trên"
+                />
+                <MenuItemWithIcon
+                    handleClick={() => handleClose('addSumBelow')}
+                    icon={<Add />}
+                    text="Thêm hàng tính CỘNG bên dưới"
                 />
             </Menu>
         </div>
@@ -229,21 +247,35 @@ const MaterialCells = ({
     data: ConstructionSettlementTable | ConstructionSettlement;
 }) => {
     const { updateRowDataById } = useMaterialData();
-    const { id, order, category, length, width, quantity, squareMeters, price, totalCost } = data;
+    const { id, order, category, length, width, quantity, squareMeters, price, totalCost, isSum } =
+        data;
 
     const updateValue = (key: keyof ConstructionSettlement, value: string | number | null) => {
         updateRowDataById(id, key, value);
     };
 
+    const isSumRow = !isAccordion && isSum;
+
     return (
         <>
             <InforCell value={order} />
             <InputCell value={category} dataKey="category" updateValue={updateValue} />
-            <InputCell value={length} dataKey="length" updateValue={updateValue} />
-            <InputCell value={width} dataKey="width" updateValue={updateValue} />
-            <InputCell value={quantity} dataKey="quantity" updateValue={updateValue} />
+            {isSumRow ? (
+                <InforCell value="CỘNG" colSpan={3} />
+            ) : (
+                <>
+                    <InputCell value={length} dataKey="length" updateValue={updateValue} />
+                    <InputCell value={width} dataKey="width" updateValue={updateValue} />
+                    <InputCell value={quantity} dataKey="quantity" updateValue={updateValue} />
+                </>
+            )}
+
             <InforCell value={squareMeters} />
-            <InputCell value={price} dataKey="price" updateValue={updateValue} />
+            {isSum ? (
+                <InputCell value={price} dataKey="price" updateValue={updateValue} />
+            ) : (
+                <InforCell value={price === 0 ? undefined : price} />
+            )}
             <InforCell value={totalCost} />
             {isAccordion ? (
                 <AccordionCell

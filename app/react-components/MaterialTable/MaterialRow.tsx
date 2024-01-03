@@ -1,10 +1,4 @@
-import {
-    Collapse,
-    Table,
-    TableBody,
-    TableCell,
-    TableRow,
-} from '@mui/material';
+import { Collapse, Table, TableBody, TableCell, TableRow } from '@mui/material';
 import { useState } from 'react';
 import { TableHeader } from '.';
 
@@ -20,11 +14,16 @@ const MaterialRow = ({ data }: { data: ConstructionSettlementTable; index: numbe
     return (
         <>
             <TableRow
-                onClick={(e) => {
+                onClick={() => {
                     setOpen(!open);
                 }}
             >
-                <MaterialCells isAccordion isAccordionOpen={open} isDetailsEmpty= {_.isEmpty(details)}data={data} />
+                <MaterialCells
+                    isAccordion
+                    isAccordionOpen={open}
+                    isDetailsEmpty={_.isEmpty(details)}
+                    data={data}
+                />
             </TableRow>
             <TableRow>
                 <TableCell colSpan={rowsNumber} padding="none">
@@ -32,14 +31,14 @@ const MaterialRow = ({ data }: { data: ConstructionSettlementTable; index: numbe
                         <Table>
                             <TableHeader hidden />
                             <TableBody>
-                                {details ? (
+                                {_.isEmpty(details) ? (
+                                    <></>
+                                ) : (
                                     details.map((subRows) => (
                                         <TableRow key={subRows.id}>
                                             <MaterialCells data={subRows} />
                                         </TableRow>
                                     ))
-                                ) : (
-                                    <></>
                                 )}
                             </TableBody>
                         </Table>

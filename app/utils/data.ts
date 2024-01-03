@@ -38,11 +38,13 @@ function formatRow(data: ConstructionSettlementTable | ConstructionSettlement) {
 export function updateSelectAccRow(data: ConstructionSettlementTable) {
     const isSelected = !data.isSelected;
     data.isSelected = isSelected;
-    data.details?.forEach((row) => (row.isSelected = isSelected));
+    if (!_.isEmpty(data.details)) {
+        data.details.forEach((row) => (row.isSelected = isSelected));
+    }
 }
 
 function updateSelectAccRowOnly(data: ConstructionSettlementTable) {
-    if (!data.details?.some((value) => value.isSelected === false)) {
+    if (!data.details.some((value) => value.isSelected === false)) {
         data.isSelected = true;
         return;
     }
@@ -50,9 +52,9 @@ function updateSelectAccRowOnly(data: ConstructionSettlementTable) {
 }
 
 export function updateSelectSubRow(accData: ConstructionSettlementTable, startLoop: number) {
-    if (!accData.details) return;
+    if (!_.isEmpty(accData.details)) return;
     const rowsWithCategoryIndex = accData.details
-        ?.map((subRow, ind) => {
+        .map((subRow, ind) => {
             if (_.isEmpty(subRow.category)) return;
             return ind;
         })
@@ -85,18 +87,20 @@ function updateTableData(tableData: ConstructionSettlementTable[]) {
 
         let subOrder = 1;
 
-        row.details?.forEach((subRow) => {
-            if (_.isEmpty(subRow.category)) {
-                subRow.order = null;
-            } else {
-                subRow.order = subOrder;
-                subOrder++;
-            }
-            formatRow(subRow);
-            calculatingMeters(subRow);
-            // if (subRow.category)
-            //     updateSelectSubRow(row, subInd, rowWithCategoryIndex, subRow.isSelected);
-        });
+        if(!_.isEmpty(row.details)) {
+            row.details.forEach((subRow) => {
+                if (_.isEmpty(subRow.category)) {
+                    subRow.order = null;
+                } else {
+                    subRow.order = subOrder;
+                    subOrder++;
+                }
+                formatRow(subRow);
+                calculatingMeters(subRow);
+                // if (subRow.category)
+                //     updateSelectSubRow(row, subInd, rowWithCategoryIndex, subRow.isSelected);
+            });
+        }
     });
 }
 
@@ -120,7 +124,8 @@ function getInitDetailsRowDataWithNumber(detailsAmount: number = 4): Constructio
 function getInitAccordionRowData(): ConstructionSettlementTable {
     return {
         ...getInitDetailsRowData(),
-        details: getInitDetailsRowDataWithNumber()
+        details: getInitDetailsRowDataWithNumber(),
+        isSum: true
     };
 }
 

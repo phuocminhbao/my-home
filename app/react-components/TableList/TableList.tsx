@@ -199,7 +199,7 @@ export default function TableList() {
                         if (isAccordionRow) {
                             newTableData.splice(accordionRowIndex, 1);
                         } else if (!_.isNil(detailRowIndex)) {
-                            currentAccRow.details?.splice(detailRowIndex, 1);
+                            currentAccRow.details.splice(detailRowIndex, 1);
                         }
                         break;
                     case 'add':
@@ -210,7 +210,7 @@ export default function TableList() {
                                 getInitAccordionRowData()
                             );
                         } else if (!_.isNil(detailRowIndex)) {
-                            currentAccRow.details?.splice(
+                            currentAccRow.details.splice(
                                 detailRowIndex + 1,
                                 0,
                                 getInitDetailsRowData()
@@ -380,7 +380,7 @@ export default function TableList() {
                                         addSubRowsCallback={addDefaultDetailsRows}
                                         expandComponent={
                                             <>
-                                                {row.details?.map((detail, subIndex) => (
+                                                {!_.isEmpty(row.details) && row.details.map((detail, subIndex) => (
                                                     <ProcessedRow
                                                         key={detail.id}
                                                         data={detail}
