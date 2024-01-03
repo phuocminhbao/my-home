@@ -25,6 +25,8 @@ Handle new column for event cell with functionals:
 
 Handle preview section with only infor table
 
+~~Handle add sub rows when empty~~
+
 Handle merge 3 cells as 1 sum cell:
  - Merge when ever value is contains + (onBlur or onChange ?)
  - Set value to Length

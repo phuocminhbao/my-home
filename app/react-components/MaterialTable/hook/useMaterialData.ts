@@ -3,6 +3,7 @@ import MaterialDataContext from '../context/MaterialDataContext';
 import {
     getInitAccordionRowData,
     getInitDetailsRowData,
+    getInitDetailsRowDataWithNumber,
     roundNumber,
     updateTableData
 } from '~/utils';
@@ -74,12 +75,14 @@ const useMaterialData = () => {
     };
 
     const removeRowById = (id: number) => {
+        // Check in main rows
         for (let i = 0; i < clonedData.length; i++) {
             if (clonedData[i].id === id) {
                 clonedData.splice(i, 1);
                 checkAndUpdateData();
                 return;
             }
+            // Check in sub rows
             const details = clonedData[i].details!;
             if (!_.isEmpty(details)) {
                 for (let j = 0; j < details.length; j++) {
@@ -95,12 +98,14 @@ const useMaterialData = () => {
     };
 
     const addRowBelowById = (id: number) => {
+        // Check in main rows
         for (let i = 0; i < clonedData.length; i++) {
             if (clonedData[i].id === id) {
                 clonedData.splice(i + 1, 0, getInitAccordionRowData());
                 checkAndUpdateData();
                 return;
             }
+            // Check in sub rows
             const details = clonedData[i].details!;
             if (!_.isEmpty(details)) {
                 for (let j = 0; j < details.length; j++) {
@@ -116,6 +121,7 @@ const useMaterialData = () => {
     };
 
     const addRowAboveById = (id: number) => {
+        // Check in main rows
         for (let i = 0; i < clonedData.length; i++) {
             if (clonedData[i].id === id) {
                 if (i === 0) {
@@ -126,6 +132,7 @@ const useMaterialData = () => {
                 checkAndUpdateData();
                 return;
             }
+            // Check in sub rows
             const details = clonedData[i].details!;
             if (!_.isEmpty(details)) {
                 for (let j = 0; j < details.length; j++) {
@@ -145,7 +152,10 @@ const useMaterialData = () => {
     };
 
     const addSubRowsById = (rowId: number) => {
-        console.log(rowId);
+        const defaultSubRows = getInitDetailsRowDataWithNumber();
+        const foundMainRow = getRowData(rowId) as ConstructionSettlementTable;
+        foundMainRow.details = defaultSubRows;
+        checkAndUpdateData();
     };
 
     return {
