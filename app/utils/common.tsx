@@ -1,4 +1,5 @@
-import { ConstructionSettlement } from "~/types";
+import _ from 'lodash';
+import { ConstructionSettlement } from '~/types';
 
 export function getUnit(type: string) {
     switch (type) {
@@ -29,17 +30,23 @@ export function idHandler() {
     };
 }
 
-export const proccessValueType = (dataKey: keyof ConstructionSettlement, value: string | number): string | number => {
-    switch(dataKey) {
+export const proccessValueType = (
+    dataKey: keyof ConstructionSettlement,
+    value: string | number
+): string | number => {
+    switch (dataKey) {
         case 'length':
+            if (_.isString(value) && value !== '') {
+                return value.replace(/\s/g, '');
+            } else return Number(value);
         case 'width':
         case 'squareMeters':
         case 'quantity':
         case 'price':
         case 'totalCost':
-            return Number(value)
+            return Number(value);
         case 'category':
         default:
-            return String(value)
+            return String(value);
     }
-}
+};

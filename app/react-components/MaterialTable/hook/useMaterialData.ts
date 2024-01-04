@@ -158,12 +158,7 @@ const useMaterialData = () => {
         checkAndUpdateData();
     };
 
-    const addSumRowBelowById = (subRowId: number) => {
-        const sumRow: ConstructionSettlement = {
-            ...getInitDetailsRowData(),
-            isSum: true
-        };
-        
+    const addRowBelowWithRowById = (rowToAdd: ConstructionSettlement, subRowId: number) => {
         const foundMainRow = dataSnapshot.find((row) =>
             row.details.some((subRow) => subRow.id === subRowId)
         );
@@ -173,13 +168,32 @@ const useMaterialData = () => {
 
         foundMainRow.details.every((subRow, index) => {
             if (subRow.id === subRowId) {
-                foundMainRow.details.splice(index + 1, 0, sumRow);
+                foundMainRow.details.splice(index + 1, 0, rowToAdd);
                 checkAndUpdateData();
                 // Break the loop
                 return false;
             }
             return true;
         });
+    };
+
+    const addSumRowBelowById = (subRowId: number) => {
+        const sumRow: ConstructionSettlement = {
+            ...getInitDetailsRowData(),
+            isSum: true
+        };
+
+        addRowBelowWithRowById(sumRow, subRowId);
+    };
+
+    const addMutipleBelowById = (subRowId: number) => {
+        const sumRow: ConstructionSettlement = {
+            ...getInitDetailsRowData(),
+            length: '',
+            isMutiple: true
+        };
+
+        addRowBelowWithRowById(sumRow, subRowId);
     };
 
     return {
@@ -191,7 +205,8 @@ const useMaterialData = () => {
         addRowAboveById,
         addRowBelowById,
         addSubRowsById,
-        addSumRowBelowById
+        addSumRowBelowById,
+        addMutipleBelowById
     };
 };
 

@@ -10,6 +10,7 @@ export interface ConstructionSettlement {
     price: number | null;
     totalCost: number | null;
     isSum: boolean;
+    isMutiple: boolean;
 }
 
 export interface ConstructionSettlementTable extends ConstructionSettlement {

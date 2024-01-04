@@ -27,7 +27,7 @@ export const TableHeader = ({ hidden }: { hidden?: boolean }) => {
                         variant="head"
                         sx={{ minWidth: MIN_TABLE_WIDTH }}
                     >
-                        {col.header}
+                        <h2>{col.header}</h2>
                     </TableCell>
                 ))}
                 <TableCell>
@@ -46,11 +46,11 @@ const TableBodyContent = () => {
 
     useEffect(() => {
         forceUpdateData();
-    },[])
+    }, []);
     return (
         <TableBody>
             {data.length > 0 ? (
-                data.map((row, index) => <MaterialRow key={row.id} data={row} index={index}/>)
+                data.map((row, index) => <MaterialRow key={row.id} data={row} index={index} />)
             ) : (
                 <GenerateMaterialRow />
             )}
@@ -59,7 +59,6 @@ const TableBodyContent = () => {
 };
 
 const MaterialTable = () => {
-    
     return (
         <Paper
             style={{
@@ -68,10 +67,10 @@ const MaterialTable = () => {
             }}
         >
             <MaterialDataProvider>
-                <TableContainer 
+                <TableContainer
                 // sx={{ maxHeight: '50vh' }}
                 >
-                    <Table size='medium'>
+                    <Table size="medium">
                         <TableHeader />
                         <TableBodyContent />
                     </Table>

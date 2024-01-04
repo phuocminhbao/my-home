@@ -41,14 +41,21 @@ const initDetailsRowData: ConstructionSettlement = {
     squareMeters: null,
     price: 0,
     totalCost: null,
-    isSum: false
+    isSum: false,
+    isMutiple: false
 };
 
 const MIN_TABLE_WIDTH = '75px';
 
 const inputCellType: Record<string, string> = {
-    'string': 'text',
-    'number': 'number'
-}
+    string: 'text',
+    number: 'number'
+};
 
-export { columnType, colWidth, initDetailsRowData, MIN_TABLE_WIDTH, inputCellType };
+const tableFontSize = {
+    style: {
+        fontSize: 20
+    }
+};
+
+export { columnType, colWidth, initDetailsRowData, MIN_TABLE_WIDTH, inputCellType, tableFontSize };
