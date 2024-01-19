@@ -43,9 +43,10 @@ Handle background color for odd and even rows
 ~~ Main row: having a icon button allow input or~~ **just show it forever**
 
 Handle calculating:
-Only calulate when price field is filled
-Sum up all above Meter value
-Auto calculate TotalPrice field (if meter and price are having value and > 0)
+
+-   Only calulate when price field is filled
+-   Sum up all above Meter value
+-   Auto calculate TotalPrice field (if meter and price are having value and > 0)
 
 Handle final total row for final total price
 

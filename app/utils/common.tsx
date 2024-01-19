@@ -43,6 +43,7 @@ export const proccessValueType = (
         case 'squareMeters':
         case 'quantity':
         case 'price':
+            return Number(String(value).replace(',', ''));
         case 'totalCost':
             return Number(value);
         case 'category':

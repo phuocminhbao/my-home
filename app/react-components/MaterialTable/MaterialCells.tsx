@@ -41,23 +41,27 @@ const InputCell = ({
     const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>) => {
         const valueToUpdate = proccessValueType(dataKey, e.target.value);
 
-        // Do nothing when value not change
-        if (valueToUpdate === value) {
-            e.target.value = valueToUpdate.toString();
-            !isInputValid.okay && setIsInputValid(VALID_INPUT_RESULT);
-            return;
+        if (dataKey === 'price' && !_.isNaN(valueToUpdate)) {
+            e.target.value = valueToUpdate.toLocaleString('en-US');
         }
 
         if (valueToUpdate === 0) {
             e.target.value = valueToUpdate.toString();
         }
 
+        // Handle merge cell
         if (isMerge) {
-            e.target.value = valueToUpdate.toString();
+            e.target.value = valueToUpdate.toString().split('+').join(' + ');
         }
 
-        if (dataKey === 'price') {
-            e.target.value = value.toLocaleString('en-US');
+        // Do nothing when value not change
+        if (valueToUpdate === value) {
+            e.target.value =
+                dataKey === 'price'
+                    ? valueToUpdate.toLocaleString('en-US')
+                    : valueToUpdate.toString();
+            !isInputValid.okay && setIsInputValid(VALID_INPUT_RESULT);
+            return;
         }
 
         const validateResult = validateInput(dataKey, valueToUpdate, isMerge);
