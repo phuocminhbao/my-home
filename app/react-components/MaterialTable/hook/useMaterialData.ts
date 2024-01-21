@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import MaterialDataContext from '../context/MaterialDataContext';
 import {
     getInitAccordionRowData,
@@ -8,7 +8,7 @@ import {
     updateTableData
 } from '~/utils';
 import _ from 'lodash';
-import { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
+import type { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
 
 const useMaterialData = () => {
     const { data, updateData } = useContext(MaterialDataContext);

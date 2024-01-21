@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { TableHeader } from '.';
 
 import useTableRowsLenght from './hook/useMaterialTableInformation';
-import { ConstructionSettlementTable } from '~/types';
+import type { ConstructionSettlementTable } from '~/types';
 import _ from 'lodash';
 import { MaterialCells } from './MaterialCells';
 

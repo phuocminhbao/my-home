@@ -39,7 +39,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { AccordionRow } from '..';
 
 // Importing types
-import { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
+import type { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
 
 //Importing contants
 import { colWidth, columnType } from '~/contants';
@@ -380,14 +380,15 @@ export default function TableList() {
                                         addSubRowsCallback={addDefaultDetailsRows}
                                         expandComponent={
                                             <>
-                                                {!_.isEmpty(row.details) && row.details.map((detail, subIndex) => (
-                                                    <ProcessedRow
-                                                        key={detail.id}
-                                                        data={detail}
-                                                        accordionRowIndex={accordionIndex}
-                                                        detailRowIndex={subIndex}
-                                                    />
-                                                ))}
+                                                {!_.isEmpty(row.details) &&
+                                                    row.details.map((detail, subIndex) => (
+                                                        <ProcessedRow
+                                                            key={detail.id}
+                                                            data={detail}
+                                                            accordionRowIndex={accordionIndex}
+                                                            detailRowIndex={subIndex}
+                                                        />
+                                                    ))}
                                             </>
                                         }
                                     >

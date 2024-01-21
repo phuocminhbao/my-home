@@ -3,7 +3,7 @@ import { TableRow, TableCell, Tooltip, IconButton } from '@mui/material';
 import useMaterialData from './hook/useMaterialData';
 
 const GenerateMaterialRow = () => {
-    const { data, generateData } = useMaterialData();
+    const { generateData } = useMaterialData();
     return (
         <TableRow>
             <TableCell colSpan={10}>

@@ -1,9 +1,9 @@
 import { initDetailsRowData } from '~/contants';
 import { idHandler, toRoman } from '.';
-import { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
+import type { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
 import _ from 'lodash';
 
-function calculatingMeters(data: ConstructionSettlementTable | ConstructionSettlement) {
+const calculatingMeters = (data: ConstructionSettlementTable | ConstructionSettlement) => {
     const { length, width, quantity } = data;
     let result = 0;
     if (_.isNumber(length) && length && width && quantity) {
@@ -18,9 +18,9 @@ function calculatingMeters(data: ConstructionSettlementTable | ConstructionSettl
     }
 
     data.squareMeters = Number(result.toFixed(2));
-}
+};
 
-function formatRow(data: ConstructionSettlementTable | ConstructionSettlement) {
+const formatRow = (data: ConstructionSettlementTable | ConstructionSettlement) => {
     const { length, width, quantity, price } = data;
     if (length) {
         data.length = _.isNaN(Number(length)) ? length : Number(length);
@@ -34,24 +34,24 @@ function formatRow(data: ConstructionSettlementTable | ConstructionSettlement) {
     if (price) {
         data.price = Number(price);
     }
-}
-export function updateSelectAccRow(data: ConstructionSettlementTable) {
+};
+const updateSelectAccRow = (data: ConstructionSettlementTable) => {
     const isSelected = !data.isSelected;
     data.isSelected = isSelected;
     if (!_.isEmpty(data.details)) {
         data.details.forEach((row) => (row.isSelected = isSelected));
     }
-}
+};
 
-function updateSelectAccRowOnly(data: ConstructionSettlementTable) {
+const updateSelectAccRowOnly = (data: ConstructionSettlementTable) => {
     if (!data.details.some((value) => value.isSelected === false)) {
         data.isSelected = true;
         return;
     }
     data.isSelected = false;
-}
+};
 
-export function updateSelectSubRow(accData: ConstructionSettlementTable, startLoop: number) {
+export const updateSelectSubRow = (accData: ConstructionSettlementTable, startLoop: number) => {
     if (!_.isEmpty(accData.details)) return;
     const rowsWithCategoryIndex = accData.details
         .map((subRow, ind) => {
@@ -75,19 +75,27 @@ export function updateSelectSubRow(accData: ConstructionSettlementTable, startLo
             accData.details[i].isSelected = isSelected;
         }
     }
-}
+};
 
-function updateTableData(tableData: ConstructionSettlementTable[]) {
+const calculateTotalMetter = (row: ConstructionSettlementTable) => {
+    const { squareMeters, price } = row;
+    if (price && price > 0) {
+        row.totalCost = squareMeters! * price;
+    }
+};
+
+const updateTableData = (tableData: ConstructionSettlementTable[]) => {
     console.log('Updating data ...');
     tableData.forEach((row, index) => {
         row.order = toRoman(index + 1);
         formatRow(row);
         calculatingMeters(row);
-        updateSelectAccRowOnly(row);
+        calculateTotalMetter(row);
+        // updateSelectAccRowOnly(row);
 
         let subOrder = 1;
 
-        if(!_.isEmpty(row.details)) {
+        if (!_.isEmpty(row.details)) {
             row.details.forEach((subRow) => {
                 if (_.isEmpty(subRow.category)) {
                     subRow.order = null;
@@ -102,45 +110,47 @@ function updateTableData(tableData: ConstructionSettlementTable[]) {
             });
         }
     });
-}
+};
 
 const ID_HANDLER = idHandler();
 
-function getInitDetailsRowData(): ConstructionSettlement {
+const getInitDetailsRowData = (): ConstructionSettlement => {
     return {
         ...initDetailsRowData,
         id: ID_HANDLER.getUniqueID()
     };
-}
+};
 
-function getInitDetailsRowDataWithNumber(detailsAmount: number = 4): ConstructionSettlement[] {
+const getInitDetailsRowDataWithNumber = (detailsAmount: number = 4): ConstructionSettlement[] => {
     const detailrows: ConstructionSettlement[] = [];
     for (let i = 0; i < detailsAmount; i++) {
         detailrows.push(getInitDetailsRowData());
     }
     return detailrows;
-}
+};
 
-function getInitAccordionRowData(): ConstructionSettlementTable {
+const getInitAccordionRowData = (): ConstructionSettlementTable => {
     return {
         ...getInitDetailsRowData(),
         details: getInitDetailsRowDataWithNumber(),
         isSum: true
     };
-}
+};
 
-function getInitTableData(amount: number = 2): ConstructionSettlementTable[] {
+const getInitTableData = (amount: number = 2): ConstructionSettlementTable[] => {
     const rows: ConstructionSettlementTable[] = [];
     for (let i = 0; i < amount; i++) {
         rows.push(getInitAccordionRowData());
     }
     return rows;
-}
+};
 
 export {
     updateTableData,
     getInitTableData,
     getInitAccordionRowData,
     getInitDetailsRowData,
-    getInitDetailsRowDataWithNumber
+    getInitDetailsRowDataWithNumber,
+    updateSelectAccRow,
+    updateSelectAccRowOnly
 };
