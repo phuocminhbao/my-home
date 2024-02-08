@@ -46,6 +46,7 @@ const TableBodyContent = () => {
 
     useEffect(() => {
         forceUpdateData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return (
         <TableBody>
@@ -66,6 +67,7 @@ const MaterialTable = () => {
                 overflow: 'hidden'
             }}
         >
+            <h1>Quyết toán công trình </h1>
             <MaterialDataProvider>
                 <TableContainer
                 // sx={{ maxHeight: '50vh' }}

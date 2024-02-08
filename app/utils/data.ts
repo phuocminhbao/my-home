@@ -77,9 +77,9 @@ export const updateSelectSubRow = (accData: ConstructionSettlementTable, startLo
     }
 };
 
-const calculateTotalMetter = (row: ConstructionSettlementTable) => {
+const calculateTotalCost = (row: ConstructionSettlementTable) => {
     const { squareMeters, price } = row;
-    if (price && price > 0) {
+    if (!_.isNil(price) && price >= 0) {
         row.totalCost = squareMeters! * price;
     }
 };
@@ -90,7 +90,7 @@ const updateTableData = (tableData: ConstructionSettlementTable[]) => {
         row.order = toRoman(index + 1);
         formatRow(row);
         calculatingMeters(row);
-        calculateTotalMetter(row);
+        calculateTotalCost(row);
         // updateSelectAccRowOnly(row);
 
         let subOrder = 1;
