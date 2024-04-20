@@ -13,6 +13,7 @@ import { MaterialDataProvider } from './provider/MaterialDataProvider';
 import GenerateMaterialRow from './GenerateMaterialRow';
 import { useEffect } from 'react';
 import MaterialRow from './MaterialRow';
+import { InforCell } from './MaterialCells';
 
 export const TableHeader = ({ hidden }: { hidden?: boolean }) => {
     return (
@@ -38,6 +39,28 @@ export const TableHeader = ({ hidden }: { hidden?: boolean }) => {
     );
 };
 
+const FinalCostRow = () => {
+    const { data } = useMaterialData();
+    const finalCost = (): number => {
+        let cost = 0;
+        data.forEach((mainRow) => {
+            cost += mainRow.totalCost ?? 0;
+            mainRow.details.forEach((subRow) => {
+                if (subRow.totalCost) {
+                    cost += subRow.totalCost;
+                }
+            });
+        });
+        return cost;
+    };
+    return (
+        <TableRow>
+            <InforCell colSpan={7} value="TỔNG CỘNG" />
+            <InforCell value={finalCost()} />
+        </TableRow>
+    );
+};
+
 const TableBodyContent = () => {
     const { data, forceUpdateData } = useMaterialData();
     useEffect(() => {
@@ -55,6 +78,7 @@ const TableBodyContent = () => {
             ) : (
                 <GenerateMaterialRow />
             )}
+            <FinalCostRow />
         </TableBody>
     );
 };

@@ -55,8 +55,8 @@ const useMaterialData = () => {
             case 'length':
             case 'width':
             case 'squareMeters':
-                if (_.isNumber(valueToupdate)) {
-                    return roundNumber(valueToupdate);
+                if (!_.isNaN(Number(valueToupdate))) {
+                    return roundNumber(Number(valueToupdate));
                 }
             default:
                 return valueToupdate;

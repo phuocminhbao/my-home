@@ -23,7 +23,7 @@ import type { ReactNode, MouseEventHandler } from 'react';
 import { useState } from 'react';
 import { VALID_INPUT_RESULT, tableFontSize } from '~/contants';
 import type { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
-import { validateInput } from '~/utils';
+import { roundNumber, validateInput } from '~/utils';
 import { getUnit, proccessValueType } from '~/utils/common';
 import useMaterialData from './hook/useMaterialData';
 
@@ -41,11 +41,17 @@ const InputCell = ({
     const [isInputValid, setIsInputValid] = useState(VALID_INPUT_RESULT);
     if (value === null) return <TableCell />;
 
+    const roundDatas: Array<keyof ConstructionSettlement> = ['length', 'width', 'squareMeters'];
+
     const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>) => {
         const valueToUpdate = proccessValueType(dataKey, e.target.value);
 
         if (dataKey === 'price' && !_.isNaN(valueToUpdate)) {
             e.target.value = valueToUpdate.toLocaleString('en-US');
+        }
+
+        if (roundDatas.includes(dataKey) && !_.isNaN(Number(value))) {
+            e.target.value = roundNumber(Number(valueToUpdate)).toString();
         }
 
         if (valueToUpdate === 0) {
@@ -82,6 +88,17 @@ const InputCell = ({
             e.target.value = '';
         }
     };
+
+    const displayValue = () => {
+        if (dataKey === 'price') {
+            return value.toLocaleString('en-US');
+        }
+        if (roundDatas.includes(dataKey) && !_.isNaN(Number(value))) {
+            return roundNumber(Number(value));
+        }
+        return value;
+    };
+
     return (
         <TableCell colSpan={isMerge ? 3 : 1} sx={{ fontSize: 20 }}>
             <TextField
@@ -90,7 +107,7 @@ const InputCell = ({
                 }}
                 aria-setsize={20}
                 type={'text'}
-                defaultValue={value}
+                defaultValue={displayValue()}
                 size="medium"
                 onBlur={handleBlur}
                 onFocus={handleFocus}

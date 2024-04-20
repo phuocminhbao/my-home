@@ -79,7 +79,7 @@ export const updateSelectSubRow = (accData: ConstructionSettlementTable, startLo
 
 const calculateRowTotalCost = (row: ConstructionSettlementTable | ConstructionSettlement) => {
     const { squareMeters, price } = row;
-    if (!_.isNil(price) && price > 0) {
+    if (!_.isNil(price) && price >= 0) {
         row.totalCost = squareMeters! * price;
     }
 };
