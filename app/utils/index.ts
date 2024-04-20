@@ -3,18 +3,25 @@ import {
     getInitTableData,
     getInitAccordionRowData,
     getInitDetailsRowData,
-    getInitDetailsRowDataWithNumber
+    getInitDetailsRowDataWithNumber,
+    updateSelectAccRow,
+    updateSelectSubRow
 } from './data';
-import { getUniqueID, getUnit } from './common';
-import { toRoman } from './number';
+import { idHandler, getUnit } from './common';
+import { roundNumber, toRoman } from './number';
+import { validateInput } from './validation';
 
 export {
     getUnit,
     updateTableData,
-    getUniqueID,
+    idHandler,
     getInitAccordionRowData,
     getInitDetailsRowData,
     getInitTableData,
     toRoman,
-    getInitDetailsRowDataWithNumber
+    getInitDetailsRowDataWithNumber,
+    updateSelectAccRow,
+    updateSelectSubRow,
+    validateInput,
+    roundNumber
 };

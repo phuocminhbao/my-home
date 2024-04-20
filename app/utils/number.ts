@@ -1,4 +1,4 @@
-export const toRoman = (number: number): string => {
+const toRoman = (number: number): string => {
     const roman: Record<string, number> = {
         M: 1000,
         CM: 900,
@@ -22,3 +22,9 @@ export const toRoman = (number: number): string => {
     }
     return str;
 };
+
+const roundNumber = (number: number, decimalPlaces: number = 2): number => {
+    return Number(number.toFixed(decimalPlaces));
+};
+
+export { toRoman, roundNumber };

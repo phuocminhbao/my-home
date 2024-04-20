@@ -9,7 +9,6 @@ module.exports = {
         '@remix-run/eslint-config',
         '@remix-run/eslint-config/node',
         'plugin:react/recommended',
-        'standard-with-typescript',
         'plugin:jsx-a11y/recommended',
         'prettier'
     ],
@@ -42,6 +41,11 @@ module.exports = {
                 asyncArrow: 'always'
             }
         ],
-        'prettier/prettier': 'error'
+        'prettier/prettier': [
+            'error',
+            {
+                endOfLine: 'auto'
+            }
+        ]
     }
 };

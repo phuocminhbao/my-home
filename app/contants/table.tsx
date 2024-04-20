@@ -1,4 +1,4 @@
-import { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
+import { ConstructionSettlement } from '~/types';
 
 const columnType = [
     { key: 'index', header: 'STT' },
@@ -18,7 +18,8 @@ const columnType = [
     { key: 'totalCost', header: 'THÀNH TIỀN' }
 ];
 
-const getColWidth: Record<string, string> = {
+const colWidth: Record<string, string> = {
+    event: '2%',
     index: '5%',
     category: '20%',
     length: '12%',
@@ -30,6 +31,8 @@ const getColWidth: Record<string, string> = {
 };
 
 const initDetailsRowData: ConstructionSettlement = {
+    isSelected: false,
+    id: 0,
     order: null,
     category: '',
     length: 0,
@@ -37,7 +40,22 @@ const initDetailsRowData: ConstructionSettlement = {
     quantity: 0,
     squareMeters: null,
     price: 0,
-    totalCost: null
+    totalCost: null,
+    isSum: false,
+    isMutiple: false
 };
 
-export { columnType, getColWidth, initDetailsRowData };
+const MIN_TABLE_WIDTH = '75px';
+
+const inputCellType: Record<string, string> = {
+    string: 'text',
+    number: 'number'
+};
+
+const tableFontSize = {
+    style: {
+        fontSize: 20
+    }
+};
+
+export { columnType, colWidth, initDetailsRowData, MIN_TABLE_WIDTH, inputCellType, tableFontSize };

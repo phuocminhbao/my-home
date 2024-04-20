@@ -1,5 +1,6 @@
 export interface ConstructionSettlement {
-    id?: number;
+    isSelected: boolean;
+    id: number;
     order: string | number | null;
     category: string | null;
     length: number | string | null;
@@ -8,8 +9,10 @@ export interface ConstructionSettlement {
     squareMeters: number | null;
     price: number | null;
     totalCost: number | null;
+    isSum: boolean;
+    isMutiple: boolean;
 }
 
 export interface ConstructionSettlementTable extends ConstructionSettlement {
-    details: ConstructionSettlement[] | null;
+    details: ConstructionSettlement[];
 }
