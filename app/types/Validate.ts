@@ -1,6 +1,6 @@
 interface ValidateResult {
     okay: boolean;
-    error: string
+    error: string;
 }
 
-export type { ValidateResult }
+export type { ValidateResult };
