@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import {
     KeyboardArrowUp,
     KeyboardArrowDown,
@@ -17,9 +19,10 @@ import {
     ListItemText
 } from '@mui/material';
 import _ from 'lodash';
-import { useState, ReactNode, MouseEventHandler } from 'react';
-import { VALID_INPUT_RESULT, inputCellType, tableFontSize } from '~/contants';
-import { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
+import type { ReactNode, MouseEventHandler } from 'react';
+import { useState } from 'react';
+import { VALID_INPUT_RESULT, tableFontSize } from '~/contants';
+import type { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
 import { validateInput } from '~/utils';
 import { getUnit, proccessValueType } from '~/utils/common';
 import useMaterialData from './hook/useMaterialData';

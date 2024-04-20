@@ -77,11 +77,28 @@ export const updateSelectSubRow = (accData: ConstructionSettlementTable, startLo
     }
 };
 
-const calculateTotalCost = (row: ConstructionSettlementTable) => {
+const calculateRowTotalCost = (row: ConstructionSettlementTable | ConstructionSettlement) => {
     const { squareMeters, price } = row;
-    if (!_.isNil(price) && price >= 0) {
+    if (!_.isNil(price) && price > 0) {
         row.totalCost = squareMeters! * price;
     }
+};
+
+const calculateSubSumRowTotalCost = (
+    subRow: ConstructionSettlement,
+    subRows: ConstructionSettlement[],
+    start: number,
+    end: number,
+    mainRowMeters: number
+) => {
+    const calculateRange = subRows.slice(start, end).filter((row) => !row.isMutiple);
+    const totalMeters =
+        calculateRange.reduce((sum, currentRow) => {
+            return sum + (currentRow.squareMeters ?? 0);
+        }, 0) + mainRowMeters;
+    const totalCost = totalMeters * (subRow.price ?? 0);
+    subRow.squareMeters = totalMeters;
+    subRow.totalCost = totalCost;
 };
 
 const updateTableData = (tableData: ConstructionSettlementTable[]) => {
@@ -90,13 +107,14 @@ const updateTableData = (tableData: ConstructionSettlementTable[]) => {
         row.order = toRoman(index + 1);
         formatRow(row);
         calculatingMeters(row);
-        calculateTotalCost(row);
-        // updateSelectAccRowOnly(row);
+        calculateRowTotalCost(row);
 
+        let shouldCalculateMainRowWithSubRows = !_.isNil(row.price) && row.price === 0;
         let subOrder = 1;
+        let startMetersCalRow = 0;
 
         if (!_.isEmpty(row.details)) {
-            row.details.forEach((subRow) => {
+            row.details.forEach((subRow, subIndex) => {
                 if (_.isEmpty(subRow.category)) {
                     subRow.order = null;
                 } else {
@@ -105,8 +123,21 @@ const updateTableData = (tableData: ConstructionSettlementTable[]) => {
                 }
                 formatRow(subRow);
                 calculatingMeters(subRow);
-                // if (subRow.category)
-                //     updateSelectSubRow(row, subInd, rowWithCategoryIndex, subRow.isSelected);
+                if (subRow.isSum) {
+                    calculateSubSumRowTotalCost(
+                        subRow,
+                        row.details,
+                        startMetersCalRow,
+                        subIndex,
+                        shouldCalculateMainRowWithSubRows ? row.squareMeters ?? 0 : 0
+                    );
+                    startMetersCalRow = subIndex + 1;
+                    shouldCalculateMainRowWithSubRows = false;
+                }
+                if (subRow.isMutiple) {
+                    calculateRowTotalCost(subRow);
+                    startMetersCalRow = subIndex + 1;
+                }
             });
         }
     });

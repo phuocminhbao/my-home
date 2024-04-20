@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { ConstructionSettlement } from '~/types';
+import type { ConstructionSettlement } from '~/types';
 
 export function getUnit(type: string) {
     switch (type) {

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { VALID_INPUT_RESULT } from '~/contants';
-import { ConstructionSettlement, ValidateResult } from '~/types';
+import type { ConstructionSettlement, ValidateResult } from '~/types';
 
 const validateNumber = (value: number): ValidateResult => {
     let error = '';
