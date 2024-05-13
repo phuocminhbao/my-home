@@ -196,6 +196,19 @@ const useMaterialData = () => {
         addRowBelowWithRowById(sumRow, subRowId);
     };
 
+    const getFinalCost = (): number => {
+        let cost = 0;
+        data.forEach((mainRow) => {
+            cost += mainRow.totalCost ?? 0;
+            mainRow.details.forEach((subRow) => {
+                if (subRow.totalCost) {
+                    cost += subRow.totalCost;
+                }
+            });
+        });
+        return cost;
+    };
+
     return {
         data,
         generateData,
@@ -206,7 +219,8 @@ const useMaterialData = () => {
         addRowBelowById,
         addSubRowsById,
         addSumRowBelowById,
-        addMutipleBelowById
+        addMutipleBelowById,
+        getFinalCost
     };
 };
 

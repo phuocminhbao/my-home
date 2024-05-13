@@ -1,6 +1,6 @@
-import { ConstructionSettlement } from '~/types/ExcelModel/ConstructionSettlement';
+import type { ConstructionSettlement } from '~/types/ExcelModel/ConstructionSettlement';
 
-export const mockData: ConstructionSettlement[] = [
+export const mockData = [
     {
         order: 'I',
         category: 'CẦU THANG ĐEN',
@@ -191,4 +191,4 @@ export const mockData: ConstructionSettlement[] = [
         price: null,
         totalCost: null
     }
-];
+] as ConstructionSettlement[];

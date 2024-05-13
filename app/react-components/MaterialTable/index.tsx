@@ -1,4 +1,5 @@
 import {
+    Button,
     Paper,
     Table,
     TableBody,
@@ -7,13 +8,14 @@ import {
     TableHead,
     TableRow
 } from '@mui/material';
-import { MIN_TABLE_WIDTH, colWidth, columnType } from '~/contants';
+import { EXCEL_PATH, MIN_TABLE_WIDTH, colWidth, columnType } from '~/contants';
 import useMaterialData from './hook/useMaterialData';
 import { MaterialDataProvider } from './provider/MaterialDataProvider';
 import GenerateMaterialRow from './GenerateMaterialRow';
 import { useEffect } from 'react';
 import MaterialRow from './MaterialRow';
 import { InforCell } from './MaterialCells';
+import useSubmitData from '~/hook/useSubmitData';
 
 export const TableHeader = ({ hidden }: { hidden?: boolean }) => {
     return (
@@ -39,24 +41,30 @@ export const TableHeader = ({ hidden }: { hidden?: boolean }) => {
     );
 };
 
-const FinalCostRow = () => {
+const SubmitConstructDataCell = () => {
     const { data } = useMaterialData();
-    const finalCost = (): number => {
-        let cost = 0;
-        data.forEach((mainRow) => {
-            cost += mainRow.totalCost ?? 0;
-            mainRow.details.forEach((subRow) => {
-                if (subRow.totalCost) {
-                    cost += subRow.totalCost;
-                }
-            });
-        });
-        return cost;
-    };
+    const { submitData } = useSubmitData();
+    return (
+        <TableCell>
+            <Button
+                onClick={() => {
+                    submitData(JSON.stringify(data), EXCEL_PATH);
+                }}
+            >
+                Do Excel
+            </Button>
+        </TableCell>
+    );
+};
+
+const FinalCostRow = () => {
+    const { getFinalCost } = useMaterialData();
+
     return (
         <TableRow>
             <InforCell colSpan={7} value="TỔNG CỘNG" />
-            <InforCell value={finalCost()} />
+            <InforCell value={getFinalCost()} />
+            <SubmitConstructDataCell />
         </TableRow>
     );
 };

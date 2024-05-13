@@ -8,6 +8,8 @@ import {
     tableFontSize
 } from './table';
 
+import { EXCEL_PATH } from './routePath';
+
 export {
     columnType,
     colWidth,
@@ -15,5 +17,6 @@ export {
     MIN_TABLE_WIDTH,
     inputCellType,
     VALID_INPUT_RESULT,
-    tableFontSize
+    tableFontSize,
+    EXCEL_PATH
 };
