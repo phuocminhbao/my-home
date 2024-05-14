@@ -74,7 +74,7 @@ export const ErrorBoundary = () => {
     }
 
     return <h1>Unknown Error</h1>;
-}
+};
 
 export default function App() {
     return (

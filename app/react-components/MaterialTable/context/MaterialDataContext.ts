@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { ConstructionSettlementTable } from '~/types';
+import type { ConstructionSettlementTable } from '~/types';
 
 type MaterialDataProps = {
     data: ConstructionSettlementTable[];

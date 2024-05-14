@@ -1,4 +1,3 @@
-import { VALID_INPUT_RESULT } from './Validation';
 import {
     columnType,
     colWidth,
@@ -9,6 +8,9 @@ import {
 } from './table';
 
 import { EXCEL_PATH } from './routePath';
+import { VALID_INPUT_RESULT } from './validation';
+import STATUS_CODE from './statusCode';
+import REASON_PHRASE from './reasonPhrases';
 
 export {
     columnType,
@@ -18,5 +20,7 @@ export {
     inputCellType,
     VALID_INPUT_RESULT,
     tableFontSize,
-    EXCEL_PATH
+    EXCEL_PATH,
+    STATUS_CODE,
+    REASON_PHRASE
 };

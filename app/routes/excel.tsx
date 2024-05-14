@@ -1,12 +1,20 @@
 import type { ActionFunctionArgs } from '@remix-run/node';
+import type { ConstructionSettlementTable } from '~/types';
 import MaterialTable from '~/react-components/MaterialTable';
-// import { doExcel } from '~/exceljs';
+import { OKResponse } from '~/helper/response/success';
+import { doExcel } from '~/exceljs';
+import { BadRequestResponse } from '~/helper/response/error';
 
 export const action = async ({ request }: ActionFunctionArgs) => {
     const formData = await request.formData();
-    const data = JSON.parse(formData.get('data') as string);
-    // await doExcel(data);
-    return null;
+    try {
+        const data = JSON.parse(formData.get('data') as string) as ConstructionSettlementTable[];
+        await doExcel(data);
+    } catch (e) {
+        return new BadRequestResponse((e as Error).message);
+    }
+
+    return new OKResponse();
 };
 
 const Excel = () => {

@@ -1,8 +1,12 @@
 import Excel from 'exceljs';
 import path from 'path';
 import { mockData } from './mockData';
+import type { ConstructionSettlementTable } from '~/types';
 
-export async function doExcel() {
+export async function doExcel(data: ConstructionSettlementTable[]) {
+    if (!data) {
+        throw new Error('No data is provided');
+    }
     const workbook = new Excel.Workbook();
     const worksheet = workbook.addWorksheet('Construction Settlement');
 

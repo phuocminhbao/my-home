@@ -1,4 +1,4 @@
-import type { ConstructionSettlement } from '~/types/ExcelModel/ConstructionSettlement';
+import type { ConstructionSettlement } from '~/types/ConstructionSettlement';
 
 export const mockData = [
     {
