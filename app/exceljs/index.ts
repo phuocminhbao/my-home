@@ -1,17 +1,23 @@
 import Excel from 'exceljs';
 import path from 'path';
-import { mockData } from './mockData';
-import type { ConstructionSettlementTable } from '~/types';
+import type { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
 
-export async function doExcel(data: ConstructionSettlementTable[]) {
-    if (!data) {
+type ProccessRow = Pick<
+    ConstructionSettlement,
+    'order' | 'category' | 'length' | 'width' | 'quantity' | 'squareMeters' | 'price' | 'totalCost'
+>;
+
+export async function doExcel(constructionSettlement: ConstructionSettlementTable[]) {
+    if (!constructionSettlement) {
         throw new Error('No data is provided');
     }
+
+    const processedConstructionSettlement = processConstructionSettlement(constructionSettlement);
     const workbook = new Excel.Workbook();
     const worksheet = workbook.addWorksheet('Construction Settlement');
 
     worksheet.columns = [
-        { key: 'index', header: 'STT' },
+        { key: 'order', header: 'STT' },
         { key: 'category', header: 'HẠNG MỤC' },
         { key: 'length', header: 'DÀI' },
         { key: 'width', header: 'RỘNG' },
@@ -21,9 +27,34 @@ export async function doExcel(data: ConstructionSettlementTable[]) {
         { key: 'totalCost', header: 'THÀNH TIỀN' }
     ];
 
-    worksheet.addRows(mockData);
+    worksheet.addRows(processedConstructionSettlement);
     const exportPath = path.resolve('./', 'Bang quyet toan cong trinh.xlsx');
 
     await workbook.xlsx.writeFile(exportPath);
-    console.log('Backend here');
 }
+
+const processConstructionSettlement = (
+    constructionSettlement: ConstructionSettlementTable[]
+): ProccessRow[] => {
+    return constructionSettlement.flatMap((row) => {
+        const processedRow = convertToProcessRow(row);
+        const processedSubRows = row.details.map((subRow) => convertToProcessRow(subRow));
+        return [processedRow, ...processedSubRows];
+    });
+};
+
+const convertToProcessRow = (
+    row: ConstructionSettlementTable | ConstructionSettlement
+): ProccessRow => {
+    const { order, category, length, width, quantity, squareMeters, price, totalCost, isSum } = row;
+    return {
+        order,
+        category,
+        length: isSum ? 'CỘNG' : length,
+        width,
+        quantity,
+        squareMeters,
+        price,
+        totalCost
+    };
+};

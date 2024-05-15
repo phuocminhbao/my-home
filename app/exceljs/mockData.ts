@@ -192,3 +192,325 @@ export const mockData = [
         totalCost: null
     }
 ] as ConstructionSettlement[];
+
+export const mockProcess = [
+    {
+        order: 'I',
+        category: '',
+        length: 0.3,
+        width: 0.2,
+        quantity: 1,
+        squareMeters: 0.06,
+        price: 0,
+        totalCost: 0
+    },
+    {
+        order: null,
+        category: '',
+        length: 0.4,
+        width: 0.25,
+        quantity: 2,
+        squareMeters: 0.2,
+        price: 0,
+        totalCost: null
+    },
+    {
+        order: null,
+        category: '',
+        length: 0.57,
+        width: 0.4,
+        quantity: 1,
+        squareMeters: 0.23,
+        price: 0,
+        totalCost: null
+    },
+    {
+        order: null,
+        category: '',
+        length: 0,
+        width: 0,
+        quantity: 0,
+        squareMeters: 0.49000000000000005,
+        price: 200000,
+        totalCost: 98000.00000000001
+    },
+    {
+        order: null,
+        category: '',
+        length: 0.2,
+        width: 0.1,
+        quantity: 4,
+        squareMeters: 0.08,
+        price: 0,
+        totalCost: null
+    },
+    {
+        order: null,
+        category: '',
+        length: 0.39,
+        width: 0.28,
+        quantity: 1,
+        squareMeters: 0.11,
+        price: 0,
+        totalCost: null
+    },
+    {
+        order: null,
+        category: '',
+        length: 0,
+        width: 0,
+        quantity: 0,
+        squareMeters: 0.19,
+        price: 300000,
+        totalCost: 57000
+    },
+    {
+        order: 'II',
+        category: '',
+        length: 0.3,
+        width: 0.1,
+        quantity: 1,
+        squareMeters: 0.03,
+        price: 258000,
+        totalCost: 7740
+    },
+    {
+        order: null,
+        category: '',
+        length: 0.6,
+        width: 0.3,
+        quantity: 1,
+        squareMeters: 0.18,
+        price: 0,
+        totalCost: null
+    },
+    {
+        order: null,
+        category: '',
+        length: 0.3,
+        width: 0.2,
+        quantity: 1,
+        squareMeters: 0.06,
+        price: 0,
+        totalCost: null
+    },
+    {
+        order: null,
+        category: '',
+        length: 0.89,
+        width: 0.4,
+        quantity: 1,
+        squareMeters: 0.36,
+        price: 0,
+        totalCost: null
+    },
+    {
+        order: null,
+        category: '',
+        length: 0,
+        width: 0,
+        quantity: 0,
+        squareMeters: 0.6,
+        price: 250000,
+        totalCost: 150000
+    },
+    {
+        order: null,
+        category: '',
+        length: '0.5+0.9+0.2+0.3+0.1',
+        width: 0,
+        quantity: 0,
+        squareMeters: 2,
+        price: 25000,
+        totalCost: 50000
+    }
+];
+
+export const mockData1 = [
+    {
+        isSelected: false,
+        id: 10,
+        order: 'I',
+        category: '',
+        length: 0.3,
+        width: 0.2,
+        quantity: 1,
+        squareMeters: 0.06,
+        price: 0,
+        totalCost: 0,
+        isSum: true,
+        isMutiple: false,
+        details: [
+            {
+                isSelected: false,
+                id: 11,
+                order: null,
+                category: '',
+                length: 0.4,
+                width: 0.25,
+                quantity: 2,
+                squareMeters: 0.2,
+                price: 0,
+                totalCost: null,
+                isSum: false,
+                isMutiple: false
+            },
+            {
+                isSelected: false,
+                id: 12,
+                order: null,
+                category: '',
+                length: 0.57,
+                width: 0.4,
+                quantity: 1,
+                squareMeters: 0.23,
+                price: 0,
+                totalCost: null,
+                isSum: false,
+                isMutiple: false
+            },
+            {
+                isSelected: false,
+                id: 20,
+                order: null,
+                category: '',
+                length: 0,
+                width: 0,
+                quantity: 0,
+                squareMeters: 0.49000000000000005,
+                price: 200000,
+                totalCost: 98000.00000000001,
+                isSum: true,
+                isMutiple: false
+            },
+            {
+                isSelected: false,
+                id: 13,
+                order: null,
+                category: '',
+                length: 0.2,
+                width: 0.1,
+                quantity: 4,
+                squareMeters: 0.08,
+                price: 0,
+                totalCost: null,
+                isSum: false,
+                isMutiple: false
+            },
+            {
+                isSelected: false,
+                id: 14,
+                order: null,
+                category: '',
+                length: 0.39,
+                width: 0.28,
+                quantity: 1,
+                squareMeters: 0.11,
+                price: 0,
+                totalCost: null,
+                isSum: false,
+                isMutiple: false
+            },
+            {
+                isSelected: false,
+                id: 21,
+                order: null,
+                category: '',
+                length: 0,
+                width: 0,
+                quantity: 0,
+                squareMeters: 0.19,
+                price: 300000,
+                totalCost: 57000,
+                isSum: true,
+                isMutiple: false
+            }
+        ]
+    },
+    {
+        isSelected: false,
+        id: 15,
+        order: 'II',
+        category: '',
+        length: 0.3,
+        width: 0.1,
+        quantity: 1,
+        squareMeters: 0.03,
+        price: 258000,
+        totalCost: 7740,
+        isSum: true,
+        isMutiple: false,
+        details: [
+            {
+                isSelected: false,
+                id: 16,
+                order: null,
+                category: '',
+                length: 0.6,
+                width: 0.3,
+                quantity: 1,
+                squareMeters: 0.18,
+                price: 0,
+                totalCost: null,
+                isSum: false,
+                isMutiple: false
+            },
+            {
+                isSelected: false,
+                id: 17,
+                order: null,
+                category: '',
+                length: 0.3,
+                width: 0.2,
+                quantity: 1,
+                squareMeters: 0.06,
+                price: 0,
+                totalCost: null,
+                isSum: false,
+                isMutiple: false
+            },
+            {
+                isSelected: false,
+                id: 18,
+                order: null,
+                category: '',
+                length: 0.89,
+                width: 0.4,
+                quantity: 1,
+                squareMeters: 0.36,
+                price: 0,
+                totalCost: null,
+                isSum: false,
+                isMutiple: false
+            },
+            {
+                isSelected: false,
+                id: 22,
+                order: null,
+                category: '',
+                length: 0,
+                width: 0,
+                quantity: 0,
+                squareMeters: 0.6,
+                price: 250000,
+                totalCost: 150000,
+                isSum: true,
+                isMutiple: false
+            },
+            {
+                isSelected: false,
+                id: 23,
+                order: null,
+                category: '',
+                length: '0.5+0.9+0.2+0.3+0.1',
+                width: 0,
+                quantity: 0,
+                squareMeters: 2,
+                price: 25000,
+                totalCost: 50000,
+                isSum: false,
+                isMutiple: true
+            }
+        ]
+    }
+];
