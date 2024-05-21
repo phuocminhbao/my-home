@@ -28,6 +28,38 @@ export async function doExcel(constructionSettlement: ConstructionSettlementTabl
     ];
 
     worksheet.addRows(processedConstructionSettlement);
+    worksheet.eachRow((row, rowNumber) => {
+        let merged = false;
+        row.eachCell((cell) => {
+            if (rowNumber === 1) {
+                cell.border = {
+                    top: {
+                        style: 'double'
+                    }
+                };
+            }
+            if (rowNumber === worksheet.rowCount) {
+                cell.border = {
+                    bottom: {
+                        style: 'double'
+                    }
+                };
+            }
+            if (merged) return;
+            if (cell.value === 'CỘNG') {
+                worksheet.mergeCells(+cell.row, +cell.col, +cell.row, +cell.col + 2);
+                merged = true;
+                cell.alignment = { horizontal: 'center' };
+                return;
+            }
+            if (cell.value?.toString().includes('+')) {
+                worksheet.mergeCells(+cell.row, +cell.col, +cell.row, +cell.col + 1);
+                merged = true;
+                cell.alignment = { horizontal: 'center' };
+                return;
+            }
+        });
+    });
     const exportPath = path.resolve('./', 'Bang quyet toan cong trinh.xlsx');
 
     await workbook.xlsx.writeFile(exportPath);
@@ -50,11 +82,11 @@ const convertToProcessRow = (
     return {
         order,
         category,
-        length: isSum ? 'CỘNG' : length,
-        width,
+        length: isSum && price !== 0 ? 'CỘNG' : length,
+        width: width ? width : null,
         quantity,
         squareMeters,
-        price,
-        totalCost
+        price: price ? price : null,
+        totalCost: totalCost ? totalCost : null
     };
 };
