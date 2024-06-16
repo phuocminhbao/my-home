@@ -190,7 +190,7 @@ const useMaterialData = () => {
         const sumRow: ConstructionSettlement = {
             ...getInitDetailsRowData(),
             length: '',
-            isMutiple: true
+            isMultiply: true
         };
 
         addRowBelowWithRowById(sumRow, subRowId);

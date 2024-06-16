@@ -339,7 +339,7 @@ export const mockData1 = [
         price: 0,
         totalCost: 0,
         isSum: true,
-        isMutiple: false,
+        isMultiply: false,
         details: [
             {
                 isSelected: false,
@@ -353,7 +353,7 @@ export const mockData1 = [
                 price: 0,
                 totalCost: null,
                 isSum: false,
-                isMutiple: false
+                isMultiply: false
             },
             {
                 isSelected: false,
@@ -367,7 +367,7 @@ export const mockData1 = [
                 price: 0,
                 totalCost: null,
                 isSum: false,
-                isMutiple: false
+                isMultiply: false
             },
             {
                 isSelected: false,
@@ -377,11 +377,11 @@ export const mockData1 = [
                 length: 0,
                 width: 0,
                 quantity: 0,
-                squareMeters: 0.49000000000000005,
+                squareMeters: 0.49,
                 price: 200000,
-                totalCost: 98000.00000000001,
+                totalCost: 98000,
                 isSum: true,
-                isMutiple: false
+                isMultiply: false
             },
             {
                 isSelected: false,
@@ -395,7 +395,7 @@ export const mockData1 = [
                 price: 0,
                 totalCost: null,
                 isSum: false,
-                isMutiple: false
+                isMultiply: false
             },
             {
                 isSelected: false,
@@ -409,7 +409,7 @@ export const mockData1 = [
                 price: 0,
                 totalCost: null,
                 isSum: false,
-                isMutiple: false
+                isMultiply: false
             },
             {
                 isSelected: false,
@@ -423,7 +423,7 @@ export const mockData1 = [
                 price: 300000,
                 totalCost: 57000,
                 isSum: true,
-                isMutiple: false
+                isMultiply: false
             }
         ]
     },
@@ -439,7 +439,7 @@ export const mockData1 = [
         price: 258000,
         totalCost: 7740,
         isSum: true,
-        isMutiple: false,
+        isMultiply: false,
         details: [
             {
                 isSelected: false,
@@ -453,7 +453,7 @@ export const mockData1 = [
                 price: 0,
                 totalCost: null,
                 isSum: false,
-                isMutiple: false
+                isMultiply: false
             },
             {
                 isSelected: false,
@@ -467,7 +467,7 @@ export const mockData1 = [
                 price: 0,
                 totalCost: null,
                 isSum: false,
-                isMutiple: false
+                isMultiply: false
             },
             {
                 isSelected: false,
@@ -481,7 +481,7 @@ export const mockData1 = [
                 price: 0,
                 totalCost: null,
                 isSum: false,
-                isMutiple: false
+                isMultiply: false
             },
             {
                 isSelected: false,
@@ -495,7 +495,7 @@ export const mockData1 = [
                 price: 250000,
                 totalCost: 150000,
                 isSum: true,
-                isMutiple: false
+                isMultiply: false
             },
             {
                 isSelected: false,
@@ -509,7 +509,7 @@ export const mockData1 = [
                 price: 25000,
                 totalCost: 50000,
                 isSum: false,
-                isMutiple: true
+                isMultiply: true
             }
         ]
     }

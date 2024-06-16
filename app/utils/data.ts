@@ -91,7 +91,7 @@ const calculateSubSumRowTotalCost = (
     end: number,
     mainRowMeters: number
 ) => {
-    const calculateRange = subRows.slice(start, end).filter((row) => !row.isMutiple);
+    const calculateRange = subRows.slice(start, end).filter((row) => !row.isMultiply);
     const totalMeters =
         calculateRange.reduce((sum, currentRow) => {
             return sum + (currentRow.squareMeters ?? 0);
@@ -134,7 +134,7 @@ const updateTableData = (tableData: ConstructionSettlementTable[]) => {
                     startMetersCalRow = subIndex + 1;
                     shouldCalculateMainRowWithSubRows = false;
                 }
-                if (subRow.isMutiple) {
+                if (subRow.isMultiply) {
                     calculateRowTotalCost(subRow);
                     startMetersCalRow = subIndex + 1;
                 }

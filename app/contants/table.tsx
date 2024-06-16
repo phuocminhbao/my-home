@@ -1,4 +1,4 @@
-import { ConstructionSettlement } from '~/types';
+import type { ConstructionSettlement } from '~/types';
 
 const columnType = [
     { key: 'index', header: 'STT' },
@@ -42,7 +42,7 @@ const initDetailsRowData: ConstructionSettlement = {
     price: 0,
     totalCost: null,
     isSum: false,
-    isMutiple: false
+    isMultiply: false
 };
 
 const MIN_TABLE_WIDTH = '75px';

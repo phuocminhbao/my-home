@@ -11,6 +11,7 @@ import { EXCEL_PATH } from './routePath';
 import { VALID_INPUT_RESULT } from './validation';
 import STATUS_CODE from './statusCode';
 import REASON_PHRASE from './reasonPhrases';
+import { COLUMNS, SUM_VALUE } from './excel';
 
 export {
     columnType,
@@ -22,5 +23,7 @@ export {
     tableFontSize,
     EXCEL_PATH,
     STATUS_CODE,
-    REASON_PHRASE
+    REASON_PHRASE,
+    COLUMNS,
+    SUM_VALUE
 };

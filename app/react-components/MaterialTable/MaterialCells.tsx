@@ -314,7 +314,7 @@ const MaterialCells = ({
         price,
         totalCost,
         isSum,
-        isMutiple
+        isMultiply
     } = data;
 
     const updateValue = (key: keyof ConstructionSettlement, value: string | number | null) => {
@@ -333,10 +333,10 @@ const MaterialCells = ({
                 <InputCell value={category} dataKey="category" updateValue={updateValue} />
             )}
             {isSumRow && <InforCell value="CỘNG" colSpan={3} />}
-            {isMutiple && (
+            {isMultiply && (
                 <InputCell value={length} dataKey="length" updateValue={updateValue} isMerge />
             )}
-            {!isSumRow && !isMutiple && (
+            {!isSumRow && !isMultiply && (
                 <>
                     <InputCell value={length} dataKey="length" updateValue={updateValue} />
                     <InputCell value={width} dataKey="width" updateValue={updateValue} />
@@ -345,7 +345,7 @@ const MaterialCells = ({
             )}
 
             <InforCell value={squareMeters} />
-            {isSum || isMutiple ? (
+            {isSum || isMultiply ? (
                 <InputCell value={price} dataKey="price" updateValue={updateValue} />
             ) : (
                 <InforCell value={price === 0 ? undefined : price} />
