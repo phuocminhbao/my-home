@@ -1,0 +1,22 @@
+enum COLUMN {
+    ORDER = 1,
+    CATEGORY,
+    LENGTH,
+    WIDTH,
+    QUANTITY,
+    SQUAREMETERS,
+    PRICE,
+    TOTALCOST
+}
+const COLUMN_WIDTH = {
+    [COLUMN.ORDER]: 5,
+    [COLUMN.CATEGORY]: 24,
+    [COLUMN.LENGTH]: 9,
+    [COLUMN.WIDTH]: 9,
+    [COLUMN.QUANTITY]: 4,
+    [COLUMN.SQUAREMETERS]: 9,
+    [COLUMN.PRICE]: 11,
+    [COLUMN.TOTALCOST]: 16
+} as const;
+
+export { COLUMN_WIDTH, COLUMN };

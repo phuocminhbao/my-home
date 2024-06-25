@@ -10,5 +10,16 @@ const COLUMNS = [
 ];
 
 const SUM_VALUE = 'CỘNG';
+const START_MERGED_TITLE_CELL = 'A1';
+const END_MERGED_TITLE_CELL = 'H1';
+const FIRST_ROW_INDEX = 1;
+const SECOND_ROW_INDEX = 2;
 
-export { COLUMNS, SUM_VALUE };
+export {
+    COLUMNS,
+    SUM_VALUE,
+    START_MERGED_TITLE_CELL,
+    END_MERGED_TITLE_CELL,
+    FIRST_ROW_INDEX,
+    SECOND_ROW_INDEX
+};
