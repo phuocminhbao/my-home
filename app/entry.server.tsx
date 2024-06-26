@@ -11,6 +11,8 @@ import { createReadableStreamFromReadable } from '@remix-run/node';
 import { RemixServer } from '@remix-run/react';
 import isbot from 'isbot';
 import { renderToPipeableStream } from 'react-dom/server';
+import { ThemeProvider } from '@mui/material';
+import { THEME } from './config/mui.config';
 
 const ABORT_DELAY = 5_000;
 
@@ -81,7 +83,9 @@ function handleBrowserRequest(
     return new Promise((resolve, reject) => {
         let shellRendered = false;
         const { pipe, abort } = renderToPipeableStream(
-            <RemixServer context={remixContext} url={request.url} abortDelay={ABORT_DELAY} />,
+            <ThemeProvider theme={THEME}>
+                <RemixServer context={remixContext} url={request.url} abortDelay={ABORT_DELAY} />,
+            </ThemeProvider>,
             {
                 onShellReady() {
                     shellRendered = true;

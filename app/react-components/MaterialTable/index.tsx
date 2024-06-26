@@ -6,9 +6,10 @@ import {
     TableCell,
     TableContainer,
     TableHead,
-    TableRow
+    TableRow,
+    Typography
 } from '@mui/material';
-import { EXCEL_PATH, MIN_TABLE_WIDTH, colWidth, columnType } from '~/contants';
+import { EXCEL_PATH, MIN_TABLE_WIDTH, TOTAL_SUM_VALUE, colWidth, columnType } from '~/contants';
 import useMaterialData from './hook/useMaterialData';
 import { MaterialDataProvider } from './provider/MaterialDataProvider';
 import GenerateMaterialRow from './GenerateMaterialRow';
@@ -16,6 +17,8 @@ import { useEffect } from 'react';
 import MaterialRow from './MaterialRow';
 import { InforCell } from './MaterialCells';
 import useSubmitData from '~/hook/useSubmitData';
+import _ from 'lodash';
+import { ConstructionSettlementTable } from '~/types';
 
 export const TableHeader = ({ hidden }: { hidden?: boolean }) => {
     return (
@@ -42,17 +45,19 @@ export const TableHeader = ({ hidden }: { hidden?: boolean }) => {
 };
 
 const SubmitConstructDataCell = () => {
-    const { data } = useMaterialData();
+    const { data, getFinalCost } = useMaterialData();
     const { submitData } = useSubmitData();
+    const handleSubmit = () => {
+        const clonedData = _.cloneDeep(data);
+        clonedData.push({
+            length: TOTAL_SUM_VALUE,
+            totalCost: getFinalCost()
+        } as ConstructionSettlementTable);
+        submitData(JSON.stringify(clonedData), EXCEL_PATH);
+    };
     return (
         <TableCell>
-            <Button
-                onClick={() => {
-                    submitData(JSON.stringify(data), EXCEL_PATH);
-                }}
-            >
-                Do Excel
-            </Button>
+            <Button onClick={handleSubmit}>Do Excel</Button>
         </TableCell>
     );
 };
@@ -62,7 +67,7 @@ const FinalCostRow = () => {
 
     return (
         <TableRow>
-            <InforCell colSpan={7} value="TỔNG CỘNG" />
+            <InforCell colSpan={7} value={TOTAL_SUM_VALUE} />
             <InforCell value={getFinalCost()} />
             <SubmitConstructDataCell />
         </TableRow>
@@ -99,7 +104,7 @@ const MaterialTable = () => {
                 overflow: 'hidden'
             }}
         >
-            <h1>Quyết toán công trình </h1>
+            <Typography variant="h3">Quyết toán công trình </Typography>
             <MaterialDataProvider>
                 <TableContainer>
                     <Table size="medium">

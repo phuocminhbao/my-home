@@ -4,15 +4,19 @@
  * For more information, see https://remix.run/file-conventions/entry.client
  */
 
+import { ThemeProvider } from '@mui/material';
 import { RemixBrowser } from '@remix-run/react';
 import { startTransition, StrictMode } from 'react';
 import { hydrateRoot } from 'react-dom/client';
+import { THEME } from './config/mui.config';
 
 startTransition(() => {
     hydrateRoot(
         document,
         <StrictMode>
-            <RemixBrowser />
+            <ThemeProvider theme={THEME}>
+                <RemixBrowser />
+            </ThemeProvider>
         </StrictMode>
     );
 });

@@ -6,7 +6,8 @@ import {
     FIRST_ROW_INDEX,
     SECOND_ROW_INDEX,
     START_MERGED_TITLE_CELL,
-    SUM_VALUE
+    SUM_VALUE,
+    TOTAL_SUM_VALUE
 } from '~/contants';
 import type { COLUMN } from './config';
 import { COLUMN_WIDTH } from './config';
@@ -45,14 +46,15 @@ const formatCellWithBorder = (row: number, cell: Cell, worksheet: Worksheet) => 
 const mergeCells = (cell: Cell, worksheet: Worksheet): boolean => {
     const isSumCell = cell.value === SUM_VALUE;
     const isMultiplyCell = cell.value?.toString().includes('+');
-    if (!isSumCell && !isMultiplyCell) {
+    const isTotalSumCell = cell.value === TOTAL_SUM_VALUE;
+    if (!isSumCell && !isMultiplyCell && !isTotalSumCell) {
         return false;
     }
     const { row, col } = cell;
     const startRow = +row;
     const startCol = +col;
     const endRow = startRow;
-    const endCol = startCol + 2;
+    const endCol = startCol + 2 + (isTotalSumCell ? 1 : 0);
     worksheet.mergeCells(startRow, startCol, endRow, endCol);
     cell.alignment = { horizontal: 'center' };
     return true;

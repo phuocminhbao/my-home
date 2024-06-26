@@ -510,6 +510,10 @@ export const mockData1 = [
                 totalCost: 50000,
                 isSum: false,
                 isMultiply: true
+            },
+            {
+                length: 'TỔNG CỘNG',
+                totalCost: 8000000
             }
         ]
     }

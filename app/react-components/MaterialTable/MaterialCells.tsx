@@ -100,7 +100,7 @@ const InputCell = ({
     };
 
     return (
-        <TableCell colSpan={isMerge ? 3 : 1} sx={{ fontSize: 20 }}>
+        <TableCell colSpan={isMerge ? 3 : 1} sx={{ fontSize: 20 }} variant="body">
             <TextField
                 onClick={(e) => {
                     e.stopPropagation();
@@ -139,6 +139,7 @@ const InforCell = ({
             align={typeof value === 'object' ? 'left' : 'center'}
             colSpan={colSpan ? colSpan : 1}
             sx={{ ...tableFontSize.style }}
+            variant="body"
         >
             <div onClick={(e) => e.stopPropagation()}>{value}</div>
         </TableCell>
