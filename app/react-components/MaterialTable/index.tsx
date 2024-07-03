@@ -53,7 +53,7 @@ const SubmitConstructDataCell = () => {
             length: TOTAL_SUM_VALUE,
             totalCost: getFinalCost()
         } as ConstructionSettlementTable);
-        submitData(JSON.stringify(clonedData), EXCEL_PATH);
+        submitData(JSON.stringify(clonedData), EXCEL_PATH, FETCHER_KEY.EXCEL);
     };
     return (
         <TableCell>
@@ -104,7 +104,9 @@ const MaterialTable = () => {
                 overflow: 'hidden'
             }}
         >
-            <Typography variant="h3">Quyết toán công trình </Typography>
+            <Typography variant="h3" align="center">
+                Quyết toán công trình{' '}
+            </Typography>
             <MaterialDataProvider>
                 <TableContainer>
                     <Table size="medium">

@@ -6,6 +6,7 @@ import { doExcel } from '~/exceljs';
 import { BadRequestResponse } from '~/helper/response/error';
 import { mockData1 } from '~/exceljs/mockData';
 import Logger from '~/helper/logger';
+import { useFetcher } from '@remix-run/react';
 
 export const action = async ({ request }: ActionFunctionArgs) => {
     const formData = await request.formData();
@@ -31,6 +32,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 const Excel = () => {
+    const fetcherData = useFetcher({ key: FETCHER_KEY.EXCEL });
+    if (fetcherData.state === 'loading' || fetcherData.state === 'submitting') {
+        return <>Loading ...</>;
+    }
     return <MaterialTable />;
 };
 

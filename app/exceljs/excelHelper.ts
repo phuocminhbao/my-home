@@ -9,38 +9,78 @@ import {
     SUM_VALUE,
     TOTAL_SUM_VALUE
 } from '~/contants';
-import type { COLUMN } from './config';
+import { COLUMN } from './config';
 import { COLUMN_WIDTH } from './config';
 import { roundNumber } from '~/utils';
 import _ from 'lodash';
 
 const formatRows = (worksheet: Worksheet) => {
     adjustColWidth(worksheet);
-    worksheet.eachRow((row, rowNumber) => {
+    worksheet.eachRow((row) => {
         if ([FIRST_ROW_INDEX, SECOND_ROW_INDEX].includes(row.number)) {
             return;
         }
         row.font = { name: 'Times New Roman', size: 12 };
         let merged = false;
-        row.eachCell((cell) => {
-            formatCellWithBorder(rowNumber, cell, worksheet);
+        row.eachCell({ includeEmpty: true }, (cell) => {
+            formatCellWithBorder(cell, worksheet);
+            formatNumber(cell);
             if (merged) return;
             merged = mergeCells(cell, worksheet);
         });
     });
 };
 
-const formatCellWithBorder = (row: number, cell: Cell, worksheet: Worksheet) => {
+const formatNumber = (cell: Cell) => {
+    const isPriceOrTotalCostCell = [COLUMN.PRICE, COLUMN.TOTALCOST].includes(+cell.col);
+    if (isPriceOrTotalCostCell) {
+        cell.numFmt = '#,##0';
+    }
+};
+
+const formatCellWithBorder = (cell: Cell, worksheet: Worksheet) => {
     const FIRST_ROW = 3;
     const LAST_ROW = worksheet.rowCount;
-    if (row === FIRST_ROW || row === LAST_ROW) {
-        const isFirstRow = row === FIRST_ROW;
-        cell.border = {
-            [isFirstRow ? 'top' : 'bottom']: {
-                style: 'medium'
-            } as Border
-        };
-    }
+    const FIRST_COL = 1;
+    const LAST_COL = worksheet.columnCount;
+    const { row, col } = cell;
+
+    cell.border = {
+        top: {
+            style: +row === FIRST_ROW ? 'medium' : 'thin'
+        },
+        bottom: {
+            style: +row === LAST_ROW ? 'medium' : 'thin'
+        },
+        left: {
+            style: +col === FIRST_COL ? 'medium' : 'thin'
+        },
+        right: {
+            style: +col === LAST_COL ? 'medium' : 'thin'
+        }
+    };
+
+    // if ([FIRST_COL, LAST_COL].includes(+col)) {
+    //     cell.border =
+    // }
+
+    // if ([FIRST_ROW, LAST_ROW].includes(+row)) {
+    //     const isFirstRow = +row === FIRST_ROW;
+    //     cell.border = {
+    //         [isFirstRow ? 'top' : 'bottom']: {
+    //             style: 'medium'
+    //         } as Border
+    //     };
+    // } else {
+    //     cell.border = {
+    //         top: {
+    //             style: 'thin'
+    //         },
+    //         bottom: {
+    //             style: 'thin'
+    //         }
+    //     };
+    // }
 };
 
 const mergeCells = (cell: Cell, worksheet: Worksheet): boolean => {

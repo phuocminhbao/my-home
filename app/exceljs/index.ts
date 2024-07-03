@@ -4,6 +4,7 @@ import path from 'path';
 import type { ConstructionSettlementTable } from '~/types';
 import { addTitle, formatRows, formatTitleRow, processConstructionSettlement } from './excelHelper';
 import { COLUMNS } from '~/contants';
+import { exec } from 'child_process';
 
 const WORK_SHEET = 'Construction Settlement';
 const TABLE_HEADER_ROW_INDEX = 3;
@@ -50,6 +51,14 @@ export async function doExcel(constructionSettlement: ConstructionSettlementTabl
     processTitle(worksheet);
     processTable(worksheet, constructionSettlement);
 
-    const exportPath = path.resolve('./', 'Bang quyet toan cong trinh.xlsx');
+    const exportPath = path.resolve('./', 'bang_quyet_toan_cong_trinh.xlsx');
     await workbook.xlsx.writeFile(exportPath);
+    if (process.env.NODE_ENV === 'development') {
+        exec('.\\bang_quyet_toan_cong_trinh.xlsx', (error) => {
+            if (error) {
+                console.log(`error: ${error.message}`);
+                return;
+            }
+        });
+    }
 }
