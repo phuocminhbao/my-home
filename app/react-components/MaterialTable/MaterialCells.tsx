@@ -21,7 +21,7 @@ import {
 import _ from 'lodash';
 import type { ReactNode, MouseEventHandler } from 'react';
 import { useState } from 'react';
-import { VALID_INPUT_RESULT, tableFontSize } from '~/contants';
+import { VALID_INPUT_RESULT, tableFontSize } from '~/constants';
 import type { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
 import { roundNumber, validateInput } from '~/utils';
 import { getUnit, proccessValueType } from '~/utils/common';

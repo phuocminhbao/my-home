@@ -1,4 +1,4 @@
-import { initDetailsRowData } from '~/contants';
+import { initDetailsRowData } from '~/constants';
 import { idHandler, toRoman } from '.';
 import type { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
 import _ from 'lodash';

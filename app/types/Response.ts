@@ -1,4 +1,4 @@
-import type { REASON_PHRASE, STATUS_CODE } from '~/contants';
+import type { REASON_PHRASE, STATUS_CODE } from '~/constants';
 
 type StatusCode = (typeof STATUS_CODE)[keyof typeof STATUS_CODE];
 

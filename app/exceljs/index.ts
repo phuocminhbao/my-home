@@ -3,7 +3,7 @@ import Excel from 'exceljs';
 import path from 'path';
 import type { ConstructionSettlementTable } from '~/types';
 import { addTitle, formatRows, formatTitleRow, processConstructionSettlement } from './excelHelper';
-import { COLUMNS } from '~/contants';
+import { COLUMNS } from '~/constants';
 import { exec } from 'child_process';
 
 const WORK_SHEET = 'Construction Settlement';
@@ -50,7 +50,6 @@ export async function doExcel(constructionSettlement: ConstructionSettlementTabl
     setupWorksheet(worksheet);
     processTitle(worksheet);
     processTable(worksheet, constructionSettlement);
-
     const exportPath = path.resolve('./', 'bang_quyet_toan_cong_trinh.xlsx');
     await workbook.xlsx.writeFile(exportPath);
     if (process.env.NODE_ENV === 'development') {

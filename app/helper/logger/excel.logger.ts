@@ -1,0 +1,20 @@
+import { EXCEL_PATH } from '~/constants';
+import Logger from '.';
+
+class ExcelLogger {
+    private logger = Logger.Instance.getLogger();
+    private actionContext = 'Proccess Excel';
+    private logInfo = {
+        context: this.actionContext,
+        requestId: EXCEL_PATH
+    };
+
+    public info(message: string) {
+        this.logger.info(message, this.logInfo);
+    }
+    public getActionContext() {
+        return this.actionContext;
+    }
+}
+
+export default ExcelLogger;

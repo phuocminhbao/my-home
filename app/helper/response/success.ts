@@ -1,4 +1,4 @@
-import { REASON_PHRASE, STATUS_CODE } from '~/contants';
+import { REASON_PHRASE, STATUS_CODE } from '~/constants';
 import type { ReasonPhrase, StatusCode } from '~/types';
 
 class SuccessResponse extends Response {

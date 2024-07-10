@@ -8,7 +8,7 @@ import {
     START_MERGED_TITLE_CELL,
     SUM_VALUE,
     TOTAL_SUM_VALUE
-} from '~/contants';
+} from '~/constants';
 import { COLUMN } from './config';
 import { COLUMN_WIDTH } from './config';
 import { roundNumber } from '~/utils';

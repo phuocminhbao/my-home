@@ -1,6 +1,6 @@
 import type { MetaFunction } from '@remix-run/node';
 import { Link } from '@remix-run/react';
-import { EXCEL_PATH } from '~/contants';
+import { EXCEL_PATH } from '~/constants';
 
 export const meta: MetaFunction = () => {
     return [{ title: 'My Home' }, { name: 'description', content: 'Hallo' }];

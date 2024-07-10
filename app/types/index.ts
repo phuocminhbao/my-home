@@ -1,11 +1,3 @@
-import type { ConstructionSettlement, ConstructionSettlementTable } from './ConstructionSettlement';
-import type { StatusCode, ReasonPhrase } from './Response';
-import type { ValidateResult } from './Validate';
-
-export type {
-    ConstructionSettlement,
-    ConstructionSettlementTable,
-    ValidateResult,
-    StatusCode,
-    ReasonPhrase
-};
+export type * from './ConstructionSettlement';
+export type * from './Response';
+export type * from './Validate';
