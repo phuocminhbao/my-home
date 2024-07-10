@@ -14,7 +14,6 @@ import ExcelLogger from '~/helper/logger/excel.logger';
 export const action = async ({ request }: ActionFunctionArgs) => {
     const formData = await request.formData();
     const LOGGER = new ExcelLogger();
-    const url = new URL(request.url);
     LOGGER.info('Starting');
     try {
         // const data = JSON.parse(formData.get('data') as string) as ConstructionSettlementTable[];
@@ -30,8 +29,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 const Excel = () => {
-    const fetcherData = useFetcher({ key: FETCHER_KEY.EXCEL });
-    if (fetcherData.state === 'loading' || fetcherData.state === 'submitting') {
+    const { state } = useFetcher({ key: FETCHER_KEY.EXCEL });
+    if (['loading', 'submitting'].includes(state)) {
         return <>Loading ...</>;
     }
     return <MaterialTable />;
