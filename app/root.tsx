@@ -1,7 +1,6 @@
 import type { LinksFunction, MetaFunction } from '@remix-run/node';
 import {
     Links,
-    LiveReload,
     Meta,
     Outlet,
     Scripts,
@@ -10,10 +9,10 @@ import {
     useRouteError
 } from '@remix-run/react';
 
-import roboto300 from '@fontsource/roboto/300.css';
-import roboto400 from '@fontsource/roboto/400.css';
-import roboto500 from '@fontsource/roboto/500.css';
-import roboto700 from '@fontsource/roboto/700.css';
+import roboto300 from '@fontsource/roboto/300.css?url';
+import roboto400 from '@fontsource/roboto/400.css?url';
+import roboto500 from '@fontsource/roboto/500.css?url';
+import roboto700 from '@fontsource/roboto/700.css?url';
 
 export const links: LinksFunction = () => [
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -38,13 +37,15 @@ export const ErrorBoundary = () => {
         switch (error.status) {
             case 401:
                 message = (
-                    <p>
+                    <div>
                         Oops! Looks like you tried to visit a page that you do not have access to.
-                    </p>
+                    </div>
                 );
                 break;
             case 404:
-                message = <p>Oops! Looks like you tried to visit a page that does not exist.</p>;
+                message = (
+                    <div>Oops! Looks like you tried to visit a page that does not exist.</div>
+                );
                 break;
 
             default:
@@ -66,7 +67,7 @@ export const ErrorBoundary = () => {
         return (
             <div>
                 <h1>There was an error</h1>
-                <p>{error.message}</p>
+                <>{error.message}</>
                 <hr />
                 <p>Hey, developer, you should replace this with what you want your users to see.</p>
             </div>
@@ -87,7 +88,6 @@ export default function App() {
                 <Outlet />
                 <ScrollRestoration />
                 <Scripts />
-                <LiveReload />
             </body>
         </html>
     );

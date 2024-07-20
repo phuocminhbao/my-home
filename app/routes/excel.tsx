@@ -5,7 +5,6 @@ import { OKResponse } from '~/helper/response/success';
 import { doExcel } from '~/exceljs';
 import { BadRequestResponse } from '~/helper/response/error';
 import { mockData1 } from '~/exceljs/mockData';
-import Logger from '~/helper/logger';
 import { useFetcher } from '@remix-run/react';
 import { FETCHER_KEY } from '~/constants';
 import { ConstructionSettlementTable } from '~/types';

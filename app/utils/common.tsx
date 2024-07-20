@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import type { ConstructionSettlement } from '~/types';
 
-export function getUnit(type: string) {
+export const getUnit = (type: string) => {
     switch (type) {
         case 'length':
         case 'width':
@@ -19,16 +19,7 @@ export function getUnit(type: string) {
         default:
             return '';
     }
-}
-
-export function idHandler() {
-    let key = 0;
-    return {
-        getUniqueID: () => {
-            return key++;
-        }
-    };
-}
+};
 
 export const proccessValueType = (
     dataKey: keyof ConstructionSettlement,

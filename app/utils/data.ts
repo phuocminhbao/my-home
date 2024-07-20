@@ -1,7 +1,16 @@
 import { initDetailsRowData } from '~/constants';
-import { idHandler, toRoman } from '.';
 import type { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
 import _ from 'lodash';
+import { toRoman } from '.';
+
+const idHandler = () => {
+    let key = 0;
+    return {
+        getUniqueID: () => {
+            return key++;
+        }
+    };
+};
 
 const calculatingMeters = (data: ConstructionSettlementTable | ConstructionSettlement) => {
     const { length, width, quantity } = data;
