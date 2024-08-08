@@ -6,13 +6,19 @@
 
 import { PassThrough } from 'node:stream';
 
-import type { AppLoadContext, EntryContext } from '@remix-run/node';
+import type {
+    ActionFunctionArgs,
+    AppLoadContext,
+    EntryContext,
+    LoaderFunctionArgs
+} from '@remix-run/node';
 import { createReadableStreamFromReadable } from '@remix-run/node';
 import { RemixServer } from '@remix-run/react';
 import isbot from 'isbot';
 import { renderToPipeableStream } from 'react-dom/server';
 import { ThemeProvider } from '@mui/material';
 import { THEME } from './config/mui.config';
+import { InternalServerError } from './helper/response/error';
 
 const ABORT_DELAY = 5_000;
 
@@ -120,4 +126,15 @@ function handleBrowserRequest(
 
         setTimeout(abort, ABORT_DELAY);
     });
+}
+
+export async function handleDataRequest(
+    response: Response,
+    { request, params, context }: LoaderFunctionArgs | ActionFunctionArgs
+) {
+    if (!response.ok && response.status === 500) {
+        const body = await response.json();
+        return new InternalServerError(body.message);
+    }
+    return response;
 }

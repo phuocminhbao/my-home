@@ -1,47 +1,36 @@
 import { REASON_PHRASE, STATUS_CODE } from '~/constants';
 import type { ReasonPhrase, StatusCode } from '~/types';
-import Logger from '../logger';
 import 'source-map-support/register';
 
 class ErrorResponse extends Response {
-    constructor(
-        error: Error,
-        reason: ReasonPhrase,
-        statusCode: StatusCode,
-        request: Request,
-        context: string
-    ) {
+    constructor(error: string, reason: ReasonPhrase, statusCode: StatusCode) {
         const jsonErrorBody = JSON.stringify({
             reason,
             code: statusCode,
-            error: error.message
+            error
         });
         super(jsonErrorBody, { status: statusCode });
-        const LOGGER = Logger.Instance.getLogger();
-        const url = new URL(request.url);
-        LOGGER.error(error.message, {
-            context,
-            requestId: url.pathname + url.search
-        });
-        LOGGER.error(error.stack ?? '', {
-            context,
-            requestId: url.pathname + url.search
-        });
     }
 }
 
 class BadRequestResponse extends ErrorResponse {
-    constructor(error: Error, request: Request, context: string) {
-        super(error, REASON_PHRASE.BAD_REQUEST, STATUS_CODE.BAD_REQUEST, request, context);
+    constructor(error: string) {
+        super(error, REASON_PHRASE.BAD_REQUEST, STATUS_CODE.BAD_REQUEST);
     }
 }
 
 class ForbiddenResponse extends ErrorResponse {
-    constructor(error: Error, request: Request, context: string) {
-        super(error, REASON_PHRASE.FORBIDDEN, STATUS_CODE.FORBIDDEN, request, context);
+    constructor(error: string) {
+        super(error, REASON_PHRASE.FORBIDDEN, STATUS_CODE.FORBIDDEN);
+    }
+}
+
+class InternalServerError extends ErrorResponse {
+    constructor(error: string) {
+        super(error, REASON_PHRASE.INTERNAL_SERVER_ERROR, STATUS_CODE.INTERNAL_SERVER_ERROR);
     }
 }
 
 export default ErrorResponse;
 
-export { BadRequestResponse, ForbiddenResponse };
+export { BadRequestResponse, ForbiddenResponse, InternalServerError };

@@ -30,7 +30,7 @@ export const meta: MetaFunction = () => {
     ];
 };
 
-export const ErrorBoundary = () => {
+const ErrorContent = () => {
     const error = useRouteError();
     if (isRouteErrorResponse(error)) {
         let message;
@@ -76,6 +76,24 @@ export const ErrorBoundary = () => {
 
     return <h1>Unknown Error</h1>;
 };
+
+export function ErrorBoundary() {
+    // const error = useRouteError();
+    return (
+        <html lang="en">
+            <head>
+                <title>Something went wrong haha</title>
+                <Meta />
+                <Links />
+            </head>
+            <body>
+                {/* add the UI you want your users to see */}
+                <ErrorContent />
+                <Scripts />
+            </body>
+        </html>
+    );
+}
 
 export default function App() {
     return (

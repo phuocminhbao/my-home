@@ -108,7 +108,7 @@ const convertToProcessRow = (
 ): ProccessRow => {
     const { order, category, length, width, quantity, squareMeters, price, totalCost, isSum } = row;
     const processedLength = () => {
-        if (isSum && price !== 0) {
+        if (isSum && price !== 0 && length == 0) {
             return SUM_VALUE;
         }
         if (_.isString(length)) {
@@ -133,6 +133,9 @@ const processConstructionSettlement = (
 ): ProccessRow[] => {
     return constructionSettlement.flatMap((row) => {
         const processedRow = convertToProcessRow(row);
+        if (row.length === TOTAL_SUM_VALUE) {
+            return processedRow;
+        }
         const processedSubRows = row.details.map((subRow) => convertToProcessRow(subRow));
         return [processedRow, ...processedSubRows];
     });

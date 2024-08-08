@@ -1,7 +1,7 @@
 import { initDetailsRowData } from '~/constants';
 import type { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
 import _ from 'lodash';
-import { toRoman } from '.';
+import { roundNumber, toRoman } from '.';
 
 const idHandler = () => {
     let key = 0;
@@ -89,7 +89,7 @@ export const updateSelectSubRow = (accData: ConstructionSettlementTable, startLo
 const calculateRowTotalCost = (row: ConstructionSettlementTable | ConstructionSettlement) => {
     const { squareMeters, price } = row;
     if (!_.isNil(price) && price >= 0) {
-        row.totalCost = squareMeters! * price;
+        row.totalCost = roundNumber(squareMeters! * price);
     }
 };
 
@@ -106,8 +106,8 @@ const calculateSubSumRowTotalCost = (
             return sum + (currentRow.squareMeters ?? 0);
         }, 0) + mainRowMeters;
     const totalCost = totalMeters * (subRow.price ?? 0);
-    subRow.squareMeters = totalMeters;
-    subRow.totalCost = totalCost;
+    subRow.squareMeters = roundNumber(totalMeters);
+    subRow.totalCost = roundNumber(totalCost);
 };
 
 const updateTableData = (tableData: ConstructionSettlementTable[]) => {
