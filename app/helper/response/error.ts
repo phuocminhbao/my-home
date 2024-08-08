@@ -1,6 +1,7 @@
 import { REASON_PHRASE, STATUS_CODE } from '~/constants';
 import type { ReasonPhrase, StatusCode } from '~/types';
 import Logger from '../logger';
+import 'source-map-support/register';
 
 class ErrorResponse extends Response {
     constructor(

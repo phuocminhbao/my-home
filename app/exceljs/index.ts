@@ -9,8 +9,8 @@ import { exec } from 'child_process';
 const WORK_SHEET = 'Construction Settlement';
 const TABLE_HEADER_ROW_INDEX = 3;
 
-const processTitle = (worksheet: Worksheet) => {
-    addTitle('Bang quyet toan cong trinh', worksheet);
+const processTitle = (worksheet: Worksheet, constructionName: string) => {
+    addTitle(`BẢNG QUYẾT TOÁN CÔNG TRÌNH ${constructionName.toUpperCase()}`, worksheet);
     formatTitleRow(worksheet);
 };
 
@@ -40,7 +40,10 @@ const addTableBody = (
 
 const setupWorksheet = (worksheet: Worksheet) => {};
 
-export async function doExcel(constructionSettlement: ConstructionSettlementTable[]) {
+export async function doExcel(
+    constructionSettlement: ConstructionSettlementTable[],
+    constructionName: string
+) {
     if (!constructionSettlement) {
         throw new Error('No data is provided');
     }
@@ -48,7 +51,7 @@ export async function doExcel(constructionSettlement: ConstructionSettlementTabl
     const workbook = new Excel.Workbook();
     const worksheet = workbook.addWorksheet(WORK_SHEET);
     setupWorksheet(worksheet);
-    processTitle(worksheet);
+    processTitle(worksheet, constructionName);
     processTable(worksheet, constructionSettlement);
     const exportPath = path.resolve('./', 'bang_quyet_toan_cong_trinh.xlsx');
     await workbook.xlsx.writeFile(exportPath);

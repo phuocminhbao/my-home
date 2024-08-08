@@ -7,25 +7,18 @@ import {
     TableContainer,
     TableHead,
     TableRow,
+    TextField,
     Typography
 } from '@mui/material';
-import {
-    EXCEL_PATH,
-    MIN_TABLE_WIDTH,
-    TOTAL_SUM_VALUE,
-    colWidth,
-    columnType,
-    FETCHER_KEY
-} from '~/constants';
+import { MIN_TABLE_WIDTH, TOTAL_SUM_VALUE, colWidth, columnType } from '~/constants';
 import useMaterialData from './hook/useMaterialData';
 import { MaterialDataProvider } from './provider/MaterialDataProvider';
 import GenerateMaterialRow from './GenerateMaterialRow';
 import { useEffect } from 'react';
 import MaterialRow from './MaterialRow';
 import { InforCell } from './MaterialCells';
-import useSubmitData from '~/hook/useSubmitData';
 import _ from 'lodash';
-import { ConstructionSettlementTable } from '~/types';
+import type { ConstructionSettlementTable } from '~/types';
 
 export const TableHeader = ({ hidden }: { hidden?: boolean }) => {
     return (
@@ -53,18 +46,18 @@ export const TableHeader = ({ hidden }: { hidden?: boolean }) => {
 
 const SubmitConstructDataCell = () => {
     const { data, getFinalCost } = useMaterialData();
-    const { submitData } = useSubmitData();
-    const handleSubmit = () => {
+    const submitData = (): string => {
         const clonedData = _.cloneDeep(data);
         clonedData.push({
             length: TOTAL_SUM_VALUE,
             totalCost: getFinalCost()
         } as ConstructionSettlementTable);
-        submitData(JSON.stringify(clonedData), EXCEL_PATH, FETCHER_KEY.EXCEL);
+        return JSON.stringify(clonedData);
     };
     return (
         <TableCell>
-            <Button onClick={handleSubmit}>Do Excel</Button>
+            <input name="data" defaultValue={submitData()} hidden></input>
+            <Button type="submit">Do Excel</Button>
         </TableCell>
     );
 };
@@ -112,7 +105,8 @@ const MaterialTable = () => {
             }}
         >
             <Typography variant="h3" align="center">
-                Quyết toán công trình{' '}
+                {/* Quyết toán công trình{' '} */}
+                <TextField variant="standard" name="constructionName" size="medium" />
             </Typography>
             <MaterialDataProvider>
                 <TableContainer>

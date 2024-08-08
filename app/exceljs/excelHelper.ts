@@ -1,4 +1,4 @@
-import type { Border, Cell, Worksheet } from 'exceljs';
+import type { Cell, Worksheet } from 'exceljs';
 import type { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
 import type { ProccessRow } from './types';
 import {
@@ -9,8 +9,7 @@ import {
     SUM_VALUE,
     TOTAL_SUM_VALUE
 } from '~/constants';
-import { COLUMN } from './config';
-import { COLUMN_WIDTH } from './config';
+import { COLUMN, COLUMN_WIDTH } from './config';
 import { roundNumber } from '~/utils';
 import _ from 'lodash';
 
