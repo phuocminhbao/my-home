@@ -31,12 +31,14 @@ const InputCell = ({
     value,
     dataKey,
     updateValue,
-    isMerge
+    isMerge,
+    isHighLight
 }: {
     value: string | number | null;
     dataKey: keyof ConstructionSettlement;
     updateValue: (key: keyof ConstructionSettlement, value: string | number | null) => void;
     isMerge?: boolean;
+    isHighLight?: boolean;
 }) => {
     const [isInputValid, setIsInputValid] = useState(VALID_INPUT_RESULT);
     if (value === null) return <TableCell />;
@@ -100,8 +102,13 @@ const InputCell = ({
     };
 
     return (
-        <TableCell colSpan={isMerge ? 3 : 1} sx={{ fontSize: 20 }} variant="body">
+        <TableCell
+            colSpan={isMerge ? 3 : 1}
+            sx={{ fontSize: 20, backgroundColor: isHighLight ? 'whitesmoke' : 'white' }}
+            variant="body"
+        >
             <TextField
+                id="category"
                 onClick={(e) => {
                     e.stopPropagation();
                 }}
@@ -129,16 +136,18 @@ const InputCell = ({
 
 const InforCell = ({
     value,
-    colSpan
+    colSpan,
+    isHighLight
 }: {
     value: string | number | ReactNode | null;
     colSpan?: number;
+    isHighLight?: boolean;
 }) => {
     return (
         <TableCell
             align={typeof value === 'object' ? 'left' : 'center'}
             colSpan={colSpan ? colSpan : 1}
-            sx={{ ...tableFontSize.style }}
+            sx={{ ...tableFontSize.style, backgroundColor: isHighLight ? 'whitesmoke' : 'white' }}
             variant="body"
         >
             <div onClick={(e) => e.stopPropagation()}>{value}</div>
@@ -315,7 +324,8 @@ const MaterialCells = ({
         price,
         totalCost,
         isSum,
-        isMultiply
+        isMultiply,
+        isSelected
     } = data;
 
     const updateValue = (key: keyof ConstructionSettlement, value: string | number | null) => {
@@ -326,32 +336,63 @@ const MaterialCells = ({
 
     return (
         <>
-            <InforCell value={order} />
+            <InforCell isHighLight={isSelected} value={order} />
 
             {isSumRow ? (
-                <InforCell value={category} />
+                <InforCell isHighLight={isSelected} value={category} />
             ) : (
-                <InputCell value={category} dataKey="category" updateValue={updateValue} />
+                <InputCell
+                    isHighLight={isSelected}
+                    value={category}
+                    dataKey="category"
+                    updateValue={updateValue}
+                />
             )}
-            {isSumRow && <InforCell value="CỘNG" colSpan={3} />}
+            {isSumRow && <InforCell isHighLight={isSelected} value="CỘNG" colSpan={3} />}
             {isMultiply && (
-                <InputCell value={length} dataKey="length" updateValue={updateValue} isMerge />
+                <InputCell
+                    isHighLight={isSelected}
+                    value={length}
+                    dataKey="length"
+                    updateValue={updateValue}
+                    isMerge
+                />
             )}
             {!isSumRow && !isMultiply && (
                 <>
-                    <InputCell value={length} dataKey="length" updateValue={updateValue} />
-                    <InputCell value={width} dataKey="width" updateValue={updateValue} />
-                    <InputCell value={quantity} dataKey="quantity" updateValue={updateValue} />
+                    <InputCell
+                        isHighLight={isSelected}
+                        value={length}
+                        dataKey="length"
+                        updateValue={updateValue}
+                    />
+                    <InputCell
+                        isHighLight={isSelected}
+                        value={width}
+                        dataKey="width"
+                        updateValue={updateValue}
+                    />
+                    <InputCell
+                        isHighLight={isSelected}
+                        value={quantity}
+                        dataKey="quantity"
+                        updateValue={updateValue}
+                    />
                 </>
             )}
 
-            <InforCell value={squareMeters} />
+            <InforCell isHighLight={isSelected} value={squareMeters} />
             {isSum || isMultiply ? (
-                <InputCell value={price} dataKey="price" updateValue={updateValue} />
+                <InputCell
+                    isHighLight={isSelected}
+                    value={price}
+                    dataKey="price"
+                    updateValue={updateValue}
+                />
             ) : (
-                <InforCell value={price === 0 ? undefined : price} />
+                <InforCell isHighLight={isSelected} value={price === 0 ? undefined : price} />
             )}
-            <InforCell value={totalCost} />
+            <InforCell isHighLight={isSelected} value={totalCost} />
             {isAccordion ? (
                 <AccordionCell
                     open={isAccordionOpen!}
@@ -359,7 +400,10 @@ const MaterialCells = ({
                     isDetailsEmpty={!!isDetailsEmpty}
                 />
             ) : (
-                <InforCell value={<EventMenuCell rowId={id} isAccordion={false} />} />
+                <InforCell
+                    isHighLight={isSelected}
+                    value={<EventMenuCell rowId={id} isAccordion={false} />}
+                />
             )}
         </>
     );

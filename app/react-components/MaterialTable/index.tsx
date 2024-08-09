@@ -14,7 +14,7 @@ import { MIN_TABLE_WIDTH, TOTAL_SUM_VALUE, colWidth, columnType } from '~/consta
 import useMaterialData from './hook/useMaterialData';
 import { MaterialDataProvider } from './provider/MaterialDataProvider';
 import GenerateMaterialRow from './GenerateMaterialRow';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import MaterialRow from './MaterialRow';
 import { InforCell } from './MaterialCells';
 import _ from 'lodash';
@@ -31,12 +31,12 @@ export const TableHeader = ({ hidden }: { hidden?: boolean }) => {
                         padding="none"
                         width={colWidth[col.key]}
                         variant="head"
-                        sx={{ minWidth: MIN_TABLE_WIDTH }}
+                        sx={{ minWidth: MIN_TABLE_WIDTH, backgroundColor: 'lightgray' }}
                     >
                         <h2>{col.header}</h2>
                     </TableCell>
                 ))}
-                <TableCell>
+                <TableCell sx={{ backgroundColor: 'lightgray' }}>
                     <></>
                 </TableCell>
             </TableRow>
@@ -57,7 +57,7 @@ const SubmitConstructDataCell = () => {
     return (
         <TableCell>
             <input name="data" defaultValue={submitData()} hidden></input>
-            <Button type="submit">Do Excel</Button>
+            <Button type="submit">Xuất Excel</Button>
         </TableCell>
     );
 };
@@ -97,16 +97,34 @@ const TableBodyContent = () => {
 };
 
 const MaterialTable = () => {
+    const constructionNameRef = useRef<HTMLDivElement>(null);
     return (
         <Paper
             style={{
                 width: '100%',
                 overflow: 'hidden'
+                // backgroundColor: 'f2f2f2'
             }}
+            // variant="outlined"
         >
-            <Typography variant="h3" align="center">
-                {/* Quyết toán công trình{' '} */}
-                <TextField variant="standard" name="constructionName" size="medium" />
+            <Typography
+                variant="h3"
+                align="center"
+                onClick={() => {
+                    if (!constructionNameRef) return;
+                    constructionNameRef.current?.focus();
+                }}
+            >
+                BẢNG QUYẾT TOÁN CÔNG TRÌNH
+                <TextField
+                    fullWidth
+                    id="construction-name"
+                    inputRef={constructionNameRef}
+                    variant="standard"
+                    name="constructionName"
+                    size="medium"
+                    inputProps={{ style: { textAlign: 'center', fontSize: '3em' } }}
+                />
             </Typography>
             <MaterialDataProvider>
                 <TableContainer>

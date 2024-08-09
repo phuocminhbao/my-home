@@ -24,13 +24,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 const Excel = () => {
-    const { state } = useFetcher({ key: FETCHER_KEY.EXCEL });
-    if (['loading', 'submitting'].includes(state)) {
-        return <>Loading ...</>;
-    }
     return (
         <Form method="POST" navigate={false}>
-            <MaterialTable />;
+            <MaterialTable />
         </Form>
     );
 };

@@ -9,6 +9,7 @@ import {
 } from '~/utils';
 import _ from 'lodash';
 import type { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
+import { EXCEL_DATA, EXCEL_DATA_SAVE_TIME } from '~/constants';
 
 const useMaterialData = () => {
     const { data, updateData } = useContext(MaterialDataContext);
@@ -20,12 +21,19 @@ const useMaterialData = () => {
         updateData(dataSnapshot);
     };
 
+    const saveToLocalStorage = _.debounce(() => {
+        console.log('debound run');
+        localStorage.setItem(EXCEL_DATA, JSON.stringify(data));
+        localStorage.setItem(EXCEL_DATA_SAVE_TIME, new Date().getTime().toString());
+    }, 5000);
+
     const checkAndUpdateData = () => {
         console.time('Updating time');
         updateTableData(dataSnapshot);
         console.timeEnd('Updating time');
         if (!_.isEqual(data, dataSnapshot)) {
             updateData(dataSnapshot);
+            saveToLocalStorage();
         }
     };
 

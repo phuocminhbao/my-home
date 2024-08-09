@@ -13,6 +13,7 @@ import roboto300 from '@fontsource/roboto/300.css?url';
 import roboto400 from '@fontsource/roboto/400.css?url';
 import roboto500 from '@fontsource/roboto/500.css?url';
 import roboto700 from '@fontsource/roboto/700.css?url';
+import { useEffect } from 'react';
 
 export const links: LinksFunction = () => [
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -96,6 +97,17 @@ export function ErrorBoundary() {
 }
 
 export default function App() {
+    // Handle weird comma appear in body
+    useEffect(() => {
+        const body = document.body;
+        // Check if the last child of the body is a text node containing a comma
+        if (
+            body?.lastChild?.nodeType === Node.TEXT_NODE &&
+            body?.lastChild?.textContent?.trim() === ','
+        ) {
+            body.removeChild(body.lastChild);
+        }
+    }, []);
     return (
         <html lang="en">
             <head>

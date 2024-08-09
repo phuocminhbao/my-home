@@ -124,6 +124,7 @@ const updateTableData = (tableData: ConstructionSettlementTable[]) => {
 
         if (!_.isEmpty(row.details)) {
             row.details.forEach((subRow, subIndex) => {
+                subRow.isSelected = subIndex % 2 === 0;
                 if (_.isEmpty(subRow.category)) {
                     subRow.order = null;
                 } else {
