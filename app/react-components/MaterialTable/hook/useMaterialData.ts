@@ -1,5 +1,4 @@
-import { useContext, useMemo } from 'react';
-import MaterialDataContext from '../context/MaterialDataContext';
+import { useMemo } from 'react';
 import {
     getInitAccordionRowData,
     getInitDetailsRowData,
@@ -10,22 +9,22 @@ import {
 import _ from 'lodash';
 import type { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
 import { EXCEL_DATA, EXCEL_DATA_SAVE_TIME } from '~/constants';
+import useMaterialDataContext from './useMaterialDataContext';
 
 const useMaterialData = () => {
-    const { data, updateData } = useContext(MaterialDataContext);
+    const { data, updateData } = useMaterialDataContext();
 
     const dataSnapshot = useMemo(() => _.cloneDeep(data), [data]);
 
-    const forceUpdateData = () => {
-        updateTableData(dataSnapshot);
-        updateData(dataSnapshot);
-    };
-
-    const saveToLocalStorage = _.debounce(() => {
-        console.log('debound run');
-        localStorage.setItem(EXCEL_DATA, JSON.stringify(data));
-        localStorage.setItem(EXCEL_DATA_SAVE_TIME, new Date().getTime().toString());
-    }, 5000);
+    const saveToLocalStorage = _.debounce(
+        () => {
+            localStorage.setItem(EXCEL_DATA, JSON.stringify(dataSnapshot));
+            localStorage.setItem(EXCEL_DATA_SAVE_TIME, new Date().getTime().toString());
+            console.log('Saved to local storage');
+        },
+        3000,
+        { maxWait: 5000 }
+    );
 
     const checkAndUpdateData = () => {
         console.time('Updating time');
@@ -34,6 +33,7 @@ const useMaterialData = () => {
         if (!_.isEqual(data, dataSnapshot)) {
             updateData(dataSnapshot);
             saveToLocalStorage();
+            console.log('Call debouce');
         }
     };
 
@@ -221,14 +221,14 @@ const useMaterialData = () => {
         data,
         generateData,
         updateRowDataById,
-        forceUpdateData,
         removeRowById,
         addRowAboveById,
         addRowBelowById,
         addSubRowsById,
         addSumRowBelowById,
         addMutipleBelowById,
-        getFinalCost
+        getFinalCost,
+        saveToLocalStorage
     };
 };
 

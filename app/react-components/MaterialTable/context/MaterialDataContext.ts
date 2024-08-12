@@ -6,6 +6,6 @@ type MaterialDataProps = {
     updateData: React.Dispatch<React.SetStateAction<ConstructionSettlementTable[]>>;
 };
 
-const MaterialDataContext = createContext<MaterialDataProps>({ data: [], updateData: () => {} });
+const MaterialDataContext = createContext<MaterialDataProps | null>(null);
 
 export default MaterialDataContext;

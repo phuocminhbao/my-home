@@ -45,7 +45,7 @@ export const TableHeader = ({ hidden }: { hidden?: boolean }) => {
 };
 
 const SubmitConstructDataCell = () => {
-    const { data, getFinalCost } = useMaterialData();
+    const { data, getFinalCost, saveToLocalStorage } = useMaterialData();
     const submitData = (): string => {
         const clonedData = _.cloneDeep(data);
         clonedData.push({
@@ -58,6 +58,7 @@ const SubmitConstructDataCell = () => {
         <TableCell>
             <input name="data" defaultValue={submitData()} hidden></input>
             <Button type="submit">Xuất Excel</Button>
+            <Button onClick={saveToLocalStorage}> Debounce</Button>
         </TableCell>
     );
 };
@@ -75,15 +76,11 @@ const FinalCostRow = () => {
 };
 
 const TableBodyContent = () => {
-    const { data, forceUpdateData } = useMaterialData();
+    const { data } = useMaterialData();
     useEffect(() => {
         console.log(data);
     }, [data]);
 
-    useEffect(() => {
-        forceUpdateData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
     return (
         <TableBody>
             {data.length > 0 ? (
@@ -103,9 +100,7 @@ const MaterialTable = () => {
             style={{
                 width: '100%',
                 overflow: 'hidden'
-                // backgroundColor: 'f2f2f2'
             }}
-            // variant="outlined"
         >
             <Typography
                 variant="h3"
