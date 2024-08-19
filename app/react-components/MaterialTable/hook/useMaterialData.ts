@@ -11,20 +11,20 @@ import type { ConstructionSettlement, ConstructionSettlementTable } from '~/type
 import { EXCEL_DATA, EXCEL_DATA_SAVE_TIME } from '~/constants';
 import useMaterialDataContext from './useMaterialDataContext';
 
+const saveToLocalStorage = _.debounce(
+    (dataSnapshot: ConstructionSettlementTable[]) => {
+        localStorage.setItem(EXCEL_DATA, JSON.stringify(dataSnapshot));
+        localStorage.setItem(EXCEL_DATA_SAVE_TIME, new Date().getTime().toString());
+        console.log('Saved to local storage');
+    },
+    3000,
+    { maxWait: 5000 }
+);
+
 const useMaterialData = () => {
     const { data, updateData } = useMaterialDataContext();
 
     const dataSnapshot = useMemo(() => _.cloneDeep(data), [data]);
-
-    const saveToLocalStorage = _.debounce(
-        () => {
-            localStorage.setItem(EXCEL_DATA, JSON.stringify(dataSnapshot));
-            localStorage.setItem(EXCEL_DATA_SAVE_TIME, new Date().getTime().toString());
-            console.log('Saved to local storage');
-        },
-        3000,
-        { maxWait: 5000 }
-    );
 
     const checkAndUpdateData = () => {
         console.time('Updating time');
@@ -32,7 +32,7 @@ const useMaterialData = () => {
         console.timeEnd('Updating time');
         if (!_.isEqual(data, dataSnapshot)) {
             updateData(dataSnapshot);
-            saveToLocalStorage();
+            saveToLocalStorage(dataSnapshot);
             console.log('Call debouce');
         }
     };
