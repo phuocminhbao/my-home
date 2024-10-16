@@ -1,5 +1,4 @@
 import {
-    Button,
     Paper,
     Table,
     TableBody,
@@ -10,19 +9,15 @@ import {
     TextField,
     Typography
 } from '@mui/material';
-import { MIN_TABLE_WIDTH, ROUTE_PATH, TOTAL_SUM_VALUE, colWidth, columnType } from '~/constants';
+import { MIN_TABLE_WIDTH, colWidth, columnType } from '~/constants';
 import useMaterialData from './hook/useMaterialData';
 import { MaterialDataProvider } from './provider/MaterialDataProvider';
 import GenerateMaterialRow from './GenerateMaterialRow';
 import { useEffect, useRef, useState } from 'react';
 import MaterialRow from './MaterialRow';
-import { InforCell } from './MaterialCells';
 import _ from 'lodash';
-import type { ConstructionSettlementTable } from '~/types';
-import axios from 'axios';
-import fileSaver from 'file-saver';
-import { generateExcel } from '~/services';
-import { download } from '~/utils';
+import FinalCostRow from './FinalCostRow';
+import Construction from './Construction';
 
 export const TableHeader = ({ hidden }: { hidden?: boolean }) => {
     return (
@@ -48,41 +43,7 @@ export const TableHeader = ({ hidden }: { hidden?: boolean }) => {
     );
 };
 
-const SubmitConstructDataCell = ({ constructionName }: { constructionName: string }) => {
-    const { data, getFinalCost } = useMaterialData();
-    const handleClick = async () => {
-        const { excelBlob, fileName } = await generateExcel({
-            constructionName,
-            data: [
-                ...data,
-                {
-                    length: TOTAL_SUM_VALUE,
-                    totalCost: getFinalCost()
-                } as ConstructionSettlementTable
-            ]
-        });
-        download(excelBlob, fileName);
-    };
-    return (
-        <TableCell>
-            <Button onClick={handleClick}>Excel</Button>
-        </TableCell>
-    );
-};
-
-const FinalCostRow = ({ constructionName }: { constructionName: string }) => {
-    const { getFinalCost } = useMaterialData();
-
-    return (
-        <TableRow>
-            <InforCell colSpan={7} value={TOTAL_SUM_VALUE} />
-            <InforCell value={getFinalCost()} />
-            <SubmitConstructDataCell constructionName={constructionName} />
-        </TableRow>
-    );
-};
-
-const TableBodyContent = ({ constructionName }: { constructionName: string }) => {
+const TableBodyContent = () => {
     const { data } = useMaterialData();
 
     useEffect(() => {
@@ -96,18 +57,12 @@ const TableBodyContent = ({ constructionName }: { constructionName: string }) =>
             ) : (
                 <GenerateMaterialRow />
             )}
-            <FinalCostRow constructionName={constructionName} />
+            <FinalCostRow />
         </TableBody>
     );
 };
 
 const MaterialTable = () => {
-    const constructionNameRef = useRef<HTMLInputElement>(null);
-    const [constructionName, setConstructionName] = useState('');
-    useEffect(() => {
-        if (!constructionNameRef) return;
-        constructionNameRef.current?.focus();
-    }, []);
     return (
         <Paper
             style={{
@@ -115,36 +70,16 @@ const MaterialTable = () => {
                 overflow: 'hidden'
             }}
         >
-            <Typography
-                variant="h3"
-                align="center"
-                onClick={() => {
-                    if (!constructionNameRef) return;
-                    constructionNameRef.current?.focus();
-                }}
-            >
-                BẢNG QUYẾT TOÁN CÔNG TRÌNH
-                <TextField
-                    fullWidth
-                    id="construction-name"
-                    inputRef={constructionNameRef}
-                    variant="standard"
-                    name="constructionName"
-                    size="medium"
-                    inputProps={{ style: { textAlign: 'center', fontSize: '3em' } }}
-                    onBlur={(e) => {
-                        setConstructionName(e.target.value);
-                    }}
-                />
-            </Typography>
-            <MaterialDataProvider>
-                <TableContainer>
-                    <Table size="medium">
-                        <TableHeader />
-                        <TableBodyContent constructionName={constructionName} />
-                    </Table>
-                </TableContainer>
-            </MaterialDataProvider>
+            <Construction>
+                <MaterialDataProvider>
+                    <TableContainer>
+                        <Table size="medium">
+                            <TableHeader />
+                            <TableBodyContent />
+                        </Table>
+                    </TableContainer>
+                </MaterialDataProvider>
+            </Construction>
         </Paper>
     );
 };
