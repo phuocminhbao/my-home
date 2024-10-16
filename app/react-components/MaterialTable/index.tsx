@@ -18,6 +18,7 @@ import MaterialRow from './MaterialRow';
 import _ from 'lodash';
 import FinalCostRow from './FinalCostRow';
 import Construction from './Construction';
+import TotalPriceText from './TotalPriceText';
 
 export const TableHeader = ({ hidden }: { hidden?: boolean }) => {
     return (
@@ -72,12 +73,15 @@ const MaterialTable = () => {
         >
             <Construction>
                 <MaterialDataProvider>
-                    <TableContainer>
-                        <Table size="medium">
-                            <TableHeader />
-                            <TableBodyContent />
-                        </Table>
-                    </TableContainer>
+                    <>
+                        <TableContainer>
+                            <Table size="medium">
+                                <TableHeader />
+                                <TableBodyContent />
+                            </Table>
+                        </TableContainer>
+                        <TotalPriceText />
+                    </>
                 </MaterialDataProvider>
             </Construction>
         </Paper>
