@@ -2,7 +2,7 @@ import type { ActionFunctionArgs } from '@remix-run/node';
 import { generateExcelBuffer } from '~/exceljs';
 import ExcelLogger from '~/helper/logger/excel.logger';
 import { InternalServerError } from '~/helper/response/error';
-import { ExcelDownload } from '~/types';
+import type { ExcelDownload } from '~/types';
 
 export const action = async ({ request }: ActionFunctionArgs) => {
     const LOGGER = new ExcelLogger();

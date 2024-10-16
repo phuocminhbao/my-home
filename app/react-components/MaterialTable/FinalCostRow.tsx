@@ -1,7 +1,7 @@
 import { TableCell, Button, TableRow } from '@mui/material';
 import { TOTAL_SUM_VALUE } from '~/constants';
 import { generateExcel } from '~/services';
-import { ConstructionSettlementTable } from '~/types';
+import type { ConstructionSettlementTable } from '~/types';
 import { download } from '~/utils';
 import { InforCell } from './MaterialCells';
 import useMaterialData from './hook/useMaterialData';

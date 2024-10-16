@@ -5,17 +5,14 @@ import {
     TableCell,
     TableContainer,
     TableHead,
-    TableRow,
-    TextField,
-    Typography
+    TableRow
 } from '@mui/material';
 import { MIN_TABLE_WIDTH, colWidth, columnType } from '~/constants';
 import useMaterialData from './hook/useMaterialData';
 import { MaterialDataProvider } from './provider/MaterialDataProvider';
 import GenerateMaterialRow from './GenerateMaterialRow';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import MaterialRow from './MaterialRow';
-import _ from 'lodash';
 import FinalCostRow from './FinalCostRow';
 import Construction from './Construction';
 import TotalPriceText from './TotalPriceText';
