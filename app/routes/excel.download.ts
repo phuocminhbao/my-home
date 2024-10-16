@@ -1,13 +1,8 @@
 import type { ActionFunctionArgs } from '@remix-run/node';
 import { generateExcelBuffer } from '~/exceljs';
-import type { ConstructionSettlementTable } from '~/types';
 import ExcelLogger from '~/helper/logger/excel.logger';
 import { InternalServerError } from '~/helper/response/error';
-
-type ExcelDownload = {
-    constructionName: string;
-    data: ConstructionSettlementTable[];
-};
+import { ExcelDownload } from '~/types';
 
 export const action = async ({ request }: ActionFunctionArgs) => {
     const LOGGER = new ExcelLogger();
@@ -18,7 +13,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         LOGGER.info('Finished generate excel file');
 
         return new Response(buffer, {
-            status: 200,
             headers: {
                 'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                 'Content-Disposition': 'attachment; filename=quyet-toan-cong-trinh.xlsx',

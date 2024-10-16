@@ -10,17 +10,19 @@ import {
     TextField,
     Typography
 } from '@mui/material';
-import { MIN_TABLE_WIDTH, TOTAL_SUM_VALUE, colWidth, columnType } from '~/constants';
+import { MIN_TABLE_WIDTH, ROUTE_PATH, TOTAL_SUM_VALUE, colWidth, columnType } from '~/constants';
 import useMaterialData from './hook/useMaterialData';
 import { MaterialDataProvider } from './provider/MaterialDataProvider';
 import GenerateMaterialRow from './GenerateMaterialRow';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import MaterialRow from './MaterialRow';
 import { InforCell } from './MaterialCells';
 import _ from 'lodash';
 import type { ConstructionSettlementTable } from '~/types';
 import axios from 'axios';
 import fileSaver from 'file-saver';
+import { generateExcel } from '~/services';
+import { download } from '~/utils';
 
 export const TableHeader = ({ hidden }: { hidden?: boolean }) => {
     return (
@@ -48,52 +50,18 @@ export const TableHeader = ({ hidden }: { hidden?: boolean }) => {
 
 const SubmitConstructDataCell = ({ constructionName }: { constructionName: string }) => {
     const { data, getFinalCost } = useMaterialData();
-    const submitData = () => {
-        const clonedData = _.cloneDeep(data);
-        clonedData.push({
-            length: TOTAL_SUM_VALUE,
-            totalCost: getFinalCost()
-        } as ConstructionSettlementTable);
-        return clonedData;
-    };
-    // const handleClick = async () => {
-    //     const formData = new FormData();
-    //     formData.append('data', submitData());
-    //     submit(formData, EXCEL_PATH, FETCHER_KEY.EXCEL);
-    // };
     const handleClick = async () => {
-        // const formData = new FormData();
-        // formData.append('data', submitData());
-        // const res = await fetch(`${window.location.href}?_data=routes%2Fexcel`, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/x-www-form-urlencoded'
-        //     },
-        //     body: new URLSearchParams(formData as unknown as Record<string, string>)
-        // });
-        const res = await axios.post(
-            '/excel/download',
-            {
-                constructionName,
-                data: submitData()
-            },
-            {
-                responseType: 'blob'
-            }
-        );
-        const contentType = res.headers['Content-Type'];
-        if (contentType !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
-            throw new Error('Unexpected file type');
-        }
-        const blob = res.data;
-        fileSaver.saveAs(blob, 'contring.xlsx');
-        // const url = window.URL.createObjectURL(blob);
-        // const link = document.createElement('a');
-        // link.href = url;
-        // link.setAttribute('download', 'generatedExcel.xlsx');
-        // document.body.appendChild(link);
-        // link.click();
-        // document.body.removeChild(link); // Clean up Clean up
+        const { excelBlob, fileName } = await generateExcel({
+            constructionName,
+            data: [
+                ...data,
+                {
+                    length: TOTAL_SUM_VALUE,
+                    totalCost: getFinalCost()
+                } as ConstructionSettlementTable
+            ]
+        });
+        download(excelBlob, fileName);
     };
     return (
         <TableCell>
@@ -116,6 +84,7 @@ const FinalCostRow = ({ constructionName }: { constructionName: string }) => {
 
 const TableBodyContent = ({ constructionName }: { constructionName: string }) => {
     const { data } = useMaterialData();
+
     useEffect(() => {
         console.log(data);
     }, [data]);
@@ -133,7 +102,12 @@ const TableBodyContent = ({ constructionName }: { constructionName: string }) =>
 };
 
 const MaterialTable = () => {
-    const constructionNameRef = useRef<HTMLDivElement>(null);
+    const constructionNameRef = useRef<HTMLInputElement>(null);
+    const [constructionName, setConstructionName] = useState('');
+    useEffect(() => {
+        if (!constructionNameRef) return;
+        constructionNameRef.current?.focus();
+    }, []);
     return (
         <Paper
             style={{
@@ -158,15 +132,16 @@ const MaterialTable = () => {
                     name="constructionName"
                     size="medium"
                     inputProps={{ style: { textAlign: 'center', fontSize: '3em' } }}
+                    onBlur={(e) => {
+                        setConstructionName(e.target.value);
+                    }}
                 />
             </Typography>
             <MaterialDataProvider>
                 <TableContainer>
                     <Table size="medium">
                         <TableHeader />
-                        <TableBodyContent
-                            constructionName={constructionNameRef.current?.nodeValue ?? ''}
-                        />
+                        <TableBodyContent constructionName={constructionName} />
                     </Table>
                 </TableContainer>
             </MaterialDataProvider>

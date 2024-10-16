@@ -16,3 +16,8 @@ export interface ConstructionSettlement {
 export interface ConstructionSettlementTable extends ConstructionSettlement {
     details: ConstructionSettlement[];
 }
+
+export interface ExcelDownload {
+    constructionName: string;
+    data: ConstructionSettlementTable[];
+}

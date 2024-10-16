@@ -1,4 +1,4 @@
-import { EXCEL_PATH } from '~/constants';
+import { ROUTE_PATH } from '~/constants';
 import Logger from '.';
 
 class ExcelLogger {
@@ -6,7 +6,7 @@ class ExcelLogger {
     private actionContext = 'Proccess Excel';
     private logInfo = {
         context: this.actionContext,
-        requestId: EXCEL_PATH
+        requestId: ROUTE_PATH.EXCEL
     };
 
     public info(message: string) {

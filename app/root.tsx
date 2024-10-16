@@ -14,6 +14,7 @@ import roboto400 from '@fontsource/roboto/400.css?url';
 import roboto500 from '@fontsource/roboto/500.css?url';
 import roboto700 from '@fontsource/roboto/700.css?url';
 import { useEffect } from 'react';
+import styles from './styles.css?url';
 
 export const links: LinksFunction = () => [
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -21,7 +22,8 @@ export const links: LinksFunction = () => [
     { rel: 'stylesheet', href: roboto300 },
     { rel: 'stylesheet', href: roboto400 },
     { rel: 'stylesheet', href: roboto500 },
-    { rel: 'stylesheet', href: roboto700 }
+    { rel: 'stylesheet', href: roboto700 },
+    { rel: 'stylesheet', href: styles }
 ];
 
 export const meta: MetaFunction = () => {
@@ -79,7 +81,6 @@ const ErrorContent = () => {
 };
 
 export function ErrorBoundary() {
-    // const error = useRouteError();
     return (
         <html lang="en">
             <head>
