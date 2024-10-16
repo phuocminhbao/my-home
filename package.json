@@ -17,7 +17,9 @@
         "@remix-run/node": "2.9.2",
         "@remix-run/react": "2.9.2",
         "@remix-run/serve": "2.9.2",
+        "axios": "^1.7.7",
         "exceljs": "^4.3.0",
+        "file-saver": "^2.0.5",
         "isbot": "^3.6.8",
         "react": "18.3.0-canary-ea17cc18f-20230807",
         "react-dom": "18.3.0-canary-ea17cc18f-20230807",
@@ -30,6 +32,7 @@
     "devDependencies": {
         "@remix-run/dev": "2.9.2",
         "@remix-run/eslint-config": "2.9.2",
+        "@types/file-saver": "^2.0.7",
         "@types/lodash": "^4.14.199",
         "@types/react": "^18.2.20",
         "@types/react-dom": "^18.2.7",

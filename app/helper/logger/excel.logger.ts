@@ -12,6 +12,11 @@ class ExcelLogger {
     public info(message: string) {
         this.logger.info(message, this.logInfo);
     }
+
+    public error(e: string) {
+        this.logger.error(e, this.logInfo);
+    }
+
     public getActionContext() {
         return this.actionContext;
     }

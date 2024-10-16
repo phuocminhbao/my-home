@@ -1,4 +1,4 @@
-import type { Worksheet } from 'exceljs';
+import type { Workbook, Worksheet } from 'exceljs';
 import Excel from 'exceljs';
 import path from 'path';
 import type { ConstructionSettlementTable } from '~/types';
@@ -40,19 +40,9 @@ const addTableBody = (
 
 const setupWorksheet = (worksheet: Worksheet) => {};
 
-export async function doExcel(
-    constructionSettlement: ConstructionSettlementTable[],
-    constructionName: string
-) {
-    if (!constructionSettlement) {
-        throw new Error('No data is provided');
-    }
-
-    const workbook = new Excel.Workbook();
-    const worksheet = workbook.addWorksheet(WORK_SHEET);
-    setupWorksheet(worksheet);
-    processTitle(worksheet, constructionName);
-    processTable(worksheet, constructionSettlement);
+const saveFile = async (workbook: Workbook) => {
+    const shouldSaveFile = false;
+    if (!shouldSaveFile) return;
     const exportPath = path.resolve('./', 'bang_quyet_toan_cong_trinh.xlsx');
     await workbook.xlsx.writeFile(exportPath);
     if (process.env.NODE_ENV === 'development') {
@@ -63,4 +53,22 @@ export async function doExcel(
             }
         });
     }
-}
+};
+
+export const generateExcelBuffer = async (
+    constructionSettlement: ConstructionSettlementTable[],
+    constructionName: string
+) => {
+    if (!constructionSettlement) {
+        throw new Error('No data is provided');
+    }
+
+    const workbook = new Excel.Workbook();
+    const worksheet = workbook.addWorksheet(WORK_SHEET);
+    setupWorksheet(worksheet);
+    processTitle(worksheet, constructionName);
+    processTable(worksheet, constructionSettlement);
+
+    void saveFile(workbook);
+    return await workbook.xlsx.writeBuffer();
+};

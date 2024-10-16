@@ -1,10 +1,12 @@
 import { useSubmit } from '@remix-run/react';
+import type { FETCHER_KEY } from '~/constants';
 
 const useSubmitData = () => {
     const submit = useSubmit();
 
-    const submitData = (data: string, actionPath: string, fetcherKey: string) => {
-        submit({ data }, { method: 'POST', action: actionPath, navigate: false, fetcherKey });
+    const submitData = (data: string | FormData, actionPath: string, fetcherKey: FETCHER_KEY) => {
+        const sendData = typeof data === 'string' ? { data } : data;
+        submit(sendData, { method: 'POST', action: actionPath, navigate: false, fetcherKey });
     };
 
     return {

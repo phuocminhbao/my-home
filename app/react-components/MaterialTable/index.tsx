@@ -19,6 +19,8 @@ import MaterialRow from './MaterialRow';
 import { InforCell } from './MaterialCells';
 import _ from 'lodash';
 import type { ConstructionSettlementTable } from '~/types';
+import axios from 'axios';
+import fileSaver from 'file-saver';
 
 export const TableHeader = ({ hidden }: { hidden?: boolean }) => {
     return (
@@ -44,38 +46,75 @@ export const TableHeader = ({ hidden }: { hidden?: boolean }) => {
     );
 };
 
-const SubmitConstructDataCell = () => {
-    const { data, getFinalCost, saveToLocalStorage } = useMaterialData();
-    const submitData = (): string => {
+const SubmitConstructDataCell = ({ constructionName }: { constructionName: string }) => {
+    const { data, getFinalCost } = useMaterialData();
+    const submitData = () => {
         const clonedData = _.cloneDeep(data);
         clonedData.push({
             length: TOTAL_SUM_VALUE,
             totalCost: getFinalCost()
         } as ConstructionSettlementTable);
-        return JSON.stringify(clonedData);
+        return clonedData;
+    };
+    // const handleClick = async () => {
+    //     const formData = new FormData();
+    //     formData.append('data', submitData());
+    //     submit(formData, EXCEL_PATH, FETCHER_KEY.EXCEL);
+    // };
+    const handleClick = async () => {
+        // const formData = new FormData();
+        // formData.append('data', submitData());
+        // const res = await fetch(`${window.location.href}?_data=routes%2Fexcel`, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/x-www-form-urlencoded'
+        //     },
+        //     body: new URLSearchParams(formData as unknown as Record<string, string>)
+        // });
+        const res = await axios.post(
+            '/excel/download',
+            {
+                constructionName,
+                data: submitData()
+            },
+            {
+                responseType: 'blob'
+            }
+        );
+        const contentType = res.headers['Content-Type'];
+        if (contentType !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+            throw new Error('Unexpected file type');
+        }
+        const blob = res.data;
+        fileSaver.saveAs(blob, 'contring.xlsx');
+        // const url = window.URL.createObjectURL(blob);
+        // const link = document.createElement('a');
+        // link.href = url;
+        // link.setAttribute('download', 'generatedExcel.xlsx');
+        // document.body.appendChild(link);
+        // link.click();
+        // document.body.removeChild(link); // Clean up Clean up
     };
     return (
         <TableCell>
-            <input name="data" defaultValue={submitData()} hidden></input>
-            <Button type="submit">Xuất Excel</Button>
-            <Button onClick={saveToLocalStorage}> Debounce</Button>
+            <Button onClick={handleClick}>Excel</Button>
         </TableCell>
     );
 };
 
-const FinalCostRow = () => {
+const FinalCostRow = ({ constructionName }: { constructionName: string }) => {
     const { getFinalCost } = useMaterialData();
 
     return (
         <TableRow>
             <InforCell colSpan={7} value={TOTAL_SUM_VALUE} />
             <InforCell value={getFinalCost()} />
-            <SubmitConstructDataCell />
+            <SubmitConstructDataCell constructionName={constructionName} />
         </TableRow>
     );
 };
 
-const TableBodyContent = () => {
+const TableBodyContent = ({ constructionName }: { constructionName: string }) => {
     const { data } = useMaterialData();
     useEffect(() => {
         console.log(data);
@@ -88,7 +127,7 @@ const TableBodyContent = () => {
             ) : (
                 <GenerateMaterialRow />
             )}
-            <FinalCostRow />
+            <FinalCostRow constructionName={constructionName} />
         </TableBody>
     );
 };
@@ -125,7 +164,9 @@ const MaterialTable = () => {
                 <TableContainer>
                     <Table size="medium">
                         <TableHeader />
-                        <TableBodyContent />
+                        <TableBodyContent
+                            constructionName={constructionNameRef.current?.nodeValue ?? ''}
+                        />
                     </Table>
                 </TableContainer>
             </MaterialDataProvider>
