@@ -25,7 +25,7 @@
 ### 2. Set up docker compose
 
 docker-compose.yml:
-version: "3.3"
+    version: "3.3"
 
     services:
         app:
