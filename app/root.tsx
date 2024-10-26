@@ -13,8 +13,11 @@ import roboto300 from '@fontsource/roboto/300.css?url';
 import roboto400 from '@fontsource/roboto/400.css?url';
 import roboto500 from '@fontsource/roboto/500.css?url';
 import roboto700 from '@fontsource/roboto/700.css?url';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './styles.css?url';
+import { ThemeProvider } from '@mui/material';
+import type { ThemeOption } from './config/mui.config';
+import { createCustomTheme } from './config/mui.config';
 
 export const links: LinksFunction = () => [
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -98,6 +101,7 @@ export function ErrorBoundary() {
 }
 
 export default function App() {
+    const [theme, setTheme] = useState<ThemeOption>('light');
     // Handle weird comma appear in body
     useEffect(() => {
         const body = document.body;
@@ -116,7 +120,9 @@ export default function App() {
                 <Links />
             </head>
             <body>
-                <Outlet />
+                <ThemeProvider theme={createCustomTheme(theme)}>
+                    <Outlet />
+                </ThemeProvider>
                 <ScrollRestoration />
                 <Scripts />
             </body>
