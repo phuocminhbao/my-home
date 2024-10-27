@@ -26,6 +26,8 @@ const LanguageChange = () => {
                 disableElevation
                 onClick={handleClick}
                 endIcon={countryIcon}
+                color="primary"
+                sx={{ backgroundColor: 'inherit' }}
             >
                 <Typography variant="button">
                     {translate(language === 'vietnamese' ? 'vn_lang' : 'en_lang')}

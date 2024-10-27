@@ -110,7 +110,15 @@ const themeOptions = {
                 main: '#8BC683' // Softer green for interactive states or highlights
             }
         },
-        typography
+        typography,
+        components: {
+            MuiAppBar: {
+                defaultProps: {
+                    enableColorOnDark: true,
+                    color: 'primary'
+                }
+            }
+        }
     } as ThemeOptions
 };
 
@@ -118,6 +126,6 @@ type ThemeOption = keyof typeof themeOptions;
 
 const createCustomTheme = (mode: ThemeOption) => createTheme(themeOptions[mode]);
 
-export { createCustomTheme };
+export { createCustomTheme, themeOptions };
 
 export type { ThemeOption };

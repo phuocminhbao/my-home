@@ -63,7 +63,7 @@ const TableBodyContent = () => {
 const MaterialTable = () => {
     return (
         <Paper
-            style={{
+            sx={{
                 width: '100%',
                 overflow: 'hidden'
             }}
