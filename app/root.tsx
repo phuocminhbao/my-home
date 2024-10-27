@@ -1,4 +1,4 @@
-import type { LinksFunction, MetaFunction } from '@remix-run/node';
+import type { LinksFunction } from '@remix-run/node';
 import {
     Links,
     Meta,
@@ -16,8 +16,9 @@ import roboto700 from '@fontsource/roboto/700.css?url';
 import { useEffect, useState } from 'react';
 import styles from './styles.css?url';
 import { ThemeProvider } from '@mui/material';
-import type { ThemeOption } from './config/mui.config';
 import { createCustomTheme } from './config/mui.config';
+import type { PageSetting } from './context/PageSettingContext';
+import PageSettingContext from './context/PageSettingContext';
 
 export const links: LinksFunction = () => [
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -28,13 +29,6 @@ export const links: LinksFunction = () => [
     { rel: 'stylesheet', href: roboto700 },
     { rel: 'stylesheet', href: styles }
 ];
-
-export const meta: MetaFunction = () => {
-    return [
-        { charSet: 'utf-8' },
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' }
-    ];
-};
 
 const ErrorContent = () => {
     const error = useRouteError();
@@ -101,7 +95,10 @@ export function ErrorBoundary() {
 }
 
 export default function App() {
-    const [theme, setTheme] = useState<ThemeOption>('light');
+    const [pageSetting, setPageSetting] = useState<PageSetting>({
+        theme: 'light',
+        language: 'vietnamese'
+    });
     // Handle weird comma appear in body
     useEffect(() => {
         const body = document.body;
@@ -113,15 +110,19 @@ export default function App() {
             body.removeChild(body.lastChild);
         }
     }, []);
+
     return (
         <html lang="en">
             <head>
-                <Meta />
+                <meta charSet="utf-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <Links />
             </head>
             <body>
-                <ThemeProvider theme={createCustomTheme(theme)}>
-                    <Outlet />
+                <ThemeProvider theme={createCustomTheme(pageSetting.theme)}>
+                    <PageSettingContext.Provider value={[pageSetting, setPageSetting]}>
+                        <Outlet />
+                    </PageSettingContext.Provider>
                 </ThemeProvider>
                 <ScrollRestoration />
                 <Scripts />

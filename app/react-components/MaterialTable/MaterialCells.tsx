@@ -7,25 +7,16 @@ import {
     Add,
     Menu as MenuIcon
 } from '@mui/icons-material';
-import {
-    TableCell,
-    TextField,
-    Grid,
-    Menu,
-    MenuItem,
-    InputAdornment,
-    Button,
-    ListItemIcon,
-    ListItemText
-} from '@mui/material';
+import { TableCell, TextField, Menu, InputAdornment, Button, Grid2 } from '@mui/material';
 import _ from 'lodash';
-import type { ReactNode, MouseEventHandler } from 'react';
+import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { VALID_INPUT_RESULT, tableFontSize } from '~/constants';
 import type { ConstructionSettlement, ConstructionSettlementTable } from '~/types';
 import { roundNumber, validateInput } from '~/utils';
 import { getUnit, proccessValueType } from '~/utils/common';
 import useMaterialData from './hook/useMaterialData';
+import MenuItemWithIcon from '../MenuItemWithIcon/MenuItemWithIcon';
 
 const InputCell = ({
     value,
@@ -123,11 +114,13 @@ const InputCell = ({
                 error={!isInputValid.okay}
                 helperText={isInputValid.error}
                 fullWidth
-                InputProps={{
-                    ...tableFontSize,
-                    endAdornment: !isMerge && (
-                        <InputAdornment position="end">{getUnit(dataKey)}</InputAdornment>
-                    )
+                slotProps={{
+                    input: {
+                        ...tableFontSize,
+                        endAdornment: !isMerge && (
+                            <InputAdornment position="end">{getUnit(dataKey)}</InputAdornment>
+                        )
+                    }
                 }}
             ></TextField>
         </TableCell>
@@ -243,23 +236,6 @@ const EventMenuCell = ({ rowId, isAccordion }: { rowId: number; isAccordion: boo
     );
 };
 
-const MenuItemWithIcon = ({
-    handleClick,
-    icon,
-    text
-}: {
-    handleClick: MouseEventHandler<HTMLLIElement>;
-    icon: JSX.Element;
-    text: string;
-}) => {
-    return (
-        <MenuItem onClick={handleClick}>
-            <ListItemIcon>{icon}</ListItemIcon>
-            <ListItemText>{text}</ListItemText>
-        </MenuItem>
-    );
-};
-
 const AccordionCell = ({
     open,
     rowId,
@@ -273,17 +249,17 @@ const AccordionCell = ({
     const ArrowIcon = () => (open ? <KeyboardArrowUp /> : <KeyboardArrowDown />);
     return (
         <TableCell>
-            <Grid
+            <Grid2
                 container
                 spacing={3}
                 direction="row"
                 justifyContent="flex-start"
                 alignItems="center"
             >
-                <Grid item xs={6}>
+                <Grid2 size={6}>
                     <EventMenuCell rowId={rowId} isAccordion />
-                </Grid>
-                <Grid item xs={6}>
+                </Grid2>
+                <Grid2 size={6}>
                     <Button>
                         {isDetailsEmpty ? (
                             <Add
@@ -295,8 +271,8 @@ const AccordionCell = ({
                             <ArrowIcon />
                         )}
                     </Button>
-                </Grid>
-            </Grid>
+                </Grid2>
+            </Grid2>
         </TableCell>
     );
 };
