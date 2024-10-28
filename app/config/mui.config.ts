@@ -117,6 +117,11 @@ const themeOptions = {
                     enableColorOnDark: true,
                     color: 'primary'
                 }
+            },
+            MuiUseMediaQuery: {
+                defaultProps: {
+                    noSsr: true
+                }
             }
         }
     } as ThemeOptions

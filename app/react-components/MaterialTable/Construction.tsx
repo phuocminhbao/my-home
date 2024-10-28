@@ -11,35 +11,35 @@ const Construction = ({ children }: { children: React.JSX.Element }) => {
         constructionNameRef.current?.focus();
     }, []);
 
-    return (
-        <>
-            <Typography
-                variant="h3"
-                align="center"
-                onClick={() => {
-                    if (!constructionNameRef) return;
-                    constructionNameRef.current?.focus();
+    return (<>
+        <Typography
+            variant="h3"
+            align="center"
+            onClick={() => {
+                if (!constructionNameRef) return;
+                constructionNameRef.current?.focus();
+            }}
+        >
+            BẢNG QUYẾT TOÁN CÔNG TRÌNH
+            <TextField
+                fullWidth
+                id="construction-name"
+                inputRef={constructionNameRef}
+                variant="standard"
+                name="constructionName"
+                size="medium"
+                onBlur={(e) => {
+                    setConstructionName(e.target.value);
                 }}
-            >
-                BẢNG QUYẾT TOÁN CÔNG TRÌNH
-                <TextField
-                    fullWidth
-                    id="construction-name"
-                    inputRef={constructionNameRef}
-                    variant="standard"
-                    name="constructionName"
-                    size="medium"
-                    inputProps={{ style: { textAlign: 'center', fontSize: '3em' } }}
-                    onBlur={(e) => {
-                        setConstructionName(e.target.value);
-                    }}
-                />
-            </Typography>
-            <ConstructionContext.Provider value={constructionName}>
-                {children}
-            </ConstructionContext.Provider>
-        </>
-    );
+                slotProps={{
+                    htmlInput: { style: { textAlign: 'center', fontSize: '3em' } }
+                }}
+            />
+        </Typography>
+        <ConstructionContext.Provider value={constructionName}>
+            {children}
+        </ConstructionContext.Provider>
+    </>);
 };
 
 export default Construction;

@@ -59,10 +59,11 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 
 const ThemeChange = () => {
-    const [, setPageSetting] = usePageSettingContext();
+    const [pageSetting, setPageSetting] = usePageSettingContext();
     return (
         <>
             <MaterialUISwitch
+                checked={pageSetting.theme === 'dark'}
                 onChange={() => {
                     setPageSetting((preSetting) => ({
                         ...preSetting,
