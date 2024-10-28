@@ -92,19 +92,20 @@ const themeOptions = {
     dark: {
         palette: {
             mode: 'dark',
+            background: {
+                default: '#121212',
+                paper: '#1E1E1E'
+            },
             primary: {
-                main: '#4C8FFF' // Lighter blue for dark mode primary elements
+                main: '#311b92'
             },
             secondary: {
-                main: '#A6A6A6' // Soft gray for secondary accents
-            },
-            background: {
-                default: '#1B1B1B', // Dark gray for main background
-                paper: '#212121' // Slightly lighter for cards or modals
+                main: '#03DAC6'
             },
             text: {
-                primary: '#E0E0E0', // Light gray for main text
-                secondary: '#BDBDBD' // Even lighter gray for secondary text
+                primary: '#FFFFFF',
+                secondary: '#B0B0B0',
+                disabled: '#666666'
             },
             accent: {
                 main: '#8BC683' // Softer green for interactive states or highlights

@@ -1,25 +1,104 @@
-import { Menu, Button, Typography } from '@mui/material';
+import {
+    Menu,
+    Button,
+    Typography,
+    ListItemButton,
+    Collapse,
+    List,
+    ListItemIcon,
+    ListItemText,
+    ListItem,
+    ButtonGroup
+} from '@mui/material';
 import { useState } from 'react';
 import usePageSettingContext from '~/hook/usePageSettingContext';
 import useTranslation from '~/hook/useTranslation';
 import VNFlag from './CountryFlagIcon/VNFlag';
 import USFlag from './CountryFlagIcon/USFlag';
 import MenuItemWithIcon from '../MenuItemWithIcon/MenuItemWithIcon';
+import useLayoutSize from '~/hook/useLayoutSize';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 
 const LanguageChange = () => {
     const { translate } = useTranslation();
+    const { isMobile } = useLayoutSize();
     const [pageSetting, setPageSetting] = usePageSettingContext();
+    const [isMobileOpen, setIsMobileOpen] = useState(false);
+    const { language } = pageSetting;
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const isOpen = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        if (isMobile) {
+            setIsMobileOpen(!isMobileOpen);
+            return;
+        }
         setAnchorEl(event.currentTarget);
     };
     const handleClose = () => {
+        if (isMobile) {
+            setIsMobileOpen(false);
+            return;
+        }
         setAnchorEl(null);
     };
-    const { language } = pageSetting;
-    const countryIcon = language === 'vietnamese' ? <VNFlag /> : <USFlag />;
-    return (
+    const { isVietnamese, isEnglish } = {
+        isVietnamese: language === 'vietnamese',
+        isEnglish: language === 'english'
+    };
+    const changeToVietnamese = () => {
+        if (isVietnamese) return;
+        setPageSetting((preSetting) => ({
+            ...preSetting,
+            language: 'vietnamese'
+        }));
+        handleClose();
+    };
+    const changeToEnglish = () => {
+        if (language === 'english') return;
+        setPageSetting((preSetting) => ({
+            ...preSetting,
+            language: 'english'
+        }));
+        handleClose();
+    };
+    const countryIcon = isVietnamese ? <VNFlag /> : <USFlag />;
+    return isMobile ? (
+        <>
+            <ListItem>
+                <ListItemButton onClick={handleClick}>
+                    <ListItemIcon>{countryIcon}</ListItemIcon>
+                    <ListItemText primary={translate('mobile_language')} />
+                    {isMobileOpen ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+            </ListItem>
+            <Collapse in={isMobileOpen} timeout="auto" unmountOnExit>
+                <List disablePadding>
+                    <ListItem disablePadding>
+                        <ButtonGroup fullWidth>
+                            <Button
+                                variant={isVietnamese ? 'contained' : 'outlined'}
+                                color={isVietnamese ? 'primary' : 'secondary'}
+                            >
+                                <ListItemText
+                                    primary={translate('vn_lang')}
+                                    onClick={changeToVietnamese}
+                                />
+                            </Button>
+                            <Button
+                                variant={isEnglish ? 'contained' : 'outlined'}
+                                color={isEnglish ? 'primary' : 'secondary'}
+                            >
+                                <ListItemText
+                                    primary={translate('en_lang')}
+                                    onClick={changeToEnglish}
+                                />
+                            </Button>
+                        </ButtonGroup>
+                    </ListItem>
+                </List>
+            </Collapse>
+        </>
+    ) : (
         <>
             <Button
                 variant="contained"
@@ -27,10 +106,10 @@ const LanguageChange = () => {
                 onClick={handleClick}
                 endIcon={countryIcon}
                 color="primary"
-                sx={{ backgroundColor: 'inherit' }}
+                // sx={{ backgroundColor: 'inherit' }}
             >
                 <Typography variant="button">
-                    {translate(language === 'vietnamese' ? 'vn_lang' : 'en_lang')}
+                    {translate(isVietnamese ? 'vn_lang' : 'en_lang')}
                 </Typography>
             </Button>
             <Menu
@@ -48,26 +127,12 @@ const LanguageChange = () => {
                 }}
             >
                 <MenuItemWithIcon
-                    handleClick={() => {
-                        if (language === 'vietnamese') return;
-                        setPageSetting((preSetting) => ({
-                            ...preSetting,
-                            language: 'vietnamese'
-                        }));
-                        handleClose();
-                    }}
+                    handleClick={changeToVietnamese}
                     icon={<VNFlag />}
                     text={translate('vn_lang')}
                 />
                 <MenuItemWithIcon
-                    handleClick={() => {
-                        if (language === 'english') return;
-                        setPageSetting((preSetting) => ({
-                            ...preSetting,
-                            language: 'english'
-                        }));
-                        handleClose();
-                    }}
+                    handleClick={changeToEnglish}
                     icon={<USFlag />}
                     text={translate('en_lang')}
                 />

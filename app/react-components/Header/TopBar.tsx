@@ -6,7 +6,7 @@ import { Menu } from '@mui/icons-material';
 import { useState } from 'react';
 
 const TopBar = () => {
-    const size = useLayoutSize();
+    const { isMobile } = useLayoutSize();
     const [isOpenDrawer, setIsOpenDrawer] = useState(false);
     return (
         <>
@@ -16,29 +16,34 @@ const TopBar = () => {
                         <Box alignContent="center">
                             <Typography variant="h6">VĂN TRỊ</Typography>
                         </Box>
-                        <Box>
-                            <LanguageChange />
-                            <ThemeChange />
-                        </Box>
-                        <Menu
-                            onClick={() => {
-                                setIsOpenDrawer(true);
-                            }}
-                        />
-                        <Drawer
-                            open={isOpenDrawer}
-                            onClose={() => {
-                                setIsOpenDrawer(false);
-                            }}
-                            anchor="top"
-                        >
-                            <List></List>
-                            <Divider />
-                            <List>
+                        {isMobile ? (
+                            <Box alignContent="center">
+                                <Menu
+                                    onClick={() => {
+                                        setIsOpenDrawer(true);
+                                    }}
+                                />
+                                <Drawer
+                                    open={isOpenDrawer}
+                                    onClose={() => {
+                                        setIsOpenDrawer(false);
+                                    }}
+                                    anchor="top"
+                                >
+                                    <List></List>
+                                    <Divider />
+                                    <List>
+                                        <LanguageChange />
+                                        <ThemeChange />
+                                    </List>
+                                </Drawer>
+                            </Box>
+                        ) : (
+                            <Box>
                                 <LanguageChange />
                                 <ThemeChange />
-                            </List>
-                        </Drawer>
+                            </Box>
+                        )}
                     </Stack>
                 </Toolbar>
             </AppBar>

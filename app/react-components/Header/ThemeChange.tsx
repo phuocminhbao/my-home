@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
-import { styled, Switch } from '@mui/material';
+import { ListItem, Stack, styled, Switch } from '@mui/material';
+import useLayoutSize from '~/hook/useLayoutSize';
 import usePageSettingContext from '~/hook/usePageSettingContext';
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
@@ -60,17 +61,28 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 
 const ThemeChange = () => {
     const [pageSetting, setPageSetting] = usePageSettingContext();
-    return (
+    const { isMobile } = useLayoutSize();
+    const ThemeSwitch = () => (
+        <MaterialUISwitch
+            checked={pageSetting.theme === 'dark'}
+            onChange={() => {
+                setPageSetting((preSetting) => ({
+                    ...preSetting,
+                    theme: preSetting.theme === 'light' ? 'dark' : 'light'
+                }));
+            }}
+        />
+    );
+
+    return isMobile ? (
+        <ListItem>
+            <Stack width="100%" justifyContent={'center'} direction="row">
+                <ThemeSwitch />
+            </Stack>
+        </ListItem>
+    ) : (
         <>
-            <MaterialUISwitch
-                checked={pageSetting.theme === 'dark'}
-                onChange={() => {
-                    setPageSetting((preSetting) => ({
-                        ...preSetting,
-                        theme: preSetting.theme === 'light' ? 'dark' : 'light'
-                    }));
-                }}
-            />
+            <ThemeSwitch />
         </>
     );
 };
