@@ -71,9 +71,9 @@ const ThemeChange = () => {
                     theme: preSetting.theme === 'light' ? 'dark' : 'light'
                 }));
             }}
+            size="small"
         />
     );
-
     return isMobile ? (
         <ListItem>
             <Stack width="100%" justifyContent={'center'} direction="row">

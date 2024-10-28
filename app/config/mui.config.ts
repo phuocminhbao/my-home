@@ -65,66 +65,61 @@ const typography = {
     }
 };
 
+const components: ThemeOptions['components'] = {
+    MuiAppBar: {},
+    MuiUseMediaQuery: {
+        defaultProps: {
+            noSsr: true
+        }
+    }
+};
+
 const themeOptions = {
     light: {
         palette: {
             mode: 'light',
             primary: {
-                main: '#003366' // Deep Blue for primary buttons and accents
+                main: '#000000' // Black for primary accents and interactive elements
             },
             secondary: {
-                main: '#8E8E8E' // Warm Gray for secondary elements
+                main: '#333333' // Dark gray for secondary elements
             },
             background: {
-                default: '#F5F5F5', // Light gray for main background
-                paper: '#FFFFFF' // Slightly lighter background for cards or modals
+                default: '#FFFFFF', // Pure white for main background
+                paper: '#F9F9F9' // Near-white for card and modal backgrounds
             },
             text: {
-                primary: '#333333', // Charcoal for main text
-                secondary: '#555555' // Slightly lighter for secondary text
+                primary: '#000000', // Black for primary text
+                secondary: '#555555' // Gray for secondary text
             },
             accent: {
-                main: '#3B7D57' // Optional olive green for special highlights
+                main: '#333333' // Optional dark gray for subtle highlights
             }
         },
-        typography
+        typography,
+        components
     } as ThemeOptions,
     dark: {
         palette: {
             mode: 'dark',
             background: {
-                default: '#121212',
-                paper: '#1E1E1E'
+                default: '#000000', // Black for main background
+                paper: '#1E1E1E' // Dark gray for cards or modals
             },
             primary: {
-                main: '#311b92'
+                main: '#FFFFFF' // White for primary accents and interactive elements
             },
             secondary: {
-                main: '#03DAC6'
+                main: '#CCCCCC' // Light gray for secondary elements
             },
             text: {
-                primary: '#FFFFFF',
-                secondary: '#B0B0B0',
-                disabled: '#666666'
-            },
-            accent: {
-                main: '#8BC683' // Softer green for interactive states or highlights
+                primary: '#FFFFFF', // White for main text
+                secondary: '#B0B0B0', // Light gray for secondary text
+                disabled: '#666666' // Dim gray for disabled elements
             }
         },
         typography,
-        components: {
-            MuiAppBar: {
-                defaultProps: {
-                    enableColorOnDark: true,
-                    color: 'primary'
-                }
-            },
-            MuiUseMediaQuery: {
-                defaultProps: {
-                    noSsr: true
-                }
-            }
-        }
+        components
     } as ThemeOptions
 };
 

@@ -74,7 +74,7 @@ const LanguageChange = () => {
             <Collapse in={isMobileOpen} timeout="auto" unmountOnExit>
                 <List disablePadding>
                     <ListItem disablePadding>
-                        <ButtonGroup fullWidth>
+                        <ButtonGroup fullWidth size="small">
                             <Button
                                 variant={isVietnamese ? 'contained' : 'outlined'}
                                 color={isVietnamese ? 'primary' : 'secondary'}
@@ -101,14 +101,14 @@ const LanguageChange = () => {
     ) : (
         <>
             <Button
-                variant="contained"
+                variant="outlined"
                 disableElevation
                 onClick={handleClick}
                 endIcon={countryIcon}
                 color="primary"
-                // sx={{ backgroundColor: 'inherit' }}
+                size="small"
             >
-                <Typography variant="button">
+                <Typography variant="button" fontSize={12}>
                     {translate(isVietnamese ? 'vn_lang' : 'en_lang')}
                 </Typography>
             </Button>
