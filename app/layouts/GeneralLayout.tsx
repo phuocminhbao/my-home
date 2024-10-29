@@ -1,4 +1,4 @@
-import { Box, Container, Paper, Stack } from '@mui/material';
+import { Box, Button, Container, Paper, Stack } from '@mui/material';
 import { themeOptions } from '~/config/mui.config';
 import usePageSettingContext from '~/hook/usePageSettingContext';
 import NavBar from '~/react-components/Header/NavBar';
@@ -19,6 +19,7 @@ const GeneralLayout = ({ children }: { children: React.ReactNode }) => {
                     {children}
                     {children}
                     {children}
+                    <Button>Hey</Button>
                     {children}
                     {children}
                     {children}

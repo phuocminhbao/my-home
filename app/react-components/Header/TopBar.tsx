@@ -8,11 +8,17 @@ const TopBar = () => {
     const navigate = useNavigate();
     return (
         <AppBar
+            id="topbar"
             position="static"
             variant="outlined"
             elevation={0}
             enableColorOnDark={true}
-            sx={[(theme) => ({ backgroundColor: theme.palette.background.default })]}
+            sx={[
+                (theme) => ({
+                    backgroundColor: theme.palette.background.default,
+                    zIndex: theme.zIndex.appBar
+                })
+            ]}
         >
             <Toolbar variant="dense">
                 <Stack direction="row" width="100%" justifyContent="space-between">
