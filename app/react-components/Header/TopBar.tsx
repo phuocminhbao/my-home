@@ -7,30 +7,28 @@ const TopBar = () => {
     const { isMobile } = useLayoutSize();
     const navigate = useNavigate();
     return (
-        <>
-            <AppBar
-                position="fixed"
-                variant="outlined"
-                elevation={0}
-                enableColorOnDark={true}
-                sx={[(theme) => ({ backgroundColor: theme.palette.background.default })]}
-            >
-                <Toolbar variant="dense">
-                    <Stack direction="row" width="100%" justifyContent="space-between">
-                        <Button
-                            variant="text"
-                            disableElevation
-                            onClick={() => {
-                                navigate('/');
-                            }}
-                        >
-                            <Typography variant="h6">VĂN TRỊ</Typography>
-                        </Button>
-                        {isMobile ? <DrawerMenu /> : <BreadcrumbsMenu />}
-                    </Stack>
-                </Toolbar>
-            </AppBar>
-        </>
+        <AppBar
+            position="static"
+            variant="outlined"
+            elevation={0}
+            enableColorOnDark={true}
+            sx={[(theme) => ({ backgroundColor: theme.palette.background.default })]}
+        >
+            <Toolbar variant="dense">
+                <Stack direction="row" width="100%" justifyContent="space-between">
+                    <Button
+                        variant="text"
+                        disableElevation
+                        onClick={() => {
+                            navigate('/');
+                        }}
+                    >
+                        <Typography variant="h5">VĂN TRỊ</Typography>
+                    </Button>
+                    {isMobile ? <DrawerMenu /> : <BreadcrumbsMenu />}
+                </Stack>
+            </Toolbar>
+        </AppBar>
     );
 };
 

@@ -80,7 +80,6 @@ const DrawerMenu = () => {
     const [isOpenDrawer, setIsOpenDrawer] = useState(false);
     const { translate } = useTranslation();
     return (
-        // <Box alignContent="center">
         <>
             <IconButton
                 onClick={() => {
@@ -109,7 +108,6 @@ const DrawerMenu = () => {
                 </List>
             </Drawer>
         </>
-        // </Box>
     );
 };
 

@@ -7,13 +7,13 @@ const MenuItemWithIcon = ({
     text
 }: {
     handleClick: MouseEventHandler<HTMLLIElement>;
-    icon: JSX.Element;
-    text: string;
+    icon?: JSX.Element;
+    text?: string;
 }) => {
     return (
         <MenuItem onClick={handleClick}>
-            <ListItemIcon>{icon}</ListItemIcon>
-            <ListItemText>{text}</ListItemText>
+            {icon && <ListItemIcon>{icon}</ListItemIcon>}
+            {text && <ListItemText>{text}</ListItemText>}
         </MenuItem>
     );
 };
