@@ -1,74 +1,33 @@
-import { Box, Button, Container, Paper, Stack } from '@mui/material';
+import { Container, Paper } from '@mui/material';
 import { themeOptions } from '~/config/mui.config';
 import usePageSettingContext from '~/hook/usePageSettingContext';
-import NavBar from '~/react-components/Header/NavBar';
-import TopBar from '~/react-components/Header/TopBar';
+import NavBar from '~/react-components/Header/NavBar/NavBar';
+import TopBar from '~/react-components/Header/TopBar/TopBar';
 
 const GeneralLayout = ({ children }: { children: React.ReactNode }) => {
     const [{ theme }] = usePageSettingContext();
     const backgroundColor = themeOptions[theme].palette?.background?.default;
     return (
-        <Box position="relative">
-            <Stack direction={'column'} height={'100%'} width="100%" position="absolute">
-                <TopBar />
-                <NavBar />
-            </Stack>
-            <Container maxWidth="lg" sx={{ backgroundColor: backgroundColor }}>
-                <Paper square elevation={0}>
+        <>
+            <TopBar />
+            <NavBar />
+            <Container
+                disableGutters
+                maxWidth={false}
+                sx={{
+                    backgroundColor: backgroundColor,
+                    padding: '2rem',
+                    margin: 0,
+                    width: '100%'
+                }}
+                component="main"
+            >
+                <Paper square elevation={1}>
                     {children}
-                    {children}
-                    {children}
-                    {children}
-                    <Button>Hey</Button>
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    {children}
-                    <div>Footer</div>
                 </Paper>
             </Container>
-        </Box>
+            <div>Footer</div>
+        </>
     );
 };
 

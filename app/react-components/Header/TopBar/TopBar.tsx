@@ -9,7 +9,7 @@ const TopBar = () => {
     return (
         <AppBar
             id="topbar"
-            position="static"
+            position="relative"
             variant="outlined"
             elevation={0}
             enableColorOnDark={true}

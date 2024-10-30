@@ -13,11 +13,11 @@ import {
 import { useState } from 'react';
 import usePageSettingContext from '~/hook/usePageSettingContext';
 import useTranslation from '~/hook/useTranslation';
-import VNFlag from './CountryFlagIcon/VNFlag';
-import USFlag from './CountryFlagIcon/USFlag';
-import MenuItemWithIcon from '../MenuItemWithIcon/MenuItemWithIcon';
+import VNFlag from '../CountryFlagIcon/VNFlag';
+import USFlag from '../CountryFlagIcon/USFlag';
 import useLayoutSize from '~/hook/useLayoutSize';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import MenuItemWithIcon from '~/react-components/MenuItemWithIcon/MenuItemWithIcon';
 
 const LanguageChange = () => {
     const { translate } = useTranslation();
