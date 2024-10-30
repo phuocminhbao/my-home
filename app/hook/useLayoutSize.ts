@@ -3,25 +3,31 @@ import { useTheme } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
 
 const useLayoutSize = () => {
-    const theme = useTheme();
+    const { breakpoints } = useTheme();
     const [sizeInfo, setSizeInfo] = useState({
         isMobile: false,
         isTablet: false,
         isLaptop: false,
-        isDesktop: false
+        isDesktop: false,
+        isDesktopLarge: false,
+        breakPoints: breakpoints.values
     });
-    const isMobile = useMediaQuery(theme.breakpoints.up('xs'));
-    const isTablet = useMediaQuery(theme.breakpoints.up('sm'));
-    const isLaptop = useMediaQuery(theme.breakpoints.up('md'));
-    const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
+    const isMobile = useMediaQuery(breakpoints.up('mobile'));
+    const isTablet = useMediaQuery(breakpoints.up('tablet'));
+    const isLaptop = useMediaQuery(breakpoints.up('laptop'));
+    const isDesktop = useMediaQuery(breakpoints.up('desktop'));
+    const isDesktopLarge = useMediaQuery(breakpoints.up('desktopLarge'));
+
     useEffect(() => {
         setSizeInfo({
             isMobile: isMobile && !isTablet,
             isTablet: isTablet && !isLaptop,
             isLaptop: isLaptop && !isDesktop,
-            isDesktop: isDesktop
+            isDesktop: isDesktop && !isDesktopLarge,
+            isDesktopLarge,
+            breakPoints: breakpoints.values
         });
-    }, [isDesktop, isLaptop, isMobile, isTablet]);
+    }, [breakpoints.values, isDesktop, isDesktopLarge, isLaptop, isMobile, isTablet]);
     return sizeInfo;
 };
 

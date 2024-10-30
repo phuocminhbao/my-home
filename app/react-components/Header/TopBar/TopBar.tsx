@@ -4,7 +4,10 @@ import { useNavigate } from '@remix-run/react';
 import { DrawerMenu, BreadcrumbsMenu } from './AppMenu';
 
 const TopBar = () => {
-    const { isMobile } = useLayoutSize();
+    const {
+        isMobile,
+        breakPoints: { desktopLarge }
+    } = useLayoutSize();
     const navigate = useNavigate();
     return (
         <AppBar
@@ -20,8 +23,18 @@ const TopBar = () => {
                 })
             ]}
         >
-            <Toolbar variant="dense">
-                <Stack direction="row" width="100%" justifyContent="space-between">
+            <Toolbar
+                variant="dense"
+                sx={{
+                    justifyContent: 'center'
+                }}
+            >
+                <Stack
+                    direction="row"
+                    width="100%"
+                    justifyContent="space-between"
+                    maxWidth={desktopLarge}
+                >
                     <Button
                         variant="text"
                         disableElevation

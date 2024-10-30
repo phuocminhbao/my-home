@@ -1,8 +1,24 @@
-import type { ThemeOptions } from '@mui/material';
+import type { Breakpoints, ThemeOptions } from '@mui/material';
 import { createTheme } from '@mui/material';
+
+declare module '@mui/material/styles' {
+    interface BreakpointOverrides {
+        xs: false; // removes the `xs` breakpoint
+        sm: false;
+        md: false;
+        lg: false;
+        xl: false;
+        mobile: true; // adds the `mobile` breakpoint
+        tablet: true;
+        laptop: true;
+        desktop: true;
+        desktopLarge: true;
+    }
+}
 
 const typography = {
     fontFamily: [
+        'Be Vietnam Pro',
         'Roboto',
         'Open Sans',
         'Noto Sans',
@@ -74,6 +90,22 @@ const components: ThemeOptions['components'] = {
     }
 };
 
+const breakpoints = {
+    values: {
+        mobile: 0,
+        tablet: 640,
+        laptop: 1024,
+        desktop: 1200,
+        desktopLarge: 1440
+    }
+} as Breakpoints;
+
+const commonSetting = {
+    typography,
+    components,
+    breakpoints
+};
+
 const themeOptions = {
     light: {
         palette: {
@@ -96,8 +128,7 @@ const themeOptions = {
                 main: '#333333' // Optional dark gray for subtle highlights
             }
         },
-        typography,
-        components
+        ...commonSetting
     } as ThemeOptions,
     dark: {
         palette: {
@@ -118,8 +149,7 @@ const themeOptions = {
                 disabled: '#666666' // Dim gray for disabled elements
             }
         },
-        typography,
-        components
+        ...commonSetting
     } as ThemeOptions
 };
 

@@ -8,7 +8,10 @@ import NavbarDropDown from './NavbarDropDown';
 
 const NavBar = () => {
     const { translate } = useTranslation();
-    const { isMobile } = useLayoutSize();
+    const {
+        isMobile,
+        breakPoints: { desktopLarge }
+    } = useLayoutSize();
     const [activeItem, setActiveItem] = useState<NavBarItem | undefined>();
     const [isOpenDropdown, setIsOpenDropdown] = useState(false);
     const ref = useRef<HTMLElement>(null);
@@ -69,8 +72,8 @@ const NavBar = () => {
                 sx={[(theme) => ({ backgroundColor: theme.palette.background.default })]}
                 ref={ref}
             >
-                <Toolbar>
-                    <Stack direction="column" width="100%">
+                <Toolbar sx={{ justifyContent: 'center' }}>
+                    <Stack direction="column" width="100%" maxWidth={desktopLarge}>
                         <Stack direction="row" justifyContent="space-evenly" width="100%">
                             {Object.entries(navBarItemProps).map((item) => {
                                 const [key, props] = item;
