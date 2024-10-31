@@ -1,9 +1,12 @@
+import { Stack } from '@mui/material';
 import HeroSection from './HeroSection';
+import SlideShowSection from './SlideShowSection';
 
 const HomePage = () => {
     return (
-        <>
+        <Stack direction="column" spacing={5} position={'relative'}>
             <HeroSection />
+            <SlideShowSection />
             <div>Hero Section 1111111111</div>
             <div>Featured Product Categories</div>
             <div>Featured Products Section</div>
@@ -68,7 +71,7 @@ const HomePage = () => {
             <div>Testimonials Section</div>
             <div>Blog Highlights</div>
             <div>Call to Action</div>
-        </>
+        </Stack>
     );
 };
 

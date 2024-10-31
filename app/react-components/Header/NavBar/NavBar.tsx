@@ -23,6 +23,14 @@ const NavBar = () => {
         setActiveItem(undefined);
     };
 
+    const openOrCloseDropdown = (target: NavBarItem) => {
+        if (activeItem === target && isOpenDropdown) {
+            closeDropdown();
+            return;
+        }
+        openDropdown();
+    };
+
     if (isMobile) {
         return <></>;
     }
@@ -36,7 +44,7 @@ const NavBar = () => {
             isActive: activeItem === 'tileCategories',
             onClick: () => {
                 setActiveItem('tileCategories');
-                openDropdown();
+                openOrCloseDropdown('tileCategories');
             }
         },
         granite: {
@@ -44,7 +52,7 @@ const NavBar = () => {
             isActive: activeItem === 'granite',
             onClick: () => {
                 setActiveItem('granite');
-                openDropdown();
+                openOrCloseDropdown('granite');
             }
         },
         project: {
@@ -52,7 +60,7 @@ const NavBar = () => {
             isActive: activeItem === 'project',
             onClick: () => {
                 setActiveItem('project');
-                openDropdown();
+                openOrCloseDropdown('project');
             }
         },
         jobs: {

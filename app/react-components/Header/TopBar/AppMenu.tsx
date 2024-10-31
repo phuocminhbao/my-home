@@ -1,5 +1,5 @@
 import type { SvgIconComponent } from '@mui/icons-material';
-import { HelpOutline, LocationOnOutlined, MenuTwoTone } from '@mui/icons-material';
+import { HelpOutline, LocationOnOutlined, MenuTwoTone, Phone } from '@mui/icons-material';
 import {
     Drawer,
     List,
@@ -11,7 +11,8 @@ import {
     ListItemButton,
     ListItemIcon,
     ListItemText,
-    Tooltip
+    Tooltip,
+    Typography
 } from '@mui/material';
 import { useState } from 'react';
 import LanguageChange from './LanguageChange';
@@ -21,19 +22,24 @@ import useTranslation from '~/hook/useTranslation';
 const BreadcrumbMenuIcon = ({
     Icon,
     onClick,
-    tooltipTitle
+    tooltipTitle,
+    children
 }: {
     Icon: SvgIconComponent;
     tooltipTitle: string;
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
+    children?: React.ReactNode;
 }) => {
     return (
-        <Stack>
+        <Stack direction="row">
             <Tooltip title={tooltipTitle}>
                 <IconButton onClick={onClick}>
                     <Icon color="primary" fontSize="medium" />
                 </IconButton>
             </Tooltip>
+            <Typography variant="body2" alignContent="center">
+                {children}
+            </Typography>
         </Stack>
     );
 };
@@ -43,6 +49,9 @@ const BreadcrumbsMenu = () => {
     return (
         <Stack direction="row">
             <Breadcrumbs>
+                <BreadcrumbMenuIcon Icon={Phone} tooltipTitle="">
+                    0903605306/0907050502
+                </BreadcrumbMenuIcon>
                 <BreadcrumbMenuIcon
                     Icon={LocationOnOutlined}
                     tooltipTitle={translate('top_bar_find_us')}

@@ -103,7 +103,7 @@ export function ErrorBoundary() {
 export default function App() {
     const [pageSetting, setPageSetting] = useState<PageSetting>({
         theme: 'light',
-        language: 'vietnamese'
+        language: 'english'
     });
     // Handle weird comma appear in body
     useEffect(() => {
