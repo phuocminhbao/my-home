@@ -1,9 +1,7 @@
-import NavigateBefore from '@mui/icons-material/NavigateBefore';
-import NavigateNext from '@mui/icons-material/NavigateNext';
 import type { CarouselNavProps, CarouselProps } from './types';
 import { useEffect, useRef } from 'react';
-import type { SxProps } from '@mui/system';
-import type { Theme } from '@mui/material';
+import type { Theme, SxProps } from '@mui/material';
+import { NavigateNext, NavigateBefore } from '@mui/icons-material';
 
 export interface SanitizedCarouselProps extends CarouselProps {
     sx: SxProps<Theme>;

@@ -1,4 +1,4 @@
-import FiberManualRecord from '@mui/icons-material/FiberManualRecord';
+import { FiberManualRecord } from '@mui/icons-material';
 import { IconButton, styled } from '@mui/material';
 
 export const StyledRoot = styled('div')({

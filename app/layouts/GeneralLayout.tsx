@@ -17,13 +17,14 @@ const GeneralLayout = ({ children }: { children: React.ReactNode }) => {
                 maxWidth={false}
                 sx={{
                     backgroundColor: backgroundColor,
-                    padding: '2rem',
                     margin: 0,
                     width: '100%'
                 }}
                 component="main"
             >
-                <Container maxWidth={'desktopLarge'}>{children}</Container>
+                <Container maxWidth={'desktopLarge'} disableGutters>
+                    {children}
+                </Container>
             </Container>
             <div>Footer</div>
         </>

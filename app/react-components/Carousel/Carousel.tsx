@@ -138,7 +138,6 @@ export const Carousel = (props: CarouselProps) => {
             onBlur={() => {
                 stopAutoPlayOnHover && setPaused(false);
             }}
-            // style={{height: height}} // <-- number | undefined
         >
             <StyledItemWrapper style={{ height: height ? height : childrenHeight }}>
                 {Array.isArray(children) ? (

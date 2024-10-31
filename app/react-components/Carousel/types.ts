@@ -1,6 +1,5 @@
 /* eslint-disable max-len */
-import type { SxProps } from '@mui/system';
-import type { Theme } from '@mui/material/styles';
+import type { SxProps, Theme } from '@mui/material';
 
 export interface CarouselNavProps extends React.AriaAttributes {
     className?: string;
