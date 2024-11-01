@@ -18,10 +18,10 @@ const SlideShowSection = () => {
         <Card>
             <CardMedia>
                 <Carousel
-                    navButtonsAlwaysInvisible
                     animation="slide"
-                    autoPlay={false}
                     height={getCarouselHeight()}
+                    showCustomNavigation
+                    autoPlay
                 >
                     <FullScreenImage
                         src="https://placehold.co/2880x1400"
@@ -30,7 +30,19 @@ const SlideShowSection = () => {
                         href="/"
                     />
                     <FullScreenImage
-                        src="https://placehold.co/2880x1400"
+                        src="https://placehold.co/2881x1400"
+                        mobileImgSrc="https://placehold.co/747x747"
+                        isLinkImg
+                        href="/"
+                    />
+                    <FullScreenImage
+                        src="https://placehold.co/2882x1400"
+                        mobileImgSrc="https://placehold.co/747x747"
+                        isLinkImg
+                        href="/"
+                    />
+                    <FullScreenImage
+                        src="https://placehold.co/2883x1400"
                         mobileImgSrc="https://placehold.co/747x747"
                         isLinkImg
                         href="/"

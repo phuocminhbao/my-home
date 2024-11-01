@@ -18,7 +18,7 @@ const Footer = () => {
     const ContentCol = () => (
         <Stack direction="column" alignItems="center" useFlexGap>
             <Typography variant="h4" color={contentColor}>
-                {`Header ${_.random(100000, false)}`}
+                {`Header 44444444`}
             </Typography>
             <List>
                 {contents.map((content) => {

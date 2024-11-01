@@ -13,10 +13,12 @@ import roboto300 from '@fontsource/roboto/300.css?url';
 import roboto400 from '@fontsource/roboto/400.css?url';
 import roboto500 from '@fontsource/roboto/500.css?url';
 import roboto700 from '@fontsource/roboto/700.css?url';
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import styles from './styles.css?url';
 import { RecoilRoot } from 'recoil';
 import GlobalThemeProvider from './contexts/GlobalThemeProvider';
+import { CircularProgress } from '@mui/material';
+import InitializeSetUp from './react-components/InitializeSetUp/InitializeSetUp';
 
 export const links: LinksFunction = () => [
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -122,9 +124,13 @@ export default function App() {
             </head>
             <body>
                 <RecoilRoot>
-                    <GlobalThemeProvider>
-                        <Outlet />
-                    </GlobalThemeProvider>
+                    <Suspense fallback={<CircularProgress color="inherit" />}>
+                        <GlobalThemeProvider>
+                            <InitializeSetUp>
+                                <Outlet />
+                            </InitializeSetUp>
+                        </GlobalThemeProvider>
+                    </Suspense>
                 </RecoilRoot>
                 <ScrollRestoration />
                 <Scripts />

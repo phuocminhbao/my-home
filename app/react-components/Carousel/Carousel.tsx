@@ -4,6 +4,7 @@ import { Indicators } from './Indicators';
 import { sanitizeProps, useInterval } from './util';
 import { StyledButtonWrapper, StyledIconButton, StyledItemWrapper, StyledRoot } from './Styled';
 import { useEffect, useState } from 'react';
+import CarouselControls from './CustomCarouselControls';
 
 export const Carousel = (props: CarouselProps) => {
     const [state, setState] = useState({
@@ -17,16 +18,16 @@ export const Carousel = (props: CarouselProps) => {
     const [paused, setPaused] = useState<boolean>(false);
 
     const sanitizedProps = sanitizeProps(props);
+    const [autoPlay, setAutoPlay] = useState(sanitizedProps.autoPlay);
 
     // componentDidMount & onIndexChange
     useEffect(() => {
         const { index, changeOnFirstRender } = sanitizedProps;
         setNext(index, true, changeOnFirstRender);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [sanitizedProps.index]);
 
     useInterval(() => {
-        const { autoPlay } = sanitizedProps;
-
         if (autoPlay && !paused) {
             next(undefined);
         }
@@ -108,7 +109,8 @@ export const Carousel = (props: CarouselProps) => {
         indicatorContainerProps,
         indicatorIconButtonProps,
         activeIndicatorIconButtonProps,
-        IndicatorIcon
+        IndicatorIcon,
+        showCustomNavigation
     } = sanitizedProps;
 
     const showButton = (next = true) => {
@@ -221,16 +223,31 @@ export const Carousel = (props: CarouselProps) => {
             )}
 
             {indicators ? (
-                <Indicators
-                    length={Array.isArray(children) ? children.length : 0}
-                    active={state.active}
-                    press={setNext}
-                    indicatorContainerProps={indicatorContainerProps}
-                    indicatorIconButtonProps={indicatorIconButtonProps}
-                    activeIndicatorIconButtonProps={activeIndicatorIconButtonProps}
-                    IndicatorIcon={IndicatorIcon}
-                />
-            ) : null}
+                showCustomNavigation ? (
+                    <CarouselControls
+                        active={state.active + 1}
+                        length={Array.isArray(children) ? children.length : 0}
+                        isPaused={autoPlay}
+                        onNext={next}
+                        onPrevious={prev}
+                        resumeOrPauseAutoPlay={() => {
+                            setAutoPlay((pre) => !pre);
+                        }}
+                    />
+                ) : (
+                    <Indicators
+                        length={Array.isArray(children) ? children.length : 0}
+                        active={state.active}
+                        press={setNext}
+                        indicatorContainerProps={indicatorContainerProps}
+                        indicatorIconButtonProps={indicatorIconButtonProps}
+                        activeIndicatorIconButtonProps={activeIndicatorIconButtonProps}
+                        IndicatorIcon={IndicatorIcon}
+                    />
+                )
+            ) : (
+                <></>
+            )}
         </StyledRoot>
     );
 };

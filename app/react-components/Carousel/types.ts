@@ -115,4 +115,6 @@ export interface CarouselProps {
     /** Defines the element inside the indicator `IconButton`s Refer to [MaterialUI Button Documentation](https://material-ui.com/components/buttons/) for more examples.
      * It is advised to use Material UI Icons, but you could use any element (`<img/>`, `<div/>`, ...) you like.*/
     IndicatorIcon?: React.ReactNode;
+
+    showCustomNavigation?: boolean;
 }

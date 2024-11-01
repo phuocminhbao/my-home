@@ -57,6 +57,7 @@ export interface SanitizedCarouselProps extends CarouselProps {
     changeOnFirstRender: boolean;
     next: (now?: number, previous?: number) => any;
     prev: (now?: number, previous?: number) => any;
+    showCustomNavigation: boolean;
 }
 
 export interface SanitizedCarouselNavProps extends CarouselNavProps {
@@ -126,7 +127,8 @@ export const sanitizeProps = (props: CarouselProps): SanitizedCarouselProps => {
         changeOnFirstRender:
             props.changeOnFirstRender !== undefined ? props.changeOnFirstRender : false,
         next: props.next !== undefined ? props.next : () => {},
-        prev: props.prev !== undefined ? props.prev : () => {}
+        prev: props.prev !== undefined ? props.prev : () => {},
+        showCustomNavigation: props.showCustomNavigation ? props.showCustomNavigation : false
     };
 };
 
