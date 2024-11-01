@@ -9,7 +9,6 @@ import NavbarDropDown from './NavbarDropDown';
 const NavBar = () => {
     const { translate } = useTranslation();
     const {
-        isMobile,
         breakPoints: { desktopLarge }
     } = useLayoutSize();
     const [activeItem, setActiveItem] = useState<NavBarItem | undefined>();
@@ -30,10 +29,6 @@ const NavBar = () => {
         }
         openDropdown();
     };
-
-    if (isMobile) {
-        return <></>;
-    }
 
     const navBarItemProps: Record<NavBarItem, NavBarItemProps> = {
         about: {
@@ -77,7 +72,14 @@ const NavBar = () => {
                 elevation={0}
                 component="nav"
                 enableColorOnDark={true}
-                sx={[(theme) => ({ backgroundColor: theme.palette.background.default })]}
+                sx={[
+                    (theme) => ({
+                        backgroundColor: theme.palette.background.default,
+                        [theme.breakpoints.down('tablet')]: {
+                            display: 'none'
+                        }
+                    })
+                ]}
                 ref={ref}
             >
                 <Toolbar sx={{ justifyContent: 'center' }}>

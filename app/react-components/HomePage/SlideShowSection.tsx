@@ -1,10 +1,13 @@
 import FullScreenImage from '../CustomImage/FullScreenImage';
 import Carousel from '../Carousel/Carousel';
-import { Card, CardActions, CardContent, CardMedia } from '@mui/material';
+import { Card, CardActions, CardContent, CardMedia, Skeleton } from '@mui/material';
 import useLayoutSize from '~/hooks/useLayoutSize';
+import { useRecoilValue } from 'recoil';
+import { isGlobalLoadingAtom } from '~/recoil/atoms/isGlobalLoadingAtom';
 
 const SlideShowSection = () => {
     const { isMobile, isTablet } = useLayoutSize();
+    const isLoading = useRecoilValue(isGlobalLoadingAtom);
     const getCarouselHeight = () => {
         if (isMobile) {
             return '250px';
@@ -14,6 +17,9 @@ const SlideShowSection = () => {
         }
         return '450px';
     };
+    if (isLoading) {
+        return <Skeleton variant="rectangular" width="100%" height="20rem" />;
+    }
     return (
         <Card>
             <CardMedia>

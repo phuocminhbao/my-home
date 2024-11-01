@@ -1,4 +1,5 @@
 import { Box, Stack, Typography, Container } from '@mui/material';
+import { useNavigate } from '@remix-run/react';
 import useLayoutSize from '~/hooks/useLayoutSize';
 
 const imageRatioMap: Record<string, string> = {
@@ -21,11 +22,16 @@ type FullScreenImageProps = {
 } & LinkProps;
 
 const FullScreenImage = (props: FullScreenImageProps) => {
+    const navigate = useNavigate();
     const { src, mobileImgSrc = '', isLinkImg, title, caption, alt, aspectRatio } = props;
     const linkProps = isLinkImg
         ? {
               component: 'a',
-              href: props.href
+              onClick: () => {
+                  if (isLinkImg) {
+                      navigate(props.href);
+                  }
+              }
           }
         : {};
     const layout = useLayoutSize();

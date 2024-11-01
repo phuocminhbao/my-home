@@ -5,7 +5,6 @@ import { DrawerMenu, BreadcrumbsMenu } from './AppMenu';
 
 const TopBar = () => {
     const {
-        isMobile,
         breakPoints: { desktopLarge }
     } = useLayoutSize();
     const navigate = useNavigate();
@@ -44,7 +43,8 @@ const TopBar = () => {
                     >
                         <Typography variant="h5">VĂN TRỊ</Typography>
                     </Button>
-                    {isMobile ? <DrawerMenu /> : <BreadcrumbsMenu />}
+                    <DrawerMenu />
+                    <BreadcrumbsMenu />
                 </Stack>
             </Toolbar>
         </AppBar>

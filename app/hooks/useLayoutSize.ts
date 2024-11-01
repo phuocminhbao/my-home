@@ -1,12 +1,9 @@
 import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
-import { useSetRecoilState } from 'recoil';
-import { isGlobalLoadingAtom } from '~/recoil/atoms/isGlobalLoadingAtom';
 
 const useLayoutSize = () => {
     const { breakpoints } = useTheme();
-    const setIsLoading = useSetRecoilState(isGlobalLoadingAtom);
     const [sizeInfo, setSizeInfo] = useState({
         isMobile: false,
         isTablet: false,
@@ -22,11 +19,6 @@ const useLayoutSize = () => {
     const isDesktopLarge = useMediaQuery(breakpoints.up('desktopLarge'));
 
     useEffect(() => {
-        const isDetectedScreenSize =
-            isDesktop || isMobile || isLaptop || isTablet || isDesktopLarge;
-        if (isDetectedScreenSize) {
-            setIsLoading(false);
-        }
         setSizeInfo({
             isMobile: isMobile && !isTablet,
             isTablet: isTablet && !isLaptop,

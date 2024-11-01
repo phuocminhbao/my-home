@@ -6,6 +6,7 @@ import TopBar from '~/react-components/Header/TopBar/TopBar';
 const GeneralLayout = ({ children }: { children: React.ReactNode }) => {
     const { palette } = useTheme();
     const backgroundColor = palette?.background?.default;
+
     return (
         <>
             <TopBar />

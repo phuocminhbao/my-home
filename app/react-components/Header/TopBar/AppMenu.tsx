@@ -47,7 +47,16 @@ const BreadcrumbsMenu = () => {
     const { translate } = useTranslation();
 
     return (
-        <Stack direction="row">
+        <Stack
+            direction="row"
+            sx={[
+                (theme) => ({
+                    [theme.breakpoints.down('tablet')]: {
+                        display: 'none'
+                    }
+                })
+            ]}
+        >
             <Breadcrumbs>
                 <BreadcrumbMenuIcon Icon={Phone} tooltipTitle="">
                     0903605306/0907050502
@@ -94,6 +103,13 @@ const DrawerMenu = () => {
                 onClick={() => {
                     setIsOpenDrawer(true);
                 }}
+                sx={[
+                    (theme) => ({
+                        [theme.breakpoints.up('tablet')]: {
+                            display: 'none'
+                        }
+                    })
+                ]}
             >
                 <MenuTwoTone color="primary" />
             </IconButton>

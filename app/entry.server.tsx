@@ -49,7 +49,7 @@ function handleBotRequest(
                     const stream = createReadableStreamFromReadable(body);
 
                     responseHeaders.set('Content-Type', 'text/html');
-
+                    responseHeaders.set('Accept-CH', 'Sec-CH-UA-Mobile, Sec-CH-UA-Platform');
                     resolve(
                         new Response(stream, {
                             headers: responseHeaders,

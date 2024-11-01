@@ -1,10 +1,23 @@
-import Loading from '../Loading/Loading';
+import { useLayoutEffect } from 'react';
+import { useSetRecoilState } from 'recoil';
 import { isGlobalLoadingAtom } from '~/recoil/atoms/isGlobalLoadingAtom';
-import { useRecoilValue } from 'recoil';
+import Loading from '../Loading/Loading';
 
 const InitializeSetUp = ({ children }: { children: React.ReactNode }) => {
-    const isLoading = useRecoilValue(isGlobalLoadingAtom);
-    return isLoading ? <Loading /> : children;
+    const setIsLoading = useSetRecoilState(isGlobalLoadingAtom);
+
+    useLayoutEffect(() => {
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 100);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    return (
+        <>
+            {children}
+            <Loading />
+        </>
+    );
 };
 
 export default InitializeSetUp;

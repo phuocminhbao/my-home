@@ -1,7 +1,14 @@
-import { Box } from '@mui/material';
+import { Box, Skeleton } from '@mui/material';
 import FullScreenImage from '../CustomImage/FullScreenImage';
+import { useRecoilValue } from 'recoil';
+import { isGlobalLoadingAtom } from '~/recoil/atoms/isGlobalLoadingAtom';
 
 const HeroSection = () => {
+    const isLoading = useRecoilValue(isGlobalLoadingAtom);
+
+    if (isLoading) {
+        return <Skeleton variant="rectangular" width="100%" height="30rem" />;
+    }
     return (
         <Box position="relative">
             <FullScreenImage
