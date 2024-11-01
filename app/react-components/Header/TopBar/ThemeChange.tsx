@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import { ListItem, Stack, styled, Switch } from '@mui/material';
 import { useRecoilState } from 'recoil';
-import useLayoutSize from '~/hook/useLayoutSize';
+import useLayoutSize from '~/hooks/useLayoutSize';
 import { globalThemeAtom } from '~/recoil/atoms/globalThemeAtom';
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({

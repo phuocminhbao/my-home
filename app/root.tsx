@@ -16,7 +16,7 @@ import roboto700 from '@fontsource/roboto/700.css?url';
 import { useEffect } from 'react';
 import styles from './styles.css?url';
 import { RecoilRoot } from 'recoil';
-import GlobalThemeProvider from './context/GlobalThemeProvider';
+import GlobalThemeProvider from './contexts/GlobalThemeProvider';
 
 export const links: LinksFunction = () => [
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },

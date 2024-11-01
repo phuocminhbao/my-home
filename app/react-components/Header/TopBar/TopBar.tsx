@@ -1,5 +1,5 @@
 import { AppBar, Toolbar, Stack, Typography, Button } from '@mui/material';
-import useLayoutSize from '~/hook/useLayoutSize';
+import useLayoutSize from '~/hooks/useLayoutSize';
 import { useNavigate } from '@remix-run/react';
 import { DrawerMenu, BreadcrumbsMenu } from './AppMenu';
 

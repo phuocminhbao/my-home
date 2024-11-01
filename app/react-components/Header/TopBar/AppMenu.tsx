@@ -17,7 +17,7 @@ import {
 import { useState } from 'react';
 import LanguageChange from './LanguageChange';
 import ThemeChange from './ThemeChange';
-import useTranslation from '~/hook/useTranslation';
+import useTranslation from '~/hooks/useTranslation';
 
 const BreadcrumbMenuIcon = ({
     Icon,

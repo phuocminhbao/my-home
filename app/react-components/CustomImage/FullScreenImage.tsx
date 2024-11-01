@@ -1,5 +1,5 @@
 import { Box, Stack, Typography, Container } from '@mui/material';
-import useLayoutSize from '~/hook/useLayoutSize';
+import useLayoutSize from '~/hooks/useLayoutSize';
 
 const imageRatioMap: Record<string, string> = {
     isMobile: '1',

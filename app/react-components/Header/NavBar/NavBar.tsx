@@ -1,7 +1,7 @@
 import { AppBar, Backdrop, Fade, Popper, Stack, Toolbar } from '@mui/material';
 import { useRef, useState } from 'react';
-import useLayoutSize from '~/hook/useLayoutSize';
-import useTranslation from '~/hook/useTranslation';
+import useLayoutSize from '~/hooks/useLayoutSize';
+import useTranslation from '~/hooks/useTranslation';
 import NavBarItem from './NavBarItem';
 import type { NavBarItemProps } from './NavBarItem';
 import NavbarDropDown from './NavbarDropDown';

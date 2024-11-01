@@ -1,7 +1,7 @@
 import FullScreenImage from '../CustomImage/FullScreenImage';
 import Carousel from '../Carousel/Carousel';
 import { Card, CardActions, CardContent, CardMedia } from '@mui/material';
-import useLayoutSize from '~/hook/useLayoutSize';
+import useLayoutSize from '~/hooks/useLayoutSize';
 
 const SlideShowSection = () => {
     const { isMobile, isTablet } = useLayoutSize();
