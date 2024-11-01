@@ -11,20 +11,20 @@ import {
     ButtonGroup
 } from '@mui/material';
 import { useState } from 'react';
-import usePageSettingContext from '~/hook/usePageSettingContext';
 import useTranslation from '~/hook/useTranslation';
 import VNFlag from '../CountryFlagIcon/VNFlag';
 import USFlag from '../CountryFlagIcon/USFlag';
 import useLayoutSize from '~/hook/useLayoutSize';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import MenuItemWithIcon from '~/react-components/MenuItemWithIcon/MenuItemWithIcon';
+import { useRecoilState } from 'recoil';
+import { languageAtom } from '~/recoil/atoms/languageAtom';
 
 const LanguageChange = () => {
     const { translate } = useTranslation();
     const { isMobile } = useLayoutSize();
-    const [pageSetting, setPageSetting] = usePageSettingContext();
     const [isMobileOpen, setIsMobileOpen] = useState(false);
-    const { language } = pageSetting;
+    const [language, setLanguage] = useRecoilState(languageAtom);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const isOpen = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -47,18 +47,12 @@ const LanguageChange = () => {
     };
     const changeToVietnamese = () => {
         if (isVietnamese) return;
-        setPageSetting((preSetting) => ({
-            ...preSetting,
-            language: 'vietnamese'
-        }));
+        setLanguage('vietnamese');
         handleClose();
     };
     const changeToEnglish = () => {
         if (language === 'english') return;
-        setPageSetting((preSetting) => ({
-            ...preSetting,
-            language: 'english'
-        }));
+        setLanguage('english');
         handleClose();
     };
     const countryIcon = isVietnamese ? <VNFlag /> : <USFlag />;

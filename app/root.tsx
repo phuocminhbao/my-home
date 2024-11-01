@@ -13,12 +13,10 @@ import roboto300 from '@fontsource/roboto/300.css?url';
 import roboto400 from '@fontsource/roboto/400.css?url';
 import roboto500 from '@fontsource/roboto/500.css?url';
 import roboto700 from '@fontsource/roboto/700.css?url';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styles from './styles.css?url';
-import { ThemeProvider } from '@mui/material';
-import { createCustomTheme } from './config/mui.config';
-import type { PageSetting } from './context/PageSettingContext';
-import PageSettingContext from './context/PageSettingContext';
+import { RecoilRoot } from 'recoil';
+import GlobalThemeProvider from './context/GlobalThemeProvider';
 
 export const links: LinksFunction = () => [
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -101,10 +99,6 @@ export function ErrorBoundary() {
 }
 
 export default function App() {
-    const [pageSetting, setPageSetting] = useState<PageSetting>({
-        theme: 'light',
-        language: 'english'
-    });
     // Handle weird comma appear in body
     useEffect(() => {
         const body = document.body;
@@ -122,14 +116,16 @@ export default function App() {
             <head>
                 <meta charSet="utf-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <meta title="Văn Trị" />
+                <meta name="description" content="Đá hoa cương Văn Trị" />
                 <Links />
             </head>
             <body>
-                <ThemeProvider theme={createCustomTheme(pageSetting.theme)}>
-                    <PageSettingContext.Provider value={[pageSetting, setPageSetting]}>
+                <RecoilRoot>
+                    <GlobalThemeProvider>
                         <Outlet />
-                    </PageSettingContext.Provider>
-                </ThemeProvider>
+                    </GlobalThemeProvider>
+                </RecoilRoot>
                 <ScrollRestoration />
                 <Scripts />
             </body>

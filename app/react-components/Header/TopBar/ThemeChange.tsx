@@ -1,7 +1,8 @@
 /* eslint-disable max-len */
 import { ListItem, Stack, styled, Switch } from '@mui/material';
+import { useRecoilState } from 'recoil';
 import useLayoutSize from '~/hook/useLayoutSize';
-import usePageSettingContext from '~/hook/usePageSettingContext';
+import { globalThemeAtom } from '~/recoil/atoms/globalThemeAtom';
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     width: 62,
@@ -60,16 +61,13 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 
 const ThemeChange = () => {
-    const [pageSetting, setPageSetting] = usePageSettingContext();
+    const [theme, setTheme] = useRecoilState(globalThemeAtom);
     const { isMobile } = useLayoutSize();
     const ThemeSwitch = () => (
         <MaterialUISwitch
-            checked={pageSetting.theme === 'dark'}
+            checked={theme === 'dark'}
             onChange={() => {
-                setPageSetting((preSetting) => ({
-                    ...preSetting,
-                    theme: preSetting.theme === 'light' ? 'dark' : 'light'
-                }));
+                setTheme((preTheme) => (preTheme === 'light' ? 'dark' : 'light'));
             }}
             size="small"
         />

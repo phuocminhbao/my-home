@@ -1,13 +1,10 @@
-import { Container } from '@mui/material';
-import { themeOptions } from '~/config/mui.config';
-import usePageSettingContext from '~/hook/usePageSettingContext';
+import { Container, useTheme } from '@mui/material';
 import NavBar from '~/react-components/Header/NavBar/NavBar';
 import TopBar from '~/react-components/Header/TopBar/TopBar';
 
 const GeneralLayout = ({ children }: { children: React.ReactNode }) => {
-    const [{ theme }] = usePageSettingContext();
-
-    const backgroundColor = themeOptions[theme].palette?.background?.default;
+    const { palette } = useTheme();
+    const backgroundColor = palette?.background?.default;
     return (
         <>
             <TopBar />

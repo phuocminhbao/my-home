@@ -19,7 +19,7 @@ module.exports = {
         project: './tsconfig.json',
         tsconfigRootDir: __dirname
     },
-    plugins: ['react', 'jsx-a11y', 'prettier'],
+    plugins: ['react', 'jsx-a11y', 'prettier', 'react-hooks'],
     rules: {
         '@typescript-eslint/strict-boolean-expressions': 'off',
         'max-len': [
@@ -39,6 +39,13 @@ module.exports = {
                 anonymous: 'always',
                 named: 'never',
                 asyncArrow: 'always'
+            }
+        ],
+        'react-hooks/rules-of-hooks': 'error',
+        'react-hooks/exhaustive-deps': [
+            'warn',
+            {
+                additionalHooks: '(useRecoilCallback|useRecoilTransaction_UNSTABLE)'
             }
         ],
         'prettier/prettier': [
