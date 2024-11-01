@@ -1,4 +1,5 @@
 import { Container, useTheme } from '@mui/material';
+import Footer from '~/react-components/Footer/Footer';
 import NavBar from '~/react-components/Header/NavBar/NavBar';
 import TopBar from '~/react-components/Header/TopBar/TopBar';
 
@@ -23,7 +24,7 @@ const GeneralLayout = ({ children }: { children: React.ReactNode }) => {
                     {children}
                 </Container>
             </Container>
-            <div>Footer</div>
+            <Footer />
         </>
     );
 };
