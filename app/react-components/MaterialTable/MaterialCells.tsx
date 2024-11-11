@@ -4,8 +4,8 @@ import {
     KeyboardArrowUp,
     KeyboardArrowDown,
     Delete,
-    Add,
-    Menu as MenuIcon
+    Menu as MenuIcon,
+    AddCircleOutline
 } from '@mui/icons-material';
 import { TableCell, TextField, Menu, InputAdornment, Button, Grid2 } from '@mui/material';
 import _ from 'lodash';
@@ -208,26 +208,26 @@ const EventMenuCell = ({ rowId, isAccordion }: { rowId: number; isAccordion: boo
                 />
                 <MenuItemWithIcon
                     handleClick={() => handleClose('addAbove')}
-                    icon={<Add />}
+                    icon={<AddCircleOutline />}
                     text="Thêm 1 hàng bên trên"
                 />
                 <MenuItemWithIcon
                     handleClick={() => handleClose('addBelow')}
-                    icon={<Add />}
+                    icon={<AddCircleOutline />}
                     text="Thêm 1 hàng bên dưới"
                 />
 
                 {!isAccordion && (
                     <MenuItemWithIcon
                         handleClick={() => handleClose('addSumBelow')}
-                        icon={<Add />}
+                        icon={<AddCircleOutline />}
                         text="Thêm hàng tính CỘNG bên dưới"
                     />
                 )}
                 {!isAccordion && (
                     <MenuItemWithIcon
                         handleClick={() => handleClose('addMutipleBelow')}
-                        icon={<Add />}
+                        icon={<AddCircleOutline />}
                         text="Thêm hàng tính nhìu số bên dưới"
                     />
                 )}
@@ -262,7 +262,7 @@ const AccordionCell = ({
                 <Grid2 size={6}>
                     <Button>
                         {isDetailsEmpty ? (
-                            <Add
+                            <AddCircleOutline
                                 onClick={() => {
                                     addSubRowsById(rowId);
                                 }}

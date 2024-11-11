@@ -1,5 +1,4 @@
-import { useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { useMediaQuery, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 const useLayoutSize = () => {

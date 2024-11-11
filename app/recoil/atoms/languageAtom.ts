@@ -4,7 +4,7 @@ type Language = 'vietnamese' | 'english';
 
 const languageAtom = atom<Language>({
     key: 'languageAtom',
-    default: 'english'
+    default: 'vietnamese'
 });
 
 export { languageAtom };
