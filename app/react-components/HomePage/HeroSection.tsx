@@ -9,8 +9,9 @@ const HeroSection = () => {
     if (isLoading) {
         return <Skeleton variant="rectangular" width="100%" height="30rem" />;
     }
+
     return (
-        <Box position="relative">
+        <Box position="relative" paddingTop={4}>
             <FullScreenImage
                 src="https://placehold.co/2880x1400"
                 mobileImgSrc="https://placehold.co/747x747"

@@ -26,7 +26,7 @@ const CarouselControls = ({
                 <KeyboardArrowLeft color="primary" />
             </IconButton>
 
-            <Typography variant="body1" alignContent="center">{`${active} / ${length}`}</Typography>
+            <Typography variant="body2" alignContent="center">{`${active} / ${length}`}</Typography>
 
             <IconButton onClick={onNext}>
                 <KeyboardArrowRight color="primary" />

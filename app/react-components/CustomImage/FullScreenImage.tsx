@@ -51,7 +51,8 @@ const FullScreenImage = (props: FullScreenImageProps) => {
                     minHeight: '100%',
                     maxHeight: '100%',
                     minWidth: '100%',
-                    maxWidth: '100%'
+                    maxWidth: '100%',
+                    cursor: 'pointer'
                 }}
             ></Box>
             {(title || caption) && (

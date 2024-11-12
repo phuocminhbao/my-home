@@ -1,9 +1,19 @@
 import FullScreenImage from '../CustomImage/FullScreenImage';
 import Carousel from '../Carousel/Carousel';
-import { Card, CardActions, CardContent, CardMedia, Skeleton } from '@mui/material';
+import {
+    Box,
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    CardMedia,
+    Skeleton,
+    Typography
+} from '@mui/material';
 import useLayoutSize from '~/hooks/useLayoutSize';
 import { useRecoilValue } from 'recoil';
 import { isGlobalLoadingAtom } from '~/recoil/atoms/isGlobalLoadingAtom';
+import SectionContainer from '../SectionContainer/SectionContainer';
 
 const SlideShowSection = () => {
     const { isMobile, isTablet } = useLayoutSize();
@@ -21,7 +31,7 @@ const SlideShowSection = () => {
         return <Skeleton variant="rectangular" width="100%" height="20rem" />;
     }
     return (
-        <Card>
+        <Card variant="outlined" sx={{ border: 'none' }}>
             <CardMedia>
                 <Carousel
                     animation="slide"
@@ -55,8 +65,28 @@ const SlideShowSection = () => {
                     />
                 </Carousel>
             </CardMedia>
-            <CardContent>Content</CardContent>
-            <CardActions>Action</CardActions>
+            <CardContent sx={{ padding: 0 }}>
+                <SectionContainer disablePaddingTopBot>
+                    <Typography
+                        variant="h2"
+                        justifyContent="center"
+                        display="flex"
+                        paddingBottom={1}
+                    >
+                        Slide header
+                    </Typography>
+                    <Typography variant="body2" justifyContent="center" display="flex">
+                        Lorem Ipsum is simply dummy text of the printing
+                    </Typography>
+                </SectionContainer>
+            </CardContent>
+            <CardActions>
+                <Box width="100%" justifyContent="center" display="flex">
+                    <Button variant="contained" sx={{ textTransform: 'none' }}>
+                        <Typography variant="body2">Action</Typography>
+                    </Button>
+                </Box>
+            </CardActions>
         </Card>
     );
 };
