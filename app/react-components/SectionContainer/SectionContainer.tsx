@@ -2,7 +2,7 @@ import { Box } from '@mui/material';
 
 const SectionContainer = ({
     children,
-    disablePaddingTopBot
+    disablePaddingTopBot = true
 }: {
     children: React.ReactNode;
     disablePaddingTopBot?: boolean;

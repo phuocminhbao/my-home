@@ -5,7 +5,8 @@ import {
     TableCell,
     TableContainer,
     TableHead,
-    TableRow
+    TableRow,
+    useTheme
 } from '@mui/material';
 import { MIN_TABLE_WIDTH, colWidth, columnType } from '~/constants';
 import useMaterialData from './hook/useMaterialData';
@@ -61,6 +62,11 @@ const TableBodyContent = () => {
 };
 
 const MaterialTable = () => {
+    const {
+        breakpoints: {
+            values: { desktop }
+        }
+    } = useTheme();
     return (
         <Paper
             sx={{
@@ -72,7 +78,7 @@ const MaterialTable = () => {
                 <MaterialDataProvider>
                     <>
                         <TableContainer>
-                            <Table size="medium">
+                            <Table size="medium" stickyHeader sx={{ minWidth: desktop }}>
                                 <TableHeader />
                                 <TableBodyContent />
                             </Table>

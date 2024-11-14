@@ -22,12 +22,12 @@ export const colWidth: Record<string, string> = {
     event: '2%',
     index: '5%',
     category: '20%',
-    length: '12%',
-    width: '12%',
+    length: '11%',
+    width: '11%',
     quantity: '8%',
-    squareMeters: '9%',
-    price: '12%',
-    totalCost: '12%'
+    squareMeters: '5%',
+    price: '17%',
+    totalCost: '13%'
 };
 
 export const initDetailsRowData: ConstructionSettlement = {

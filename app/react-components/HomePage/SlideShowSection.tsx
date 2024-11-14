@@ -66,9 +66,9 @@ const SlideShowSection = () => {
                 </Carousel>
             </CardMedia>
             <CardContent sx={{ padding: 0 }}>
-                <SectionContainer disablePaddingTopBot>
+                <SectionContainer>
                     <Typography
-                        variant="h2"
+                        variant="h4"
                         justifyContent="center"
                         display="flex"
                         paddingBottom={1}

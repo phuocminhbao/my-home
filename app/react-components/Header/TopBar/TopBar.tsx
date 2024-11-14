@@ -25,7 +25,9 @@ const TopBar = () => {
             <Toolbar
                 variant="dense"
                 sx={{
-                    justifyContent: 'center'
+                    justifyContent: 'center',
+                    paddingLeft: 4,
+                    paddingRight: 4
                 }}
             >
                 <Stack
